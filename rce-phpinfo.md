@@ -1,3 +1,7 @@
+layout: page
+title: "PHPINFO + LFI = RCE"
+permalink: /rce-phpinfo/
+
 # PhpInfo + LFI = RCE
 
 ## Creando el entorno
