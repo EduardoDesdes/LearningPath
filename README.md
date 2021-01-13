@@ -2,4 +2,4 @@
 
 Por ahora no tengo nada, pero puedes ver esto e.e
 
-[RCE por LFI](rce-phpinfo/)
+[RCE por LFI](http://desdes.xyz/rce-phpinfo/)
