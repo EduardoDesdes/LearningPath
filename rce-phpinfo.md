@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: default
 title: "PHPINFO + LFI = RCE"
 permalink: /rce-phpinfo/
 ---
