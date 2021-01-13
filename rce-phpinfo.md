@@ -79,12 +79,12 @@ Security Test
 
 ## Referencias
 
-https://www.hackplayers.com/2018/12/race-condition-phpinfo-mas-lfi-rce.html
+* [https://www.hackplayers.com/2018/12/race-condition-phpinfo-mas-lfi-rce.html](https://www.hackplayers.com/2018/12/race-condition-phpinfo-mas-lfi-rce.html)
 
-https://github.com/M4LV0/LFI-phpinfo-RCE
+* [https://github.com/M4LV0/LFI-phpinfo-RCE](https://github.com/M4LV0/LFI-phpinfo-RCE)
 
-https://hub.docker.com/r/dimonpvt/php5.5.9
+* [https://hub.docker.com/r/dimonpvt/php5.5.9](https://hub.docker.com/r/dimonpvt/php5.5.9)
 
-https://developer.mozilla.org/es/docs/Web/HTTP/Headers/Content-Type
+* [https://developer.mozilla.org/es/docs/Web/HTTP/Headers/Content-Type](https://developer.mozilla.org/es/docs/Web/HTTP/Headers/Content-Type)
 
-https://tools.ietf.org/html/rfc7231#section-3.1.1.4
+* [https://tools.ietf.org/html/rfc7231#section-3.1.1.4](https://tools.ietf.org/html/rfc7231#section-3.1.1.4)
