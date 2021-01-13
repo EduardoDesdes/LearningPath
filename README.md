@@ -1,7 +1,4 @@
----
-layout: default
-title: "Home"
----
+# Home
 
 Por ahora no tengo nada, pero puedes ver esto e.e
 
