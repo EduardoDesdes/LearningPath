@@ -539,7 +539,37 @@ En este caso solo nos queda probar una de las dos claves y logearnos de manera e
 
 ![done](img20.png)
 
-## 7. 
+## 7.  Lab: 2FA simple bypass
+
+Empezaremos ingresando al login, con nuestras credenciales.
+
+![login](img21.png)
+
+Nos pide un codigo, el cual lo encontraremos en la seccion **Email Client**.
+
+![email](img22.png)
+
+Entraremos a **My Account** y guardaremos el enlace del perfil que es luego de realizar la autenticacion.
+
+```
+https://ace51fbe1e7cf6a580f19dfb00f7005c.web-security-academy.net/my-account
+```
+
+ Ahora cerramos session e intentamos hacer lo mismo con el usuario victima.
+
+![2fa](img23.png)
+
+Como vemos nos pide un codigo de 4 digitos, el cual no poseemos, pero como tenemos una ruta interna de la pagina que se accede cuando estás logeado. Pues intentaremos ponerla en la URL y ver lo que pasa.
+
+![bypass](img24.png)
+
+Como podemos ver, logramos saltarnos la autenticacion, porque simplemente no verificaba luego de ingresar si realizaste un envio valido del codigo de 4 digitos.
+
+## 8. Lab: 2FA broken logic
+
+
+
+
 
 
 
