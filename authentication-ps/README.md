@@ -6,6 +6,13 @@ permalink: /authentication-ps/
 
 # Authentication - PortSwigger
 
+## Índice
+
+- [BRUTEFORCE](#brute-force)
+- [DOBLE FACTOR](#doble-factor)
+
+## BRUTERFORCE
+
 ## 1. Lab: Username enumeration via different responses
 
 ![Request HTTP](img1.png)
@@ -539,6 +546,8 @@ En este caso solo nos queda probar una de las dos claves y logearnos de manera e
 
 ![done](img20.png)
 
+## DOBLE FACTOR
+
 ## 7.  Lab: 2FA simple bypass
 
 Empezaremos ingresando al login, con nuestras credenciales.
@@ -566,10 +575,6 @@ Como vemos nos pide un codigo de 4 digitos, el cual no poseemos, pero como tenem
 Como podemos ver, logramos saltarnos la autenticacion, porque simplemente no verificaba luego de ingresar si realizaste un envio valido del codigo de 4 digitos.
 
 ## 8. Lab: 2FA broken logic
-
-
-
-
 
 
 
