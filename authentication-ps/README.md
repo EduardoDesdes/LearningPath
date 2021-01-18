@@ -9,7 +9,15 @@ permalink: /authentication-ps/
 ## Índice
 
 - [BRUTEFORCE](#brute-force)
+  * [1. Lab: Username enumeration via different responses](#lab1)
+  * [2. Lab: Username enumeration via subtly different responses](#lab2)
+  * [3. Lab: Username enumeration via response timing](#lab3)
+  * [4. Lab: Broken brute-force protection, IP block](#lab4)
+  * [5. Lab: Username enumeration via account lock](#lab5)
+  * [6. Lab: Broken brute-force protection, multiple credentials per request](#lab6)
 - [DOBLE FACTOR](#doble-factor)
+  * [7.  Lab: 2FA simple bypass](#lab7)
+  * [8. Lab: 2FA broken logic](#lab8)
 
 ## BRUTERFORCE
 
@@ -575,8 +583,6 @@ Como vemos nos pide un codigo de 4 digitos, el cual no poseemos, pero como tenem
 Como podemos ver, logramos saltarnos la autenticacion, porque simplemente no verificaba luego de ingresar si realizaste un envio valido del codigo de 4 digitos.
 
 ## 8. Lab: 2FA broken logic
-
-
 
 
 
