@@ -22,6 +22,7 @@ Todos los laboratorios posteriormente expuestos los puedes encontrar para resolv
 - [DOBLE FACTOR](#doble-factor)
   * [7.  Lab: 2FA simple bypass](#7--lab-2fa-simple-bypass)
   * [8. Lab: 2FA broken logic](#8-lab-2fa-broken-logic)
+  * [9. Lab: 2FA bypass using a brute-force attack](#9-lab-2fa-bypass-using-a-brute-force-attack)
 
 ## BRUTERFORCE
 
@@ -587,6 +588,59 @@ Como vemos nos pide un codigo de 4 digitos, el cual no poseemos, pero como tenem
 Como podemos ver, logramos saltarnos la autenticacion, porque simplemente no verificaba luego de ingresar si realizaste un envio valido del codigo de 4 digitos.
 
 ## 8. Lab: 2FA broken logic
+
+Ingresamos a la url del reto, lo que haremos será logearnos con las credenciales que nos dá la plataforma, e interceptaremos la solicitud con BurpSuite.
+
+![](img25.png)
+
+Como podemos ver, todo está ocurriendo de manera normal, así que le damos en forward y vemos el siguiente paquete.
+
+![](img26.png)
+
+Como podemos ver en la siguiente imagen, contamos con el parametro **verify** lo que haremos será cambiar el nombre por **carlos** que es a donde queremos acceder y le damos forward.
+
+![](img27.png)
+
+Ahora, en esta parte enviamos cualquier codigo para que nos vote un error. y luego revisamos en el HTTP history de brupsuite, para obtener la solicutd y enviarla al intruder.
+
+![](img28.png)
+
+En el intruder, hacemos un Clear $, luego seleccionamos el valor de mfa-code y le damos en el boton Add $, 
+**NOTA: en la siguiente imagen, debe cambiar el valor de verify por carlos, por lo cual quedaría. verify=carlos**
+
+![](img29.png)
+
+Luego vamos a payloads y agregamos la lista de todos los posibles codigos esto lo podemos realizar con el comando:
+
+```bash
+crunch 4 4 1234567890
+```
+
+![](img30.png)
+
+Y luego si contamos con BurpSuite Professional podemos ir a la seccion de options y especificar el numero de hilos en 20.
+
+![](img31.png)
+
+Y luego le damos en Attack para que empiece el ataque de fuerza bruta. Organizamos por Status, y cuando empiecen a salir codigos de estado 400 le damos en Attack > Pause. Y buscamos el codigo **302**
+
+![](img32.png)
+
+Luego le damos clic derecho y clic en **Show response in browser** ,
+
+![](img33.png)
+
+Luego de ello, le damos clic en **Copy** y lo pegamos en nuestro navegador.
+
+![](img34.png)
+
+Como podemos ver, hay un usuario ya legeado. Entonces entraremos a la seccion **My account** para culminar con el nivel.
+
+![](img35.png)
+
+## 9. Lab: 2FA bypass using a brute-force attack
+
+
 
 
 
