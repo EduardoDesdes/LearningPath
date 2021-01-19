@@ -6,6 +6,10 @@ permalink: /authentication-ps/
 
 # Authentication - PortSwigger
 
+Todos los laboratorios posteriormente expuestos los puedes encontrar para resolverlos en la academia de PortSwigger.
+
+[https://portswigger.net/web-security/authentication](https://portswigger.net/web-security/authentication)
+
 ## Índice
 
 - [BRUTEFORCE](#brute-force)
@@ -583,4 +587,6 @@ Como vemos nos pide un codigo de 4 digitos, el cual no poseemos, pero como tenem
 Como podemos ver, logramos saltarnos la autenticacion, porque simplemente no verificaba luego de ingresar si realizaste un envio valido del codigo de 4 digitos.
 
 ## 8. Lab: 2FA broken logic
+
+
 
