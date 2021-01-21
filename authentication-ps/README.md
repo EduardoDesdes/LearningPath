@@ -23,6 +23,7 @@ Todos los laboratorios posteriormente expuestos los puedes encontrar para resolv
   * [7.  Lab: 2FA simple bypass](#7--lab-2fa-simple-bypass)
   * [8. Lab: 2FA broken logic](#8-lab-2fa-broken-logic)
   * [9. Lab: 2FA bypass using a brute-force attack](#9-lab-2fa-bypass-using-a-brute-force-attack)
+  * [10. Lab: Brute-forcing a stay-logged-in cookie](#10-lab-brute-forcing-a-stay-logged-in-cookie)
 
 ## BRUTERFORCE
 
@@ -640,7 +641,56 @@ Como podemos ver, hay un usuario ya legeado. Entonces entraremos a la seccion **
 
 ## 9. Lab: 2FA bypass using a brute-force attack
 
+Para este laboratorio necesitaremos usar una opcion de Burpsuite denominado **macros**, que vendrían hacer como automatizacion de consultas previas, para de esta manera la consulta que ejecutemos sea valida, puesto que esta requiere de realizar ciertas acciones antes.
 
+Empezamos este laboratorio ingresando por el login y luego ejecutamos un codigo aleatorio de verificacion.
 
+![](img36.png)
 
+Luego vamos a **Proyect options**, y luego a la pestaña **Sessions**, y luego a la seccion **Session Handling Rules** y **Add**.
 
+![](img37.png)
+
+![](img38.png)
+
+En descripcion ponemos un nombre, en rule actions hacemos clic en **Add** y **Run a macro**. Nos saldrá una nueva ventana.
+
+![](img40.png)
+
+Luego le damos clic en **Add**, 
+
+![](img41.png)
+
+Seleccionamos los 3 packetes antes del POST de /login2 y le damos **ok** a todo hasta llegar hasta la ventana siguiente:
+
+![](img42.png)
+
+Luego vamos a la seccion **Scope** y seleccionamos la siguiente configuracion.
+
+![](img43.png)
+
+Y luego debe quedar la regla de la siguiente manera:
+
+![](img44.png)
+
+Luego vamos al Http history y elegimos la 4ta solicitud y la enviamos al intruder.
+
+![](img45.png)
+
+Luego mantenemos la siguiente configuraciones:
+
+![](img46.png)
+
+![](img47.png)
+
+![](img48.png)
+
+Luego le damos **Start Attack** Y esperamos que salgo un codigo 302 como en el ejercicio anterior y completamos el reto.
+
+![](img50.png)
+
+**Nota: A veces la maquina muere antes de encontrar la solicitud es cosa de seguir intentando.**
+
+![](img51.png)
+
+## 10. Lab: Brute-forcing a stay-logged-in cookie
