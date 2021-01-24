@@ -7,7 +7,40 @@ permalink: /Phoenix-EE/
 
 # Phoenix-Exploit Education
 
+## Índice
+
+  * [Stack Buffer Overflow](#stack-buffer-overflow)
+      * [Stack Zero](#stack-zero)
+      * [Stack One](#stack-one)
+      * [Stack Two](#stack-two)
+      * [Stack Three](#stack-three)
+      * [Stack Four](#stack-four)
+      * [Stack Five](#stack-five)
+      * [Stack Six](#stack-six)
+  * [Format String Overflow](#format-string-overflow)
+      * [Format Zero](#format-zero)
+      * [Format One](#format-one)
+      * [Format Two](#format-two)
+      * [Format Three](#format-three)
+      * [Format Four](#format-four)
+  * [Heap Overflow](#heap-overflow)
+      * [Heap Zero](#heap-zero)
+      * [Heap One](#heap-one)
+      * [Heap Two](#heap-two)
+      * [Heap Three](#heap-three)
+  * [Net Overflow](#net-overflow)
+      * [Net Zero](#net-zero)
+      * [Net One](#net-one)
+      * [Net Two](#net-two)
+  * [Final Problem](#final-problem)
+      * [Final Zero](#final-zero)
+      * [Final One](#final-one)
+      * [Final Two](#final-two)
+
+# Stack Buffer Overflow
+
 ## Stack Zero
+
 ## Stack One
 ## Stack Two
 ## Stack Three
@@ -15,7 +48,58 @@ permalink: /Phoenix-EE/
 ## Stack Five
 ## Stack Six
 
+# Format String Overflow
+
 ## Format Zero
+
+```c
+/*
+ * phoenix/format-zero, by https://exploit.education
+ *
+ * Can you change the "changeme" variable?
+ *
+ * 0 bottles of beer on the wall, 0 bottles of beer! You take one down, and
+ * pass it around, 4294967295 bottles of beer on the wall!
+ */
+
+#include <err.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+#define BANNER \
+  "Welcome to " LEVELNAME ", brought to you by https://exploit.education"
+
+int main(int argc, char **argv) {
+  struct {
+    char dest[32];
+    volatile int changeme;
+  } locals;
+  char buffer[16];
+
+  printf("%s\n", BANNER);
+
+  if (fgets(buffer, sizeof(buffer) - 1, stdin) == NULL) {
+    errx(1, "Unable to get buffer");
+  }
+  buffer[15] = 0;
+
+  locals.changeme = 0;
+
+  sprintf(locals.dest, buffer);
+
+  if (locals.changeme != 0) {
+    puts("Well done, the 'changeme' variable has been changed!");
+  } else {
+    puts(
+        "Uh oh, 'changeme' has not yet been changed. Would you like to try "
+        "again?");
+  }
+
+  exit(0);
+}
+```
 
 Como hablamos de formatos, nos referimos a los que tienen **%** como por ejemplo **%s**, **%i**, **%p**, **%x** o **%d** entre otros. En este caso usaremos **%x**, unas cuantas veces para formar el  error del bug.
 
@@ -311,13 +395,22 @@ Well done, you're redirected code execution!
 ...
 ```
 
+# Heap Overflow
+
 ## Heap Zero
+
 ## Heap One
 ## Heap Two
 ## Heap Three
+# Net Overflow
+
 ## Net Zero
+
 ## Net One
 ## Net Two
+
+# Final Problem
+
 ## Final Zero
 ## Final One
 ## Final Two
