@@ -165,7 +165,7 @@ Welcome to phoenix/stack-one, brought to you by https://exploit.education
 Getting closer! changeme is currently 0x00000000, we want 0x496c5962
 ```
 
-Como podemos ver, exite una structura llamada **locals**. En el contexto de las estructuras, todos los elementos se ubican de manera continua, para de esta manera no perder tiempo y esfuerzo a la hora de acceder entre ellos. Por ello lo que haremos será exceder todos los 64 bytes del vector de caracteres **buffer**, y de esta manera alcanzar al elemento **changeme**.
+Como podemos ver, existe una estructura llamada **locals**. En el contexto de las estructuras, todos los elementos se ubican de manera continua, para de esta manera no perder tiempo y esfuerzo a la hora de acceder entre ellos. Por ello lo que haremos será exceder todos los 64 bytes del vector de caracteres **buffer**, y de esta manera alcanzar al elemento **changeme**.
 
 ```bash
 user@phoenix-amd64:/opt/phoenix/amd64$ ./stack-one $(python -c "print 'A'*64+'BBBB'")
