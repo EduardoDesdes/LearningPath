@@ -27,6 +27,7 @@ Todos los laboratorios posteriormente expuestos los puedes encontrar para resolv
   * [10. Lab: Brute-forcing a stay-logged-in cookie](#10-lab-brute-forcing-a-stay-logged-in-cookie)
   * [11. Lab: Offline password cracking](#11-lab-offline-password-cracking)
   * [12. Lab: Password reset broken logic](#12-lab-password-reset-broken-logic)
+  * [13. Lab: Password reset poisoning via middleware](#13-lab-password-reset-poisoning-via-middleware)
 
 # BRUTERFORCE
 
@@ -827,3 +828,24 @@ Y Luego de ello logramos completar el laboratorio.
 
 ## 12. Lab: Password reset broken logic
 
+Vamos a la seccion del login y le damos en **forgot password**.
+
+![](img63.png)
+
+Y le damos **Submit** y luego vemos lo que nos envia al correo.
+
+![](img64.png)
+
+Y accedemos a la url y revisamos en el portswigger los paquetes que envía.
+
+![](img65.png)
+
+Interceptamos el paquete de submit para ver como funciona.
+
+![](img66.png)
+
+Y como podemos ver, existe un parametro **username** lo que haremos será cambiar el valor de **wiener** por **carlos** y enviar el paquete. Y Luego nos logeamos con el usuario **carlos** y la contraseña que en mi caso es **123**.
+
+![](img67.png)
+
+## 13. Lab: Password reset poisoning via middleware
