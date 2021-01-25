@@ -24,6 +24,7 @@ Todos los laboratorios posteriormente expuestos los puedes encontrar para resolv
   * [8. Lab: 2FA broken logic](#8-lab-2fa-broken-logic)
   * [9. Lab: 2FA bypass using a brute-force attack](#9-lab-2fa-bypass-using-a-brute-force-attack)
   * [10. Lab: Brute-forcing a stay-logged-in cookie](#10-lab-brute-forcing-a-stay-logged-in-cookie)
+  * [11. Lab: Offline password cracking](#11-lab-offline-password-cracking)
 
 ## BRUTERFORCE
 
@@ -694,3 +695,48 @@ Luego le damos **Start Attack** Y esperamos que salgo un codigo 302 como en el e
 ![](img51.png)
 
 ## 10. Lab: Brute-forcing a stay-logged-in cookie
+
+Lo que haremos será logearnos activando la opcion de mentenerse conectados. Y luego interceptamos el paquete de consulta get luego del logeo.
+
+![](img52.png)
+
+Entonces como podemos ver, tenemos una cookie extra, la cual es: **stay-logged-in**, parece que este valor sea base64, entonces lo que haremos será decodificarla para ver si nuestra supocision es verdadera.
+
+```bash
+└──╼ $echo d2llbmVyOjUxZGMzMGRkYzQ3M2Q0M2E2MDExZTllYmJhNmNhNzcw | base64 -d
+wiener:51dc30ddc473d43a6011e9ebba6ca770
+```
+
+Como podemos ver, si era base64, y ahora nos topamos con lo que parece ser un hash en md5, así que intentaremos hashear la clave de wiener que es **peter** en md5. y analizarlo con el resultado, para ver si es correcto.
+
+```bash
+└──╼ $echo -ne 'peter' | md5sum
+51dc30ddc473d43a6011e9ebba6ca770  -
+```
+
+Entonces, lo que haremos será preparar las posibles cookies dependiendo de la estructura antes explicada la cual sería:
+
+```bash
+COOKIE-LOGGED = BASE64(USER:MD5(PASS))
+```
+
+Con el siguiente comando:
+
+```bash
+└──╼ $ for i in `cat password.txt`;do echo -ne carlos:$(echo -ne $i | md5sum | cut -d " " -f 1) | base64 ;done > cookie-hash.txt
+```
+
+Ahora en nuestro navegador hacemos una consulta a **My Account**. Y luego lo enviamos al intruder. Y realizamos las siguientes configuraciones.
+
+![](img53.png)
+
+![](img54.png)
+
+Y luego hacemos clic en **Start Attack**. Luego ordenamos por **Status** y obtenemos que hay una solicitud con codigo 200 que envio un payload. Le damos clic derecho **Show in response in browser**, y copiamos el link y lo pegamos en el navegador.
+
+![](img55.png)
+
+Y Listo :D.
+
+## 11. Lab: Offline password cracking
+
