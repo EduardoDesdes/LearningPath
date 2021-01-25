@@ -602,7 +602,11 @@ uid=1000(user) gid=1000(user) euid=405(phoenix-amd64-stack-five) egid=405(phoeni
 
 Listo :D.
 
-## Stack Six [ no me sale :c ]
+## Stack Six
+
+	[ no me sale :c ]
+	> rm -rf /
+	u.u
 
 # Format String Overflow
 
