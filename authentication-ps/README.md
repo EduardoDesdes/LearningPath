@@ -28,6 +28,7 @@ Todos los laboratorios posteriormente expuestos los puedes encontrar para resolv
   * [11. Lab: Offline password cracking](#11-lab-offline-password-cracking)
   * [12. Lab: Password reset broken logic](#12-lab-password-reset-broken-logic)
   * [13. Lab: Password reset poisoning via middleware](#13-lab-password-reset-poisoning-via-middleware)
+  * [14. Lab: Password brute-force via password change](#14-lab-password-brute-force-via-password-change)
 
 # BRUTERFORCE
 
@@ -849,3 +850,54 @@ Y como podemos ver, existe un parametro **username** lo que haremos será cambia
 ![](img67.png)
 
 ## 13. Lab: Password reset poisoning via middleware
+
+Para este laboratorio intentaremos reiniciar la contraseña de nuestro usuario conocido **wiener** para ver el link que genera en el mensaje que llega al correo:
+
+![](img68.png)
+
+Y podemos verlo en la seccion **Go to exploit server** y luego clic en **Email client**.
+
+![](img69.png)
+
+Entonces ahora lo que haremos será interceptar justo este paquete antes de que se envie, y lo que haremos será agregar la cabecera **X-Forwarded-Host** de la siguiente manera y luego le damos forward.
+
+![](img70.png)
+
+Y ahora revisando el correo vemos lo siguiente:
+
+![](img71.png)
+
+Entonces como vemos lo que escriba en **X-Forwarded-Host** reemplazará el host natural con el que se general la url para reiniciar la password, entonces será reemplazarlo por la url del exploit server de este laboratorio.
+
+```bash
+aca11fac1f76f4b980373c24012d00b5.web-security-academy.net
+```
+
+Entonces enviamos una nueva solicitud de reinicio, pero con el usuario **carlos** pero lo interceptamos con el burpsuite.
+
+![](img72.png)
+
+Y lo configuramos de la siguiente manera antes de darle forward:
+
+![](img73.png)
+
+Como nos dice la descripcion del reto, el usuario carlos hará clic en cualquier enlace que se le envie al correo entonces, en los logs de servidor deberíamos ver la consulta que se hizo, y de ahi robarla y solo cambiar el host por el original.
+
+![](img74.png)
+
+Así que ahora le agregamos todo ello a la url original y quedaría de esta forma:
+
+```bash
+https://ac781f3d1f1af4b180743cb4002100b0.web-security-academy.net/forgot-password?temp-forgot-password-token=1Mk9u6J7Vzofueokkmakc0ogi69yxwgD
+```
+
+Ahora accedemos al link y cambiamos la clave por una sencilla, yo usaré **123**
+
+![](img75.png)
+
+Luego nos logeamos y vamos a la seccion **My Account**
+
+![](img76.png)
+
+## 14. Lab: Password brute-force via password change
+
