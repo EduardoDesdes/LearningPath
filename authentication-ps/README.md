@@ -23,12 +23,13 @@ Todos los laboratorios posteriormente expuestos los puedes encontrar para resolv
   * [7.  Lab: 2FA simple bypass](#7--lab-2fa-simple-bypass)
   * [8. Lab: 2FA broken logic](#8-lab-2fa-broken-logic)
   * [9. Lab: 2FA bypass using a brute-force attack](#9-lab-2fa-bypass-using-a-brute-force-attack)
-- [Otros Mecanismos](#otros-mecanismos)
+- [OTROS MECANISMOS](#otros-mecanismos)
   * [10. Lab: Brute-forcing a stay-logged-in cookie](#10-lab-brute-forcing-a-stay-logged-in-cookie)
   * [11. Lab: Offline password cracking](#11-lab-offline-password-cracking)
   * [12. Lab: Password reset broken logic](#12-lab-password-reset-broken-logic)
   * [13. Lab: Password reset poisoning via middleware](#13-lab-password-reset-poisoning-via-middleware)
   * [14. Lab: Password brute-force via password change](#14-lab-password-brute-force-via-password-change)
+- [DESPEDIDA](#despedida) 
 
 # BRUTERFORCE
 
@@ -901,3 +902,34 @@ Luego nos logeamos y vamos a la seccion **My Account**
 
 ## 14. Lab: Password brute-force via password change
 
+Para este laboratio empezaremos ingresando con nuestra cuenta atacante **wiener**:**peter**. Y vamos a la seccion **My Account** para cambiar nuestra clave.
+
+![](img77.png)
+
+Cologamos una contrasela diferente para que no nos cambie la contraseña al enviarlo. E interceptamos la solicitud y la pasamos al intruder.
+
+![](img78.png)
+
+Cambiamos el usuario de **wiener** a **carlos** y la seleccionamos **peter** y le damos en **Add**. Luego ingresamos la lista de contraseñas en la seccion de payloads.
+
+![](img79.png)
+
+Luego vamos a la **Options** y a **Grep-Extract** , le hacemos clic en **Load**, Clic en **Fetch Response** y seleccionamos **Current password is incorrect** y luego **Ok**.
+
+![](img80.png)
+
+Luego le damos clic en **Start Attack**, y ordenamos por **Warning**
+
+![](img81.png)
+
+Y podemos ver que para el payload **jordan** el error es diferente. Entonces sabemos que la contraseña del usuario **carlos** es **jordan**. 
+
+Entonces, nos logeamos con las credenciales y vamos a la seccion **My Account** para completar el laboratorio.
+
+![](img82.png)
+
+# DESPEDIDA
+
+*Y con esto acabamos nuestro camino por todos los laboratorios de **Authentication**, espero que les sea de ayuda todas estas soluciones :D.*
+
+*Atte. Eduardo Desdes*
