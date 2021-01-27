@@ -2,12 +2,14 @@
 
 Por ahora no tengo nada, pero puedes ver esto e.e
 
-[RCE por LFI](http://desdes.xyz/rce-phpinfo/)
+[RCE por LFI](rce-phpinfo/)
 
-[XML Tutorial](http://desdes.xyz/xml-tutorial/)
+[XML Tutorial](xml-tutorial/)
 
-[Bit Flipper Attack](http://desdes.xyz/bit-flipper-attack/)
+[Bit Flipper Attack](bit-flipper-attack/)
 
 [Authentication - PortSwigger](authentication-ps/)
 
 [Phoenix-Exploit Education](Phoenix-EE/)
+
+[Directory Traversal - PortSwigger](directory-traversal-ps/)
