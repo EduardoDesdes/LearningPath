@@ -148,6 +148,14 @@ Ahora verificamos en el home del laboratorio si lo completamos.
 
 ## 5. Lab: Blind OS command injection with out-of-band data exfiltration
 
+```bash
+Esta práctica de laboratorio contiene una vulnerabilidad de inyección ciega de comandos del SO en la función de retroalimentación.
+
+La aplicación ejecuta un comando de shell que contiene los detalles proporcionados por el usuario. El comando se ejecuta de forma asincrónica y no tiene ningún efecto en la respuesta de la aplicación. No es posible redirigir la salida a una ubicación a la que pueda acceder. Sin embargo, puede desencadenar interacciones fuera de banda con un dominio externo.
+
+Para resolver el laboratorio, ejecute el whoamicomando y extraiga el resultado a través de una consulta de DNS a Burp Collaborator. Deberá ingresar el nombre del usuario actual para completar el laboratorio.
+```
+
 Como en el laboratorio entramos al **Burp Collaborator Client**, y damos clic en **Copy to clipboard**, con lo cual obtenemos el siguiente:
 
 ```bash
