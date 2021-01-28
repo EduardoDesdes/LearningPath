@@ -12,7 +12,12 @@ Todos los laboratorios posteriormente expuestos los puedes encontrar para resolv
 
 ## Indice
 
-
+  * [1. Lab: OS command injection, simple case](#1-lab-os-command-injection-simple-case)
+  * [2. Lab: Blind OS command injection with time delays](#2-lab-blind-os-command-injection-with-time-delays)
+  * [3. Lab: Blind OS command injection with output redirection](#3-lab-blind-os-command-injection-with-output-redirection)
+  * [4. Lab: Blind OS command injection with out-of-band interaction](#4-lab-blind-os-command-injection-with-out-of-band-interaction)
+  * [5. Lab: Blind OS command injection with out-of-band data exfiltration](#5-lab-blind-os-command-injection-with-out-of-band-data-exfiltration)
+  * [CONCLUSION](#conclusion)
 
 ## 1. Lab: OS command injection, simple case
 
