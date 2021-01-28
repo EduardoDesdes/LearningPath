@@ -15,3 +15,5 @@ Por ahora no tengo nada, pero puedes ver esto e.e
 [Directory Traversal - PortSwigger](directory-traversal-ps/)
 
 [OS command injection - PortSwigger](command-injection-ps/)
+
+[Business logic vulnerabilities - PortSwigger](business-logic-ps/)
