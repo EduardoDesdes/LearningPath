@@ -308,3 +308,29 @@ Y eliminamos el usuario carlos para completar el laboratorio.
 
 ## 7. Lab: Insufficient workflow validation
 
+```bash
+Este laboratorio hace suposiciones erróneas sobre la secuencia de eventos en el flujo de trabajo de compras. Para resolver el laboratorio, aproveche este defecto para comprar una "Lightweight l33t leather jacket".
+
+Puede acceder a su propia cuenta con las siguientes credenciales: wiener:peter
+```
+
+Nos logeamos con las credenciales que nos dá el laboratorio, y luego compramos un item, el mas barato que encontremos para interceptar todos los paquetes y ver algo interesante que podamos encontrar.
+
+![](img40.png)
+
+Podemos ver, un paquete muy interesante, donde se realiza una validacion y confirmacion de la compra y la llevamos a repeater.
+
+Dropearemos el paquete del proxy, y lo que haremos será cambiar el producto que agregamos por el de **Lightweight l33t leather jacket**.
+
+![](img41.png)
+
+Y luego vamos al repeater, donde dejamos nuestro paquete, y lo enviamos para analizar el resultado.
+
+![](img42.png)
+
+Y como podemos ver, nos generá un texto que nos dice que completamos el laboratorio. Entonces vamos a la pagina principal para verificar que se completó el laboratorio.
+
+![](img43.png)
+
+## 8. Lab: Authentication bypass via flawed state machine
+
