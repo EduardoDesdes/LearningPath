@@ -334,3 +334,35 @@ Y como podemos ver, nos generá un texto que nos dice que completamos el laborat
 
 ## 8. Lab: Authentication bypass via flawed state machine
 
+```
+Este laboratorio realiza suposiciones erróneas sobre la secuencia de eventos en el proceso de inicio de sesión. Para resolver el laboratorio, aproveche esta falla para evitar la autenticación del laboratorio, acceder a la interfaz de administración y eliminar a Carlos.
+
+Puede acceder a su propia cuenta con las siguientes credenciales: wiener:peter
+```
+
+Lo logeamos con las credenciales que nos dan e interceptamos todos los paquetes, podemos ver que uno de los mas interesantes es el siguiente,
+
+![](img44.png)
+
+Que enviamos algunos de los valores genera un paquete POST, que es el siguiente,
+
+![](img45.png)
+
+Podemos suponer que este recurso, **role-selector** sirve para actualizar el rol del usuario en el sitio web luego de realizarse el inicio de sesion, lo que intentaremos será simulas el mismo fujo pero haciendo un **drop** al momento que nos aparecer la solicitud **GET** de **/role-selector**.
+
+![](img46.png)
+
+Y luego vemos en el sitio web lo siguiente,
+
+![](img47.png)
+
+Lo cual tiene sentido porque realizamos un **drop** al request, entonces ahora simplemente accedemos al home del laboratorio y nos topamos con que nuestro rol está como administrador.
+
+![](img48.png)
+
+Ahora, accedemos al panel de administracion de eliminamos al usuario carlos para completar el laboratorio.
+
+![](img49.png)
+
+## 9. Lab: Flawed enforcement of business rules
+
