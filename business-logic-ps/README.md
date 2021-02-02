@@ -280,3 +280,31 @@ Y luego completariamos el laboratorio.
 
 ## 6. Lab: Weak isolation on dual-use endpoint
 
+```bash
+Este laboratorio hace una suposición errónea sobre el nivel de privilegios del usuario en función de su entrada. Como resultado, puede aprovechar la lógica de sus funciones de administración de cuentas para obtener acceso a cuentas de usuarios arbitrarios. Para solucionar el laboratorio, acceda a la cuenta administrator y elimine a Carlos.
+
+Puede acceder a su propia cuenta con las siguientes credenciales: wiener:peter
+```
+
+Ingresamos con las credenciales que nos entregan, y nos dirigimos a la seccion **My account**, ahi lo que haremos será cambiar la contraseña, interceptamos el paquete y lo enviamos al **repeater**.
+
+![](img35.png)
+
+Como podemos ver tenemos varios parametros, entre ellos **username** el cual lo reemplazaremos por **administrator**, luego el **current-password** como no tenemos la clave, eliminaremos el parametro y seteamos una nueva contraseña que será **123**.
+
+![](img36.png)
+
+Y quedaría de la siguiente manera:
+
+![](img37.png)
+
+Ingresamos con el usuario **administrator** y la contraseña que especificamos que en nuestro caso es **123**.
+
+![](img38.png)
+
+Y eliminamos el usuario carlos para completar el laboratorio.
+
+![](img39.png)
+
+## 7. Lab: Insufficient workflow validation
+
