@@ -246,3 +246,37 @@ Y logramos solucionar el laboratorio.
 
 ## 5. Lab: Inconsistent security controls
 
+```bash
+La lógica defectuosa de este laboratorio permite que usuarios arbitrarios accedan a funciones administrativas que solo deberían estar disponibles para los empleados de la empresa. Para resolver el laboratorio, acceda al panel de administración y elimine a Carlos.
+```
+
+Lo que haremos para este laboratorio será registrarnos, verificar el correo y luego logearnos e ingresar a la seccion **My account**.
+
+![](img31.png)
+
+Ahora lo que haremos será ir a la seccion de **/admin** y nos devuelve el siguiente error:
+
+```bash
+Admin interface only available if logged in as a DontWannaCry user
+```
+
+Entonces lo que haremos será en la seccion **My account** actualizamos el correo al siguiente correo:
+
+```bash
+attacker@dontwannacry.com
+```
+
+Y obtendriamos lo siguiente:
+
+![](img32.png)
+
+Ahora no vamos a la seccion **Admin panel** y eliminamos al usuario **carlos**.
+
+![](img33.png)
+
+Y luego completariamos el laboratorio.
+
+![](img34.png)
+
+## 6. Lab: Weak isolation on dual-use endpoint
+
