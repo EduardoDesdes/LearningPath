@@ -366,3 +366,47 @@ Ahora, accedemos al panel de administracion de eliminamos al usuario carlos para
 
 ## 9. Lab: Flawed enforcement of business rules
 
+```
+Este laboratorio tiene una falla lógica en su flujo de trabajo de compras. Para resolver el laboratorio, aproveche este defecto para comprar una "Lightweight l33t leather jacket".
+
+Puede acceder a su propia cuenta con las siguientes credenciales: wiener:peter
+```
+
+Al entrar al laboratorio, nos topamos con lo siguiente:
+
+```bash
+New customers use code at checkout: NEWCUST5
+```
+
+Entonces, ahora bajando, nos encontramos con la siguiente seccion,
+
+![](img50.png)
+
+Ingresamos un correo cualquierda, para ver que ocurre y nos genera un alert con lo siguiente:
+
+```bash
+Use coupon SIGNUP30 at checkout!
+```
+
+Entonces luego de logearnos y como tenemos dos cupones, intentaremos comprar el articulo que nos piden, antes ingresando los cupones de descuento.
+
+![](img51.png)
+
+Como podemos ver, el primer cupon nos da un descuento de 5 dolares, mientras que el segundo nos dá un descuento de mas de 400 dolares. Entonces intentaremos usar de nuevo el segundo codigo para ver si se pueden acomular.
+
+![](img52.png)
+
+Entonces, nos salta un error de que el cupon ya se aplicó y que no se puede enviar de nuevo, ahora intentaremos con el otro cupon.
+
+![](img53.png)
+
+Vemos que el primero cupon si permite usar de nuevo, ahora podemos suponer dos cosas que el solo el primer cupon el que permite, o es que se puede enviar los cupones de manera intercalada para de esta manera saltar la "proteccion", así que intentaremos con el segundo cupón y de ser así lo intentamos hasta que el precio total sea menor que nuestro balance.
+
+![](img54.png)
+
+Realizamos la compra y completamos el laboratorio.
+
+![](img55.png)
+
+## 10. Lab: Infinite money logic flaw
+
