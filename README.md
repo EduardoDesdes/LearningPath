@@ -19,3 +19,5 @@ Por ahora no tengo nada, pero puedes ver esto e.e
 [Business logic vulnerabilities - PortSwigger](business-logic-ps/)
 
 [DVWA](dvwa/)
+
+[Information disclosure vulnerabilities - PortSwigger](information-disclosure-ps/)
