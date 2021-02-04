@@ -123,3 +123,39 @@ Entonces enviamos la solucion y completamos el laboratorio.
 
 ## 3. Lab: Source code disclosure via backup files
 
+```
+Este laboratorio filtra su código fuente a través de archivos de respaldo en un directorio oculto. Para resolver el laboratorio, identifique y envíe la contraseña de la base de datos, que está codificada en el código fuente filtrado.
+```
+
+Buscamos directorios posibles, y nos topamos con que el directorio **backup** existe, y dentro de el encontramos un archivo llamado **ProductTemplate.java.bak** , la ruta sería.
+
+```
+https://ac371fb21ec0935c80fa104d00c30038.web-security-academy.net/backup/ProductTemplate.java.bak
+```
+
+Luego leyendo el codigo del archivo nos encontramos con lo siguiente.
+
+```java
+        ConnectionBuilder connectionBuilder = ConnectionBuilder.from(
+                "org.postgresql.Driver",
+                "postgresql",
+                "localhost",
+                5432,
+                "postgres",
+                "postgres",
+                "tdutsjroyh43uwjtfq0gqoohgpd4hynr"
+        ).withAutoCommit();
+```
+
+Entonces, concluimos que la contraseña de la base de datos es:
+
+```
+tdutsjroyh43uwjtfq0gqoohgpd4hynr
+```
+
+Entonces, enviamos la solucion y completamos el laboratorio.
+
+![](img3.png)
+
+## 4. Lab: Authentication bypass via information disclosure
+
