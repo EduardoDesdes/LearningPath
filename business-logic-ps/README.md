@@ -410,3 +410,73 @@ Realizamos la compra y completamos el laboratorio.
 
 ## 10. Lab: Infinite money logic flaw
 
+```bash
+Este laboratorio tiene una falla lógica en su flujo de trabajo de compras. Para resolver el laboratorio, aproveche este defecto para comprar una "Lightweight l33t leather jacket".
+
+Puede acceder a su propia cuenta con las siguientes credenciales: wiener:peter
+```
+
+En primer lugar nos suscribimos al boletín para que nos dé el codigo de descuento el cual es:
+
+```bash
+Use coupon SIGNUP30 at checkout!
+```
+
+Luego abrimos el burpsuite interceptando en segundo plano los paquetes, y realizamos los siguientes pasos:
+
+- Nos dirigimos al articulo de la **gift card**.
+- La agregamos al carrito.
+- Vamos al carrito y ejecutamos el codigo de descuento.
+- Le damos en comprar.
+- Y activamos el codigo de la **gift card** en **My account**.
+
+Luego de realizar toda la tarea, vamos a configurar la macro, para ello seguiremos los siguientes pasos.
+
+![](img56.png)
+
+Nos saldrá una nueva ventana escribimos una descripcion y luego en **Rule Actions** le damos clic en **Add** y luego en **Run a macro**. En la nueva ventana le damos clic en add, y nos saldrá el visualizador de paquetes aquí seleccionamos los siguiente paquetes y le damos en **OK**.
+
+![](img57.png)
+
+Luego vamos al 5to paquete, para ver cual es el parametro de la gift card, y vemos que es **gift-card**.
+
+![](img58.png)
+
+Entonces ahora vamos al paquete 4, y configuramos lo siguiente haciendo clic en **configure item** y en **Add**.
+
+![](img59.png)
+
+Luego le damos en **OK** y ahora seleccionamos el 5to paquete, y luego clic en **Configure item**, vamos a donde dice **gift-card** y seleccionamos la opcion **Derive from prior response** y elejimos a la derecha **Response 4**.
+
+![](img60.png)
+
+Luego **OK** a todo hasta llegar a la ventana de **Session  handling rule editor**, y seleccionamos **Scope** con la siguiente configuracion:
+
+![](img61.png)
+
+Luego seleccionamos el paquete de **GET** del http history y lo enviamos al intruder.
+
+![](img62.png)
+
+Luego ahí hacemos clic en **Clear $**, y luego la siguiente cofiguracion.
+
+![](img63.png)
+
+Luego lo que haremos será obtener los montos por request, por ello iremos a la seccion de options y realizaremos la siguiente configuracion:
+
+![](img64.png)
+
+Y luego de toda esa configuracion podemos darle en **Start attack** y ver como se realizan los envios hasta llegar al monto necesario para comprar el articulo.
+
+![](img65.png)
+
+Revisamos si tenemos el saldo que nos devuelve el burpsutie.
+
+![](img66.png)
+
+Luego ya teniendo el dinero necesario, compramos el articulo y completamos el laboratorio.
+
+![](img67.png)
+
+## 11. Lab: Authentication bypass via encryption oracle
+
