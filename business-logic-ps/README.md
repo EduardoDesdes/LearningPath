@@ -12,7 +12,18 @@ Todos los laboratorios posteriormente expuestos los puedes encontrar para resolv
 
 ## Índice
 
-
+* [1. Lab: Excessive trust in client-side controls](#1-lab-excessive-trust-in-client-side-controls)
+* [2. Lab: High-level logic vulnerability](#2-lab-high-level-logic-vulnerability)
+* [3. Lab: Low-level logic flaw](#3-lab-low-level-logic-flaw)
+* [4. Lab: Inconsistent handling of exceptional input](#4-lab-inconsistent-handling-of-exceptional-input)
+* [5. Lab: Inconsistent security controls](#5-lab-inconsistent-security-controls)
+* [6. Lab: Weak isolation on dual-use endpoint](#6-lab-weak-isolation-on-dual-use-endpoint)
+* [7. Lab: Insufficient workflow validation](#7-lab-insufficient-workflow-validation)
+* [8. Lab: Authentication bypass via flawed state machine](#8-lab-authentication-bypass-via-flawed-state-machine)
+* [9. Lab: Flawed enforcement of business rules](#9-lab-flawed-enforcement-of-business-rules)
+* [10. Lab: Infinite money logic flaw](#10-lab-infinite-money-logic-flaw)
+* [11. Lab: Authentication bypass via encryption oracle](#11-lab-authentication-bypass-via-encryption-oracle)
+* [CONCLUSION](#conclusion)
 
 ## 1. Lab: Excessive trust in client-side controls
 
@@ -479,4 +490,102 @@ Luego ya teniendo el dinero necesario, compramos el articulo y completamos el la
 ![](img67.png)
 
 ## 11. Lab: Authentication bypass via encryption oracle
+
+```bash
+Este laboratorio contiene una falla lógica que expone un oráculo de cifrado a los usuarios. Para resolver el laboratorio, aproveche esta falla para obtener acceso al panel de administración y eliminar a Carlos.
+
+Puede acceder a su propia cuenta con las siguientes credenciales: wiener:peter
+```
+
+Empezaremos logeandonos y activando la casilla de **Stay logged in**. Luego enviamos un comentario con el correo invalido y vemos lo siguiente.
+
+![](img68.png)
+
+Nos muestra este error, y podemos ver en los paquetes, que existe una nueva cookie que se ah generado.
+
+![](img69.png)
+
+La cual se llama **notification** y podemos ver en el siguiente paquete, que se envia en la cookie e imprime el texto.
+
+![ ](img70.png)
+
+Así que enviaremos el GET al repeater, y en **notification** en vez de ese mensaje colocaremos la cookie de **stay-logger-in** y veremos cual es la respuesta que nos dá:
+
+![](img71.png)
+
+Entonces nuestra cookie de **stay-logger-in** contiene USUARIO:TIME , siendo TIME el tiempo de expiracion de la cookie. Ahora intentaremos enviar por email el siguiente payload.
+
+```
+administrator:1612462627960 
+```
+
+Y nos devolverá un texto cifrado.
+
+![](img72.png)
+
+Ahora, enviamos al desencriptador de la consulta anterior, para ver si nos devuelve el texto plano.
+
+![](img73.png)
+
+Funciona! Pero podemos ver que hay un problema, la cookie que enviariamos a **stay-logger-in** tiene un texto adelante que no nos sirve el cual es, **Invalid email address: **, entonces calculamos su longitud la cual es,
+
+```python
+>>> len("Invalid email address: ")
+23
+```
+
+Entonces enviamos el texto cifrado al decoder de burp. Y hacemos las decodificaciones de HTML y BASE64.
+
+![](img74.png)
+
+Seleccionamos desde el bytes 24 para adelante y le damos encode **base64**.
+
+![](img75.png)
+
+Y lo enviamos al repeater para decifrarlo.
+
+![](img76.png)
+
+Pero nos dice que el texto cifrado debe ser multiplo de 16, (al parecer se está realizando un cifrado por bloques), Así que lo que haremos será en nuestro payload agregarle una cantidad para que al recortarle esa cantidad en el texto cifrado siga siendo multiplo de 16. Por ello sabemos que queremos cortar todo el texto anterior a **administrator**, por ello los 23 caracteres no nos es suficiente, y como necesitamos un multiplo de 16 entonces:
+
+```python
+>>> (16*2) - len("Invalid email address: ")
+9
+>>> 'A'*9
+'AAAAAAAAA'
+```
+
+Entonces nuestro payload será 
+
+```bash
+AAAAAAAAAadministrator:1612462627960 
+```
+
+Enviando el payload en el parametro email para cifrarlo:
+
+![](img77.png)
+
+Y ahora, lo que haremos será llevar el texto cifrado al decoder, y realizamos las decodificaciones de **URL** y **BASE64**.
+
+![](img78.png)
+
+Y ahora seleccionamos desde el byte 33 para adelante y le damos encode **Base64**.
+
+![](img79.png)
+
+Ahora realizaremos un GET a /admin mediante el navegador, interceptando el paquete en el burpsuite, para realizar el cambio de la cookie.
+
+![](img80.png)
+
+**NOTA: Eliminamos la cookie de session para que no haga conflicto con la cookie de stay-logged-in.**
+
+![](img81.png)
+
+Y eliminamos al usuario carlos para completar el laboratorio.
+
+![](img82.png)
+
+## CONCLUSION
+
+Este conjunto de laboratorios, son mucho mas interesantes pues aprendemos que las vulnerabilidades no sono son las conocidas, sino que tambien existen vulnerabilidades de logica que pueden cometer los desarolladores, vulnerabilidad algo raras pero que si analizamos el comportamiento de los sitios web, nos topamos que son totalmente válidas.
 
