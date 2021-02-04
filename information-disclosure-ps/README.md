@@ -84,3 +84,42 @@ Enviamos la respuesta y completamos el laboratorio.
 ![](img1.png)
 
 ## 2. Lab: Information disclosure on debug page
+
+```
+Este laboratorio contiene una página de depuración que revela información confidencial sobre la aplicación. Para resolver el laboratorio, obtenga y envíe la variable de entorno SECRET_KEY.
+```
+
+Revisando el codigo fuente del laboratorio nos encontramos con lo siguiente:
+
+```html
+                        <div>
+                            <img src="/image/content/productcatalog/products/1.jpg">
+                            <h3>Eggtastic, Fun, Food Eggcessories</h3>
+                            <img src="/resources/images/rating4.png">
+                            $27.60
+                            <a class="button" href="/product?productId=20">View details</a>
+                        </div>
+                    </section>
+                    <!-- <a href=/cgi-bin/phpinfo.php>Debug</a> -->
+                </div>
+            </section>
+```
+
+Existe una ruta en donde nos podemos topar con un archivo phpinfo.php, que tiene el nombre de **Debug**. Entonces accedemos a la ruta
+
+```
+https://ace81f711f47a55d803d2973000a00a8.web-security-academy.net/cgi-bin/phpinfo.php
+```
+
+Y ahi dentro buscamos entre toda la informacion interesante el nombre de la variable de entorno **SECRET_KEY**.
+
+```
+SECRET_KEY	jkz8p8xls3tgv9z1l5ztffdsgpvv173y
+```
+
+Entonces enviamos la solucion y completamos el laboratorio.
+
+![](img2.png)
+
+## 3. Lab: Source code disclosure via backup files
+
