@@ -36,3 +36,43 @@ Ahora eliminamos a carlos y completamos el laboratorio.
 
 ## 2. Lab: Unprotected admin functionality with unpredictable URL
 
+```
+Este laboratorio tiene un panel de administración desprotegido. Está ubicado en una ubicación impredecible, pero la ubicación se revela en algún lugar de la aplicación.
+
+Resuelva el laboratorio accediendo al panel de administración y utilizándolo para eliminar al usuario carlos.
+```
+
+Revisando el codigo fuente del laboratorio nos topamos con el siguiente codigo en JS.
+
+```html
+<script>
+var isAdmin = false;
+if (isAdmin) {
+   var topLinksTag = document.getElementsByClassName("top-links")[0];
+   var adminPanelTag = document.createElement('a');
+   adminPanelTag.setAttribute('href', '/admin-lplp1v');
+   adminPanelTag.innerText = 'Admin panel';
+   topLinksTag.append(adminPanelTag);
+   var pTag = document.createElement('p');
+   pTag.innerText = '|';
+   topLinksTag.appendChild(pTag);
+}
+</script>
+```
+
+Entonces con esto llegamos a la conclusion que existe un recurso con el nombre
+
+```
+/admin-lplp1v
+```
+
+As'que accedemos a el mediante la URL.
+
+![](img4.png)
+
+Ahora eliminamos a carlos y completamos el laboratorio.
+
+![](img5.png)
+
+## 3. Lab: User role controlled by request parameter
+
