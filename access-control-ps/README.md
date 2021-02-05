@@ -269,6 +269,26 @@ Entonces copiamos la API key y la enviamos para completar el laboratorio.
 
 ## 9. Lab: User ID controlled by request parameter with data leakage in redirect
 
+```
+Este laboratorio contiene una vulnerabilidad de control de acceso en la que se filtra información confidencial en el cuerpo de una respuesta de redireccionamiento.
+
+Para resolver el laboratorio, obtenga la clave API para el usuario carlos y envíelo como la solución.
+
+Puede acceder a su propia cuenta utilizando wiener:peter.
+```
+
+Accedemos al laboratorio, nos logeamos y luego accedemos a **My account**. Podemos ver que en la url está el nombre de **wiener**. Entonces ahora prendemos el burpsuite, para que filtre los paquetes en segundo plano y cambiarmos el nombre de **wiener** por **carlos** y vemos como nos redirige al **Home**. Luego buscamos el request enel **http history** de la ventana **proxy**.
+
+![](img26.png)
+
+Entonces copiamos la API key y la enviamos para completar el laboratorio.
+
+![](img27.png)
+
+## 10. Lab: User ID controlled by request parameter with password disclosure
+
+
+
 
 
 
