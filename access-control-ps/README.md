@@ -76,3 +76,29 @@ Ahora eliminamos a carlos y completamos el laboratorio.
 
 ## 3. Lab: User role controlled by request parameter
 
+```
+Este laboratorio tiene un panel de administración en /admin, que identifica a los administradores mediante una cookie falsificable.
+
+Resuelva el laboratorio accediendo al panel de administración y utilizándolo para eliminar al usuario carlos.
+
+Tiene una cuenta en la aplicación que puede usar para ayudar a diseñar su ataque. Las credenciales son: wiener:peter.
+```
+
+Ingresamos al laboratorio y no logeamos con las credenciales que nos dan, interceptando todo en primer plano con la herramienta de proxy de burpsuite. En el segundo paquete interceptado nos encontramos con lo siguiente:
+
+![](img6.png)
+
+Podemos ver una cookie llamada **Admin** la cual tiene el valor de **false**, entonces lo que haremos será cambiar este valor por **true** y hacer clic en **Forward**.
+
+![](img7.png)
+
+Así que como podemos ver, nos reconoce como usuario administrador, ahora vamos al panel y eliminamos al usuario carlos para completar el laboratorio.
+
+![](img8.png)
+
+Cambiando de manera continua el valor de la cookie siempre que esté en false.
+
+![](img9.png)
+
+## 4. Lab: User role can be modified in user profile
+
