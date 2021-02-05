@@ -102,3 +102,29 @@ Cambiando de manera continua el valor de la cookie siempre que esté en false.
 
 ## 4. Lab: User role can be modified in user profile
 
+```
+Este laboratorio tiene un panel de administración en /admin. Solo es accesible para usuarios registrados con un roleid igual a 2.
+
+Resuelva el laboratorio accediendo al panel de administración y utilizándolo para eliminar al usuario carlos.
+
+Puede iniciar sesión en su propia cuenta utilizando wiener:peter.
+```
+
+Entonces nos logeamos, vamos a la seccion de **My account** y luego cambiamos el correo, pero interceptamos el paquete.
+
+![](img10.png)
+
+Como podemos ver, el email se envia en formato JSON, entonces supondremos que podemos enviarle mas datos, asi que insertaremos un parametro **roleid** con un valor de **2**.
+
+![](img11.png)
+
+Y como podemos ver, ya nos verifica como un usuario administrador.
+
+![](img12.png)
+
+Entonces, ahora accedemos al panel de administracion y eliminamos al usuario carlos.
+
+![](img13.png)
+
+## 5. Lab: URL-based access control can be circumvented
+
