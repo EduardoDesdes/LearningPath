@@ -287,6 +287,34 @@ Entonces copiamos la API key y la enviamos para completar el laboratorio.
 
 ## 10. Lab: User ID controlled by request parameter with password disclosure
 
+```
+Este laboratorio tiene una página de "Account Details" para los usuarios que contiene su contraseña existente rellenada previamente en una entrada enmascarada.
+
+Para resolver el laboratorio, recupere la contraseña del administrador y luego utilícela para eliminar carlos.
+
+Puede acceder a su propia cuenta utilizando wiener:peter.
+```
+
+Accedemos al laboratorio, nos logeamos y luego accedemos a **My account**. Podemos ver que aparece en nuestra seccion de **Update password** nuestra contraseña, entonces para verla hacemos clic derecho y en **inspeccionar elemento** para ver la contraseña en texto plano.
+
+![](img28.png)
+
+Entonces cambiamos en la url el valor de **wiener** por **administrator** y luego copiamos la contraseña.
+
+![](img29.png)
+
+Entonces la password del usuario **administrator** sería:
+
+```
+xaxvp0fb0cwdf2wdprcb
+```
+
+Entonces nos logeamos y eliminamos al usuario **carlos** para completar el laboratorio.
+
+![](img30.png)
+
+## 11. Lab: Insecure direct object references
+
 
 
 
