@@ -12,7 +12,12 @@ Todos los laboratorios posteriormente expuestos los puedes encontrar para resolv
 
 ## Índice
 
-
+  * [1. Lab: Information disclosure in error messages](#1-lab-information-disclosure-in-error-messages)
+  * [2. Lab: Information disclosure on debug page](#2-lab-information-disclosure-on-debug-page)
+  * [3. Lab: Source code disclosure via backup files](#3-lab-source-code-disclosure-via-backup-files)
+  * [4. Lab: Authentication bypass via information disclosure](#4-lab-authentication-bypass-via-information-disclosure)
+  * [5. Lab: Information disclosure in version control history](#5-lab-information-disclosure-in-version-control-history)
+  * [CONCLUSION](#conclusion)
 
 ## 1. Lab: Information disclosure in error messages
 
