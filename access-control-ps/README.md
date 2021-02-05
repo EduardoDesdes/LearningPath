@@ -128,3 +128,33 @@ Entonces, ahora accedemos al panel de administracion y eliminamos al usuario car
 
 ## 5. Lab: URL-based access control can be circumvented
 
+```
+Este sitio web tiene un panel de administración no autenticado en /admin, pero se ha configurado un sistema de front-end para bloquear el acceso externo a esa ruta. Sin embargo, la aplicación de back-end se basa en un marco que admite el encabezado X-Original-URL.
+
+Para resolver el laboratorio, acceda al panel de administración y elimine al usuario carlos.
+```
+
+Ingresamos al laboratorio e intentamos acceder al recurso /admin y nos sale el siguiente error.
+
+![](img14.png)
+
+Ahora interceptamos el paquete y le agregamos las configuraciones para el encabezado X-Original-URL.
+
+![](img15.png)
+
+ Y como podemos ver si nos muestra el panel de administracion.
+
+![](img16.png)
+
+Ahora eliminamos al usuario carlos y completamos el laboratorio. No olvidar realizar las mismas configuraciones de la encabezado para el siguiente paquete.
+
+![](img17.png)
+
+Colocando los parametro en la en el primer encabezado, pero los recursos en el encabezado **X-Original-URL**.
+
+![](img18.png)
+
+## 6. Lab: Method-based access control can be circumvented
+
+
+
