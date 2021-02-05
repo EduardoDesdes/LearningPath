@@ -159,3 +159,53 @@ Entonces, enviamos la solucion y completamos el laboratorio.
 
 ## 4. Lab: Authentication bypass via information disclosure
 
+```
+La interfaz de administración de este laboratorio tiene una vulnerabilidad de omisión de autenticación, pero no es práctico explotarla sin el conocimiento de un encabezado HTTP personalizado utilizado por el front-end.
+
+Para resolver el laboratorio, obtenga el nombre del encabezado y luego utilícelo para omitir la autenticación del laboratorio. Accede a la interfaz de administración y elimina la cuenta de Carlos.
+
+Puede acceder a su propia cuenta con las siguientes credenciales: wiener:peter
+```
+
+Accedemos a la ruta **/admin** y nos encontramos con el siguiente mensaje:
+
+![](img4.png)
+
+Entonces, lo que haremos será enviar el paquete **GET** a el repeater y cambiar el metodo **GET** por el metodo **TRACE**.
+
+![](img5.png)
+
+Entre todos los headers que nos devuelve la consulta **TRACE** nos topamos con uno interesante,
+
+```
+X-Custom-IP-Authorization: 179.6.192.124
+```
+
+Por lo cual en la consulta **GET** anterior, enviaremos la misma solicitud pero enviando este header de **HTTP** cambiando el valor de la IP por 127.0.0.1, que vendría simular el acceso de un usuario de manera local.
+
+![](img6.png)
+
+Como podemos ver, esto ah funcionado, entonces ahora interceptaremos los paquetes al cargar el panel de administracion desde el navegador agregando el header correcto el cual es:
+
+```
+X-Custom-IP-Authorization: 127.0.0.1
+```
+
+![](img7.png)
+
+Y podemos ver que visualizamos el panel de administracion,
+
+![](img8.png)
+
+Y eliminamos el usuario carlos y completamos el laboratorio.
+
+**NOTA: Para todos los paquetes interceptados agregar el header antes expuesto.**
+
+![](img9.png)
+
+## 5. Lab: Information disclosure in version control history
+
+
+
+
+
