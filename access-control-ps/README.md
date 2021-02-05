@@ -206,7 +206,7 @@ Y vemos que no lo permite, ahora solo vamos a la web desde el navegador para ver
 ```
 Este laboratorio tiene una vulnerabilidad de escalamiento de privilegios horizontal en la página My account.
 
-Para resolver el laboratorio, obtenga la clave API para el usuario carlosy envíelo como la solución.
+Para resolver el laboratorio, obtenga la API key para el usuario carlosy envíelo como la solución.
 
 Puede acceder a su propia cuenta utilizando wiener:peter.
 ```
@@ -232,6 +232,42 @@ Ahora lo que haremos será enviar la **API Key** para completar el laboratorio.
 ![](img22.png)
 
 ## 8. Lab: User ID controlled by request parameter, with unpredictable user IDs
+
+```
+Este laboratorio tiene una vulnerabilidad de escalamiento de privilegios horizontal en la página My account, pero identifica a los usuarios con GUID.
+
+Para resolver el laboratorio, busque el GUID de carlos y luego envíe su API key como solución.
+
+Puede acceder a su propia cuenta utilizando wiener:peter.
+```
+
+Nos logeamos en el laboratorio, y vamos a la seccion My account, y vemos que en la url nos sale lo siguiente:
+
+```
+https://ac381f771edcd015804d58a7007700c8.web-security-academy.net/my-account?id=0b6ac053-6d12-44b7-9bb1-cd7d78129c0e
+```
+
+Así que necesitamos saber el GUID de el usuario **carlos**, podemos buscar algún indicio que mencione al usuario para verificar si hay informacion por ahí. Podemos ver que los post tienen autores, así que buscamos un post que tenga como autor a **carlos**.
+
+![](img23.png)
+
+Ahora lo que haremos será hacerle clic y podemos ver que nos lleva a una lista de post, publicados por carlos y podemos ver que en la url tenemos lo siguiente:
+
+```
+https://ac381f771edcd015804d58a7007700c8.web-security-academy.net/blogs?userId=034fd09a-600e-4308-9623-b8fae835cfa5
+```
+
+Entonces podemos suponer que el GUID de carlos es **034fd09a-600e-4308-9623-b8fae835cfa5**.
+
+Ahora cambiamos el valor de GUID de **wiener** por el de **carlos**  en **My account** y obtenemos al API key.
+
+![](img24.png)
+
+Entonces copiamos la API key y la enviamos para completar el laboratorio.
+
+![](img25.png)
+
+## 9. Lab: User ID controlled by request parameter with data leakage in redirect
 
 
 
