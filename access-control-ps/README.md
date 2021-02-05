@@ -203,6 +203,36 @@ Y vemos que no lo permite, ahora solo vamos a la web desde el navegador para ver
 
 ## 7. Lab: User ID controlled by request parameter
 
+```
+Este laboratorio tiene una vulnerabilidad de escalamiento de privilegios horizontal en la página My account.
+
+Para resolver el laboratorio, obtenga la clave API para el usuario carlosy envíelo como la solución.
+
+Puede acceder a su propia cuenta utilizando wiener:peter.
+```
+
+Nos logeamos en el laboratorio, y vamos a la seccion My account, y vemos que en la url nos sale lo siguiente:
+
+```
+https://ac9c1f461f644de98050b22a00a30024.web-security-academy.net/my-account?id=wiener
+```
+
+Entonces, lo que podemos intentar es cambiar **wiener** por **carlos**.
+
+Entonces nos devuelve la informacion deseada:
+
+```
+Your username is: carlos
+
+Your API Key is: iorkHspsZHINOI7Rn5a0PGofxxm8HVnQ
+```
+
+Ahora lo que haremos será enviar la **API Key** para completar el laboratorio.
+
+![](img22.png)
+
+## 8. Lab: User ID controlled by request parameter, with unpredictable user IDs
+
 
 
 
