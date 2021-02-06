@@ -23,3 +23,5 @@ Por ahora no tengo nada, pero puedes ver esto e.e
 [Information disclosure vulnerabilities - PortSwigger](information-disclosure-ps/)
 
 [Access control vulnerabilities - PortSwigger](access-control-ps/)
+
+[Server-side request forgery - PortSwigger](ssrf-ps/)
