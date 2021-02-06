@@ -355,6 +355,36 @@ Como podemos ver en el texto se encuentra una contraseña la cual podría ser la
 
 ## 12. Lab: Multi-step process with no access control on one step
 
+```
+Este laboratorio tiene un panel de administración con un proceso defectuoso de varios pasos para cambiar el rol de un usuario. Puede familiarizarse con el panel de administración iniciando sesión con administrator:admin.
+
+Para resolver el laboratorio, inicie sesión utilizando wiener:peter y aproveche los controles de acceso defectuosos para promocionarse y convertirse en administrador.
+```
+
+Lo que haremos será logearnos con las credenciales de administrator, para de esta manera familiarizarnos el panel de administracion. Para ello elevaremos al usuario **carlos** como admin. Al interceptar los paquetes nos topamos con que se realizan dos envios **POST**.
+
+![](img34.png)
+
+El primero realiza un pedido para verificar si el usuario está seguro de realizar la acción.
+
+![](img35.png)
+
+Y el segundo realiza la configuracion, puesto que ya contiene la confirmacion del usuario. Entonces será este paquete el que enviaremos al repeater.
+
+Luego, salimos se la sesion y nos logeamos con nuestro usuario **wiener** y extramos la cookie de session para reemplazarla en el paquete que enviamos al repeater con ciertas configuraciones.
+
+![](img36.png)
+
+Entonces copiamos la cookie y la ponemos en el repeater, y a su ves cambiamos el usuario **carlos** por **wiener**.
+
+![](img37.png)
+
+Nos aceptó la solicitud así que ahora vamos al navegador a verificar que completamos el laboratorio.
+
+![](img38.png)
+
+## 13. Lab: Referer-based access control
+
 
 
 
