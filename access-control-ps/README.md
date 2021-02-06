@@ -12,7 +12,20 @@ Todos los laboratorios posteriormente expuestos los puedes encontrar para resolv
 
 ## Índice
 
-
+  * [1. Lab: Unprotected admin functionality](#1-lab-unprotected-admin-functionality)
+  * [2. Lab: Unprotected admin functionality with unpredictable URL](#2-lab-unprotected-admin-functionality-with-unpredictable-url)
+  * [3. Lab: User role controlled by request parameter](#3-lab-user-role-controlled-by-request-parameter)
+  * [4. Lab: User role can be modified in user profile](#4-lab-user-role-can-be-modified-in-user-profile)
+  * [5. Lab: URL-based access control can be circumvented](#5-lab-url-based-access-control-can-be-circumvented)
+  * [6. Lab: Method-based access control can be circumvented](#6-lab-method-based-access-control-can-be-circumvented)
+  * [7. Lab: User ID controlled by request parameter](#7-lab-user-id-controlled-by-request-parameter)
+  * [8. Lab: User ID controlled by request parameter, with unpredictable user IDs](#8-lab-user-id-controlled-by-request-parameter--with-unpredictable-user-ids)
+  * [9. Lab: User ID controlled by request parameter with data leakage in redirect](#9-lab-user-id-controlled-by-request-parameter-with-data-leakage-in-redirect)
+  * [10. Lab: User ID controlled by request parameter with password disclosure](#10-lab-user-id-controlled-by-request-parameter-with-password-disclosure)
+  * [11. Lab: Insecure direct object references](#11-lab-insecure-direct-object-references)
+  * [12. Lab: Multi-step process with no access control on one step](#12-lab-multi-step-process-with-no-access-control-on-one-step)
+  * [13. Lab: Referer-based access control](#13-lab-referer-based-access-control)
+  * [CONCLUSION](#conclusion)
 
 ## 1. Lab: Unprotected admin functionality
 
@@ -385,11 +398,38 @@ Nos aceptó la solicitud así que ahora vamos al navegador a verificar que compl
 
 ## 13. Lab: Referer-based access control
 
+```
+Esta práctica de laboratorio controla el acceso a determinadas funciones de administración según el encabezado Referer. Puede familiarizarse con el panel de administración iniciando sesión con administrator:admin.
 
+Para resolver el laboratorio, inicie sesión utilizando wiener:peter y aproveche los controles de acceso defectuosos para promocionarse y convertirse en administrador.
+```
 
+Lo que haremos será logearnos con las credenciales de administrator, para de esta manera familiarizarnos el panel de administracion. Para ello elevaremos al usuario **carlos** como admin. Al interceptar los paquetes nos topamos con que se realizan un envio **GET** que vuelve al usuario **carlos** a un administrador.
 
+![](img39.png)
 
+Entonces será este paquete el que enviaremos al repeater. Luego, salimos se la sesion y nos logeamos con nuestro usuario **wiener** y extramos la cookie de session para reemplazarla en el paquete que enviamos al repeater con ciertas configuraciones.
 
+![](img40.png)
 
+Entonces copiamos la cookie y la ponemos en el repeater, y a su ves cambiamos el usuario **carlos** por **wiener**.
 
+![](img41.png)
 
+Como podemos ver, ah funcionado!, pero esto es como podemos ver, por el encabezado **Referer**.
+
+```
+Referer: https://ac981f501efb794d809d3a6e005e0078.web-security-academy.net/admin
+```
+
+Porque si cambiamos este encabezado a la ruta raiz y enviamos el paquete, nos encontramos con lo siguiente:
+
+![](img42.png)
+
+Entonces ahora vamos al navegador a verificar que completamos el laboratorio.
+
+![](img43.png)
+
+## CONCLUSION
+
+Laboratorios muy interesantes y metodos muy curiosos que pueden existir en algunos sitios webs a los que hagamos pentesting en algún momento. :D.
