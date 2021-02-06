@@ -315,6 +315,46 @@ Entonces nos logeamos y eliminamos al usuario **carlos** para completar el labor
 
 ## 11. Lab: Insecure direct object references
 
+```
+Este laboratorio almacena los registros de chat de los usuarios directamente en el sistema de archivos del servidor y los recupera mediante URL estáticas.
+
+Resuelva el laboratorio encontrando la contraseña del usuario carlos e iniciando sesión en su cuenta.
+```
+
+Accedemos al laboratorio y vamos a la seccion de **Live chat** y vemos que nos encontramos con un chat donde podemos entablar una conversacion.
+
+![](img31.png)
+
+Podemos ver la opcion de **View transcript**, y al darle clic nos descarga un archivo con la conversacion que tuvimos.
+
+![](img32.png)
+
+Si le damos clic derecho a la url y copiamos el enlace nos encontramos con el siguiente:
+
+```
+https://acda1f5c1f0d3f6080b5306200970039.web-security-academy.net/download-transcript/2.txt
+```
+
+Donde podemos entender que se guardan los historiales de conversacion del chat, entonces probamos con el fichero **1.txt** el cual nos devuelve el siguiente contenido:
+
+```
+CONNECTED: -- Now chatting with Hal Pline --
+You: Hi Hal, I think I've forgotten my password and need confirmation that I've got the right one
+Hal Pline: Sure, no problem, you seem like a nice guy. Just tell me your password and I'll confirm whether it's correct or not.
+You: Wow you're so nice, thanks. I've heard from other people that you can be a right ****
+Hal Pline: Takes one to know one
+You: Ok so my password is n0d7kab01nlhuazjad41. Is that right?
+Hal Pline: Yes it is!
+You: Ok thanks, bye!
+Hal Pline: Do one!
+```
+
+Como podemos ver en el texto se encuentra una contraseña la cual podría ser la contraseña del usuario **carlos**. Entonces lo probamos en el login y de ser la contraseña completariamos el laboratorio.
+
+![](img33.png)
+
+## 12. Lab: Multi-step process with no access control on one step
+
 
 
 
