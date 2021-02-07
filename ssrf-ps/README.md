@@ -122,3 +122,49 @@ Entonces, funcionó el envio. Ahora accedemos al home del laboratorio para verif
 
 ## 4. Lab: SSRF with whitelist-based input filter
 
+```
+Este laboratorio tiene una función de verificación de stock que obtiene datos de un sistema interno.
+
+Para resolver el laboratorio, cambie la URL de verificación de existencias para acceder a la interfaz de administración http://localhost/admin y elimine al usuario carlos.
+
+El desarrollador ha implementado una defensa anti-SSRF que deberá omitir.
+```
+
+Entonces, lo que haremos será interceptar los paquetes en segundo plano y entrar a uno de los articulos y verificar el stock presente y luego lo enviamos al repeater y comprobamos el envio.
+
+![](img20.png)
+
+Ahora lo que haremos será intentar conectarnos a la url **http://localhost/admin**-
+
+![](img21.png)
+
+Entonces, podemos ver qie nos pide que la url contenga **stock.weliketoshop.net**. Entonces, intentaremos usando el truco del **@**.
+
+![](img22.png)
+
+Como podemos ver funciona el **@**, ahora intentaremos reemplazar **malware-url** por **localhost**. y le agregamos un **#** luego de localhost y vemos lo que ocurre.
+
+![](img23.png)
+
+Entonces podemos ver que nos deniega la URL, entonces intentamos usar el mismo metodo que en el laboratorio anterior encodeando dos veces el simbolo **#**.
+
+![](img24.png)
+
+Entonces enviamos el siguiente payload.
+
+![](img25.png)
+
+Y vemos que si interpreta el payload, entonces enviamos el directorio de **/admin**.
+
+![](img26.png)
+
+Entonces podemos ver que funcionó, ahora copiamos el recurso **/delete... ** y lo agregamo al parametro **stockApi** para eliminar al usuario **carlos**.
+
+![](img27.png)
+
+Entonces, funcionó el envio. Ahora accedemos al home del laboratorio para verificar que lo completamos.
+
+![](img28.png)
+
+## 5. Lab: SSRF with filter bypass via open redirection vulnerability
+
