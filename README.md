@@ -1,6 +1,9 @@
 # Home
 
-Por ahora no tengo nada, pero puedes ver esto e.e
+Bienvenido a mi Learning Path, o mi camino de parendizaje. Acá subiré todos los laboratorios que resuelva en todo mi tiempo de entrenamiento, obiamente contando desde que creé esta pagina.
+Espero que te pueda servir, hay mucha informacion util. Luego iré ordenando el indice de mejor manera. :D.
+
+Saludos,
 
 [RCE por LFI](rce-phpinfo/)
 
@@ -25,3 +28,5 @@ Por ahora no tengo nada, pero puedes ver esto e.e
 [Access control vulnerabilities - PortSwigger](access-control-ps/)
 
 [Server-side request forgery - PortSwigger](ssrf-ps/)
+
+[XML external entity (XXE) injection](xxe-ps/)
