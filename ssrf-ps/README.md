@@ -168,3 +168,59 @@ Entonces, funcionó el envio. Ahora accedemos al home del laboratorio para verif
 
 ## 5. Lab: SSRF with filter bypass via open redirection vulnerability
 
+```
+Este laboratorio tiene una función de verificación de existencias que obtiene datos de un sistema interno.
+
+Para resolver el laboratorio, cambie la URL de verificación de existencias para acceder a la interfaz de administración http://192.168.0.12:8080/admin y elimine al usuario carlos.
+
+El verificador de acciones se ha restringido para acceder solo a la aplicación local, por lo que primero deberá encontrar una redirección abierta que afecte a la aplicación.
+```
+
+Entonces, lo que haremos será interceptar los paquetes en segundo plano y entrar a uno de los articulos y verificar el stock presente y luego lo enviamos al repeater y comprobamos el envio.
+
+![](img29.png)
+
+Ahora, vamos a la pagina del articulo y vemos un enlace el cual dice: **[Next product]** , y luego vemos en el HTTP History.
+
+![](img30.png)
+
+Entonces, tenemos los parametros post:
+
+```
+stockApi=%2Fproduct%2Fstock%2Fcheck%3FproductId%3D1%26storeId%3D1
+```
+
+Y en el paquete anterior, obtenemos el redirect en el parametro **path**.
+
+```
+/product/nextProduct?currentProductId=1&path=/product?productId=2
+```
+
+Agregamos nuestra url deseada **http://192.168.0.12:8080/admin**.
+
+```
+/product/nextProduct?currentProductId=1&path=http://192.168.0.12:8080/admin
+```
+
+Entonces codeamos nuestro payload en el encoder.
+
+![](img31.png)
+
+Lo actualizamos el parametro **stockApi** y enviamos el paquete.
+
+![](img32.png)
+
+Y como vemos si envia el paquete, y carga el panel de administracion, entonces le agregamos el recurso **/delete?username=carlos**.
+
+![](img33.png)
+
+Entonces, enviamos el parametro para esperar la respuesta de que se eliminó el usuario satisfactoriamente.
+
+![](img34.png)
+
+Entonces, funcionó el envio. Ahora accedemos al home del laboratorio para verificar que lo completamos.
+
+![](img35.png)
+
+## 6. Lab: Blind SSRF with out-of-band detection
+
