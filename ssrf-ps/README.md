@@ -12,3 +12,39 @@ Todos los laboratorios posteriormente expuestos los puedes encontrar para resolv
 
 ## Índice
 
+
+
+## 1. Lab: Basic SSRF against the local serve
+
+```
+Este laboratorio tiene una función de verificación de stock que obtiene datos de un sistema interno.
+
+Para resolver el laboratorio, cambie la URL de verificación de existencias para acceder a la interfaz de administración http://localhost/admin y elimine al usuario carlos.
+```
+
+Entonces, lo que haremos será interceptar los paquetes en segundo plano y entrar a uno de los articulos.
+
+![](img1.png)
+
+Entonces buscamos el paquete que envio la solicutd de **Check stock**.
+
+![](img2.png)
+
+Así que lo enviamos al repeater, y a su vez desde el navegador intentamos dirigirnos a **/admin**, para visualizar la respuesta.
+
+![](img3.png)
+
+Como podemos ver se puede acceder con una cuenta de administrador, o tambien de manera local. Entonces en el paquete que enviamos al Repeater, editamos el parametro **stockApi** por **http://localhost/admin**.
+
+![](img4.png)
+
+Y como podemos ver, funcionó la solicitud y a su vez nos envia un link donde podemos eliminar al usuario carlos, así que lo agregamos a nuestra solicitud y lo volvemos a enviar.
+
+![](img5.png)
+
+Lo cual parece que funcionó. Entonces nos dirigimos al home del laboratorio para verificar que completamos el laboratorio.
+
+![](img6.png)
+
+## 2. Lab: Basic SSRF against another back-end system
+
