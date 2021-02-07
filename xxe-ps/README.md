@@ -253,3 +253,29 @@ Entonces, como podemos ver, hemos obtenido el contenido del fichero **/etc/passw
 
 ## 8. Lab: Exploiting XInclude to retrieve files
 
+```
+Este laboratorio tiene una función "Check stock" que incorpora la entrada del usuario dentro de un documento XML del lado del servidor que luego se analiza.
+
+Como no controla todo el documento XML, no puede definir una DTD para lanzar un ataque XXE clásico .
+
+Para resolver el laboratorio, inyecte una XIncludedeclaración para recuperar el contenido del archivo /etc/passwd.
+```
+
+Entonces, vamos al laboratorio e interceptamos en segundo plano todos los paquetes en el burpsuite, entonces vamos a un producto y hacemos clic en **Check stock** y buscamos el paquete en el **Http history** y lo enviamos al **Repeater**.
+
+![](img27.png)
+
+Entonces ahora debemos generar un payload para el ataque, el cual será el siguiente que colocaremos en el parametro **productId**.
+
+```
+<foo xmlns:xi="http://www.w3.org/2001/XInclude"><xi:include parse="text" href="file:///etc/passwd"/></foo>
+```
+
+![](img28.png)
+
+Ahora, vamos al home para verificar que completamos el laboratorio.
+
+![](img29.png)
+
+## 9. Lab: Exploiting XXE via image file upload
+
