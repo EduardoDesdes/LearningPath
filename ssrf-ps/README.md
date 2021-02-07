@@ -12,7 +12,14 @@ Todos los laboratorios posteriormente expuestos los puedes encontrar para resolv
 
 ## Índice
 
-
+  * [1. Lab: Basic SSRF against the local serve](#1-lab-basic-ssrf-against-the-local-serve)
+  * [2. Lab: Basic SSRF against another back-end system](#2-lab-basic-ssrf-against-another-back-end-system)
+  * [3. Lab: SSRF with blacklist-based input filter](#3-lab-ssrf-with-blacklist-based-input-filter)
+  * [4. Lab: SSRF with whitelist-based input filter](#4-lab-ssrf-with-whitelist-based-input-filter)
+  * [5. Lab: SSRF with filter bypass via open redirection vulnerability](#5-lab-ssrf-with-filter-bypass-via-open-redirection-vulnerability)
+  * [6. Lab: Blind SSRF with out-of-band detection](#6-lab-blind-ssrf-with-out-of-band-detection)
+  * [7. Laboratorio: SSRF ciego con explotación Shellshock](#7-laboratorio-ssrf-ciego-con-explotaci-n-shellshock)
+  * [CONCLUSION](#conclusion)
 
 ## 1. Lab: Basic SSRF against the local serve
 
