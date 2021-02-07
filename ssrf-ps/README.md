@@ -84,3 +84,41 @@ Ahora revisamos en el home del laboratorio para verificar que lo completamos.
 
 ## 3. Lab: SSRF with blacklist-based input filter
 
+```
+Este laboratorio tiene una función de verificación de existencias que obtiene datos de un sistema interno.
+
+Para resolver el laboratorio, cambie la URL de verificación de existencias para acceder a la interfaz de administración http://localhost/admin y elimine al usuario carlos.
+
+El desarrollador ha implementado dos defensas anti-SSRF débiles que deberá evitar.
+```
+
+Entonces, lo que haremos será interceptar los paquetes en segundo plano y entrar a uno de los articulos y verificar el stock presente.
+
+![](img13.png)
+
+Así que ahora lo enviamos al repeater, e intentamos cargar el panel de administracion.
+
+![](img14.png)
+
+Entonces como podemos ver, nos bloquea la solicitud puesto que en su lista negra debe estar el string **127.0.0.1**, entonces lo vamos a reemplazar por **127.1**.
+
+![](img15.png)
+
+Como podemos ver, aun nos bloquea, y debe ser por que **admin** debe ser parte de la lista negra tambien, así que enviamos admin al decoder y aplicamos dos veces **encode URL**.
+
+![](img16.png)
+
+Y el resultado lo reemplazamos en el repeater, y enviamos el paquete.
+
+![](img17.png)
+
+Entonces podemos ver que funcionó, ahora copiamos el recurso **/delete... ** y lo agregamo al parametro **stockApi** para eliminar al usuario **carlos**.
+
+![](img18.png)
+
+Entonces, funcionó el envio. Ahora accedemos al home del laboratorio para verificar que lo completamos.
+
+![](img19.png)
+
+## 4. Lab: SSRF with whitelist-based input filter
+
