@@ -224,3 +224,29 @@ Entonces, funcionó el envio. Ahora accedemos al home del laboratorio para verif
 
 ## 6. Lab: Blind SSRF with out-of-band detection
 
+```
+Este sitio utiliza un software de análisis que obtiene la URL especificada en el encabezado Referer cuando se carga una página de producto.
+
+Para resolver el laboratorio, use esta funcionalidad para generar una solicitud HTTP al servidor público de Burp Collaborator.
+```
+
+Entonces, buscamos un producto y le hacemos clic, buscamos el paquete de la consulta al producto en el **http history**, y lo enviamos al repeater.
+
+![](img36.png)
+
+Entonces, segun la informacion del laboratorio, existe un SSRF en la cabecera **Referer:** entonces, primero iniciamos el **Burp collaborator client** que se encuentra en la pestaña **Burp**, y le damos clic en **Copy to clipboard**.
+
+```
+oyq2dknvpjrf7a872qrgq7bl9cf33s.burpcollaborator.net
+```
+
+Entonces, ahora en el Referer, escribimos la url antes obtenida en el burp collaborator y enviamos el paquete.
+
+![](img37.png)
+
+Entonces, podemos ver que al enviar el paquete, el servidor realiza una solicitud HTTP al dominio antes obtenido en el burp collaborator. Ahora revisamos en el home del laboratorio para ver que completamos el laboratorio.
+
+![](img38.png)
+
+## 7. Laboratorio: SSRF ciego con explotación Shellshock
+
