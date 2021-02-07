@@ -1,7 +1,5 @@
 # Home
-
-Bienvenido a mi Learning Path, o mi camino de parendizaje. Acá subiré todos los laboratorios que resuelva en todo mi tiempo de entrenamiento, obiamente contando desde que creé esta pagina.
-Espero que te pueda servir, hay mucha informacion util. Luego iré ordenando el indice de mejor manera. :D.
+Bienvenido a mi Learning Path, o mi camino de aprendizaje. Acá subiré todos los laboratorios que resuelva en todo mi tiempo de entrenamiento, obviamente contando desde que creé esta página. Espero que te pueda servir, hay mucha información útil. Luego iré ordenando el índice de mejor manera. :D.
 
 Saludos,
 
