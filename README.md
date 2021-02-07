@@ -27,4 +27,4 @@ Saludos,
 
 [Server-side request forgery - PortSwigger](ssrf-ps/)
 
-[XML external entity (XXE) injection](xxe-ps/)
+[XML external entity (XXE) injection - PortSwigger](xxe-ps/)

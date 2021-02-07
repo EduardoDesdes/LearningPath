@@ -1,10 +1,10 @@
 ---
 layout: default
-title: "XML external entity (XXE) injection"
+title: "XML external entity (XXE) injection - PortSwigger"
 permalink: /xxe-ps/
 ---
 
-# XML external entity (XXE) injection
+# XML external entity (XXE) injection - PortSwigger
 
 Todos los laboratorios posteriormente expuestos los puedes encontrar para resolverlos en el siguiente link.
 
