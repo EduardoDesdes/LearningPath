@@ -48,3 +48,39 @@ Lo cual parece que funcionó. Entonces nos dirigimos al home del laboratorio par
 
 ## 2. Lab: Basic SSRF against another back-end system
 
+```
+Este laboratorio tiene una función de verificación de existencias que obtiene datos de un sistema interno.
+
+Para resolver el laboratorio, use la función de verificación de existencias para escanear el rango interno  192.168.0.X en busca de una interfaz de administración en el puerto 8080, luego úsela para eliminar el usuario carlos.
+```
+
+Entonces, lo que haremos será interceptar los paquetes en segundo plano y entrar a uno de los articulos y verificar el stock presente.
+
+![](img7.png)
+
+Ahora lo que haremos será enviarlo al Intruder, y entonces, hay que planear cual sería el payload que ingresariamos en **stockApi**, como nos hablan de un panel de administracion en el puerto 8080,
+
+```
+http://192.168.0.1:8080/admin
+```
+
+Entonces realizamos las siguientes configuraciones en el intruder.
+
+![](img8.png)
+
+![](img9.png)
+
+Y le damos en **Start Attack**.
+
+![](img10.png)
+
+Entonces, encontramos que para el payload **227**, nos topamos con un panel de administracion. Entonces enviamos el paquete al repeater, y colocamos el enlace para eliminar a carlos y enviamos el paquete.
+
+![](img11.png)
+
+Ahora revisamos en el home del laboratorio para verificar que lo completamos.
+
+![](img12.png)
+
+## 3. Lab: SSRF with blacklist-based input filter
+
