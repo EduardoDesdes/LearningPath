@@ -158,7 +158,25 @@ Entonces lo enviamos por comentario y terminamos el laboratorio.
 
 ![](img10.png)
 
-## 5. Lab: Reflected XSS into HTML context with nothing encoded
+## 5. Lab: Stored XSS into HTML context with nothing encoded
+
+```
+This lab contains a stored cross-site scripting vulnerability in the comment functionality.
+
+To solve this lab, submit a comment that calls the alert function when the blog post is viewed
+```
+
+Payload
+
+```html
+<script>alert(1)</script>
+```
+
+![](img11.png)
+
+![](img12.png)
+
+## 6. Lab: Reflected XSS into HTML context with most tags and attributes blocked
 
 
 
