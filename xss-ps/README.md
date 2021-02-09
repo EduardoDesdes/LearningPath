@@ -178,6 +178,68 @@ Payload
 
 ## 6. Lab: Reflected XSS into HTML context with most tags and attributes blocked
 
+```
+This lab contains a reflected cross-site scripting vulnerability in the search functionality but uses a web application firewall (WAF) to protect against common XSS vectors.
+
+To solve the lab, perform a cross-site scripting attack that bypasses the WAF and alerts document.cookie.
+```
+
+Al ejecutar el payload común obtenemos la siguiente respuesta.
+
+![](img13.png)
+
+Entonces lo que haremos será enviar la consulta GET del search al intruder, y luego en la **Cross-site scripting (XSS) cheat sheet**, https://portswigger.net/web-security/cross-site-scripting/cheat-sheet , clic en **copy tags to clipboard**.
+
+![](img14.png)
+
+Luego en el intruder realizamos la siguiente configuracion:
+
+![](img15.png)
+
+![](img16.png)
+
+Luego verificamos que el **payload** que nos dió codigo 200 fue **body**
+
+![](img17.png)
+
+Ahora realizamos lo mismo pero con los eventos.
+
+![](img18.png)
+
+![](img19.png)
+
+![](img20.png)
+
+Luego verificamos que el **payload** que nos dió codigo 200 fue **onresize**
+
+![](img21.png)
+
+Entonces el payload final sería el siguiente:
+
+```
+<body onresize=alert(1)>
+```
+
+Ahora podemos probar el payload en la pagina, y luego cambiamos de tamaño  a la ventana y vemos que nos genera el alert.
+
+![](img22.png)
+
+Ahora hacemos clic en **Go to exploit server** y diseñamos un iframe para que realice el **resize** por nosotros.
+
+```
+<iframe src="https://ac2f1fe11f9e36b080425a7400750067.web-security-academy.net/?search=%3Cbody%20onresize=alert(document.cookie)%3E" onload=this.style.width='100px'>
+```
+
+Entonces le damos en **Store** y luego en **Deliver exploit to victim**.
+
+![](img23.png)
+
+Y luego de ello vamos al home del laboratorio para ver que lo completamos.
+
+![](img24.png)
+
+## 7. Lab: Reflected XSS into HTML context with all tags blocked except custom ones
+
 
 
 
