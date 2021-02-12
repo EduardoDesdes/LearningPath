@@ -330,13 +330,62 @@ Payload
 javascript:alert(document.domain)
 ```
 
-![](img31.png)
+![](img32.png)
 
 ![](img33.png)
 
 ## 12. Lab: Reflected XSS in canonical link tag
 
+```
+This lab reflects user input in a canonical link tag and escapes angle brackets.
 
+To solve the lab, perform a cross-site scripting attack on the home page that injects an attribute that calls the alert function.
+
+To assist with your exploit, you can assume that the simulated user will press the following key combinations:
+
+ALT+SHIFT+X
+CTRL+ALT+X
+Alt+X
+Please note that the intended solution to this lab is only possible in Chrome.
+```
+
+Entonces vamos a la url y agregamos lo siguiente y verificamos si existe alguna variacion en el codigo:
+
+```
+https://acd71f591ee689ce804595b50035007d.web-security-academy.net/?payload
+```
+
+![](img34.png)
+
+Entonces ideamos un payload para generar un alert.
+
+```
+' ><h1>a
+```
+
+![](img35.png)
+
+Al parecer no podemos usar los caracteres **< >** entonces debemos seguir en el mismo tag, para ello pensamos el siguiente payload.
+
+```
+'onload='alert(1)
+```
+
+![](img36.png)
+
+Pero, no genera ningun alert, lo que haremos será crear un argumento de accion como **onclick** y luego lo llamamos con **accesskey**.
+
+```
+'accesskey='x'onclick='alert(1)
+```
+
+![](img37.png)
+
+Entonces para ejecutar el alert realizamos cualquiera de las conbinaciones de teclas que nos recomiendan. **(ALT+SHIFT+X)**
+
+![](img38.png)
+
+## 13. Lab: Reflected XSS into a JavaScript string with single quote and backslash escaped
 
 
 
