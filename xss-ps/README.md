@@ -318,5 +318,25 @@ Payload
 
 ## 11. Lab: Stored XSS into anchor `href` attribute with double quotes HTML-encoded
 
+```
+This lab contains a stored cross-site scripting vulnerability in the comment functionality. To solve this lab, submit a comment that calls the alert function when the comment author name is clicked.
+```
+
+![](img31.png)
+
+Payload
+
+```
+javascript:alert(document.domain)
+```
+
+![](img31.png)
+
+![](img33.png)
+
+## 12. Lab: Reflected XSS in canonical link tag
+
+
+
 
 
