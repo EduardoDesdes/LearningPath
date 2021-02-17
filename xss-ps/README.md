@@ -652,5 +652,25 @@ Entonces generamos el siguiente payload para ejecutar el alert.
 
 ## 23. Lab: DOM XSS in innerHTML sink using source location.search
 
+```
+This lab contains a DOM-based cross-site scripting vulnerability in the search blog functionality. It uses an innerHTML assignment, which changes the HTML contents of a div element, using data from location.search.
+
+To solve this lab, perform a cross-site scripting attack that calls the alert function.
+```
+
+Buscamos cualquier texto por ejemplo **aaa** en el laboratorio y luego revisamos si encontramos alguna coincidencia en el codigo fuente. Vemos que solo tenemos una coincidencia pero luego encontramos un codigo **HTML** interesante.
+
+![](img53.png)
+
+Entonces generamos el siguiente payload para ejecutar el alert.
+
+```
+<img%20src=x%20onerror=alert(1)>
+```
+
+![](img54.png)
+
+## 24. Lab: DOM XSS in jQuery anchor href attribute sink using location.search source
+
 
 
