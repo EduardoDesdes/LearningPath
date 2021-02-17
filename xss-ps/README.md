@@ -612,3 +612,45 @@ Entonces generamos el siguiente payload para ejecutar el alert.
 
 ## 22. Lab: DOM XSS in document.write sink using source location.search inside a select element
 
+```
+This lab contains a DOM-based cross-site scripting vulnerability in the stock checker functionality. It uses the JavaScript document.write function, which writes data out to the page. The document.write function is called with data from location.search which you can control using the website URL. The data is enclosed within a select element.
+
+To solve this lab, perform a cross-site scripting attack that breaks out of the select element and calls the alert function.
+```
+
+Revisando el codigo fuente podemos ver una seccion de html interesante.
+
+```html
+                            <script>
+                                var stores = ["London","Paris","Milan"];
+                                var store = (new URLSearchParams(window.location.search)).get('storeId');
+                                document.write('<select name="storeId">');
+                                if(store) {
+                                    document.write('<option selected>'+store+'</option>');
+                                }
+                                for(var i=0;i<stores.length;i++) {
+                                    if(stores[i] === store) {
+                                        continue;
+                                    }
+                                    document.write('<option>'+stores[i]+'</option>');
+                                }
+                                document.write('</select>');
+                            </script>
+```
+
+Podemos ver que entre todo el codigo, está la funcion **URLSearchParams(window.location.search)).get('storeId')** en donde está que obtiene el valor del parametro get **storeId**. entonces, enviamor por url ese parametro realizando un valor aleatorio por ejempl **aaa**.
+
+![](img51.png)
+
+Entonces generamos el siguiente payload para ejecutar el alert.
+
+```
+</option></select><img src=x onerror=alert(1)>
+```
+
+![](img52.png)
+
+## 23. Lab: DOM XSS in innerHTML sink using source location.search
+
+
+
