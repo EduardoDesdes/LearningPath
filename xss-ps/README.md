@@ -672,5 +672,35 @@ Entonces generamos el siguiente payload para ejecutar el alert.
 
 ## 24. Lab: DOM XSS in jQuery anchor href attribute sink using location.search source
 
+```
+This lab contains a DOM-based cross-site scripting vulnerability in the submit feedback page. It uses the jQuery library's $ selector function to find an anchor element, and changes its href attribute using data from location.search.
+
+To solve this lab, make the "back" link alert document.cookie.
+```
+
+Ingresamos a cualquier producto o al enlace **Submit feedback** y analizando el codigo fuente encontramos lo siguiente
+
+```
+<script>
+    $(function() {
+    	$('#backLink').attr("href", (new URLSearchParams(window.location.search)).get('returnPath'));
+    });
+</script>
+```
+
+Entonces, agregaremos el parametro returnPath con un valor por ejemplo **aaa** y verificamos mediante las heramientas de desarrollador donde encontramos dicho texto.
+
+![](img55.png)
+
+Entonces generamos el siguiente payload para ejecutar el alert.
+
+```
+javascript:alert(document.cookie)
+```
+
+![](img56.png)
+
+## 25. Lab: DOM XSS in AngularJS expression with angle brackets and double quotes HTML-encoded
+
 
 
