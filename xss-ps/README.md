@@ -726,5 +726,42 @@ Y vemos como nos devuelve el valor de **4**. Entonces, lo que necesitamos es eje
 
 ## 26. Lab: Reflected DOM XSS
 
+```
+This lab demonstrates a reflected DOM vulnerability. Reflected DOM vulnerabilities occur when the server-side application processes data from a request and echoes the data in the response. A script on the page then processes the reflected data in an unsafe way, ultimately writing it to a dangerous sink.
+
+To solve this lab, create an injection that calls the alert() function.
+```
+
+Cuando vamos a la seccion de busqueda del laboratorio, nos encontramos con la siguiente linea HTML.
+
+```
+<script src='resources/js/searchResults.js'></script>
+```
+
+Entonces, enviamos la busqueda e interceptamos los paquetes.
+
+![](img58.png)
+
+Entonces podemos ver, que existe una respuesta en formato JSON, que obtiene lo que enviamos como si fuera un string, lo cual hace que no pueda ejecutarse, así que intentaremos escapar de ese string usando comilla, y de ser necesario un **\\** para conseguirlo.
+
+```
+Payload: "-alert(1)
+R:
+{"searchTerm":"\"-alert(1)","results":[]}
+Payload: \"-alert(1)
+R:
+{"searchTerm":"\\"-alert(1)","results":[]}
+```
+
+ Con ello logramos escapar de las comillas, pero dejamos lo demas de la respuesta con errores de sintaxis. Entonces lo que haremos será cerrar la llave y convertir todo lo demas en un comentario con el siguiente payload.
+
+```
+\"-alert(1)}//
+```
+
+![](img59.png)
+
+## 27. Lab: Stored DOM XSS
+
 
 
