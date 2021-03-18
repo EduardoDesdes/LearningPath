@@ -9,24 +9,27 @@ Saludos,
 
 [Bit Flipper Attack](bit-flipper-attack/)
 
-[Authentication - PortSwigger](authentication-ps/)
-
-[Phoenix-Exploit Education](Phoenix-EE/)
-
-[Directory Traversal - PortSwigger](directory-traversal-ps/)
-
-[OS command injection - PortSwigger](command-injection-ps/)
-
-[Business logic vulnerabilities - PortSwigger](business-logic-ps/)
-
 [DVWA](dvwa/)
 
-[Information disclosure vulnerabilities - PortSwigger](information-disclosure-ps/)
+## PortSwigger
 
-[Access control vulnerabilities - PortSwigger](access-control-ps/)
+- [Authentication](authentication-ps/)
+- [Directory Traversal](directory-traversal-ps/)
 
-[Server-side request forgery - PortSwigger](ssrf-ps/)
+- [OS command injection](command-injection-ps/)
 
-[XML external entity (XXE) injection - PortSwigger](xxe-ps/)
+- [Business logic vulnerabilities](business-logic-ps/)
 
-[Cross-site scripting - PortSwigger](xss-ps/)
+- [Information disclosure vulnerabilities](information-disclosure-ps/)
+
+- [Access control vulnerabilities](access-control-ps/)
+
+- [Server-side request forgery](ssrf-ps/)
+
+- [XML external entity (XXE) injection](xxe-ps/)
+
+- [Cross-site scripting](xss-ps/)
+
+## Exploit Education
+
+- [Phoenix](Phoenix-EE/)
