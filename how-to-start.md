@@ -10,6 +10,7 @@ permalink: /how-to-start/
 Me llamo Desdes. Seria un honor para mi saber cual es tu nombre.
 
 Mi nombre es:  <input name='name' type='text' >
+<span id='done'>:)</span>
 
 ------
 
