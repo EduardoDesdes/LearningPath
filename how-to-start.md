@@ -11,7 +11,8 @@ Me llamo Desdes. Seria un honor para mi saber cual es tu nombre.
 
 Mi nombre es:  <input name='name' type='text' onchange="document.getElementById('done').innerHTML = 'Un gusto!, desde hoy te llamare Marrano.'">
 
-<p id='done'><p>
+<p id='done'><p><br>
+
 Bueno, tal vez llegaste aqui porque no sabes como empezar en este mundo, y te entiendo. Puede que tengas interes en este mundo... pero, hay muchos temas o muchas ramas y no sabes por donde empezar. Esto es algo comun, asi que empezaremos desde los temas mas basicos y nos iremos complicando poco a poco. Entendido :D !
 
 Tocaremos muchos temas, la mayoria tal vez las conozcas o tal vez no. Asi que si conoces algun tema que ya conoces simplemente saltatelo. Pero... si quieres reforzar tus ideas, te recomiendo que las revises.
