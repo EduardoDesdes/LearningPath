@@ -9,7 +9,8 @@ permalink: /how-to-start/
 
 Me llamo Desdes. Seria un honor para mi saber cual es tu nombre.
 
-Mi nombre es:  <input name='name' type='text' >
+Mi nombre es:  <input name='name' type='text' onchange="document.getElementById('done').innerHTML = 'Un gusto!, desde hoy te llamare Marrano.'">
+
 <span id='done'>:)</span>
 
 ------
