@@ -81,5 +81,23 @@ Busca un poco de informacion sobre estos protocolos para que ya poco a poco teng
 
 ### Transporte
 
-e.e
+En esta seccion nos empezamos a poner cada vez mas raro, ahora hablaremos sobre los protocolos de la capa de transporte, para ser mas exactos, de los 2 mas importantes, **TCP** y **UDP**.
+
+* TCP: Protocolo orientado a conexion, esto quiere decir que el protocolo esta rigurosamente hecho para que no se pierdan ningun paquete en el envio.
+* UDP: Protocolo no orientado a conexion, en este protocolo no existe esa rigurosidad, pero esto hace que el protocolo sea mucho mas ligero.
+
+Para definir un protocolo de transporte necesitamos la informacion de puertos de origen y destino. Entonces que es un puerto?.
+
+Pues, hablaremos de puertos logicos de red, como un carril en el cual se transporta un mensaje **(asi como en los trenes que tienes carriles?, igual, y el tren vendria el paquete con el protocolo de transporte, ya sea TCP o UDP).** Bueno, entonces, cuantos puertos existen, pues existe un total de 65535 puertos. (este no es un numero sacado de un sombrero, tiene una explicacion y la veremos cuando toquemos cada uno de estos protocolos). Luego tambien estan los datos que se transporta. Y Aqui viene una gran revelacion, los datos que envia el protocolo de transporte es **el paquete de la capa de aplicacion con su protocolo respectivo**.
+
+### Internet
+
+Esta capa contiene una informacion parecida a la capa de transporte, pero en lugar de almacenar puertos de origen y destino. El protocolo de internet **(IP)** contiene la IP de origen y destino. En su seccion de datos, almacena el paquete de la capa de transporte.
+
+### Acceso a la red
+
+a
+
+
+
 
