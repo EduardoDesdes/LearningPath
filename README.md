@@ -3,7 +3,7 @@ Bienvenido a mi Learning Path, o mi camino de aprendizaje. Acá subiré todos lo
 
 Saludos,
 
-Imaginate que no sabes como empezar... puedes entrar here: [Soy gil no se como empezar](/how-to-start)
+Imaginate que no sabes como empezar... puedes entrar aqui: [Como empezar](/how-to-start)
 
 [RCE por LFI](rce-phpinfo/)
 
