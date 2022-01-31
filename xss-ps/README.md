@@ -10,8 +10,39 @@ Todos los laboratorios posteriormente expuestos los puedes encontrar para resolv
 
 [https://portswigger.net/web-security/cross-site-scripting](https://portswigger.net/web-security/cross-site-scripting)
 
+## Indice
 
-[TOC]
+- [1. Lab: Reflected XSS into HTML context with nothing encoded](#1-lab-reflected-xss-into-html-context-with-nothing-encoded)
+- [2. Lab: Exploiting cross-site scripting to steal cookies](#2-lab-exploiting-cross-site-scripting-to-steal-cookies)
+- [3. Lab: Exploiting cross-site scripting to capture passwords](#3-lab-exploiting-cross-site-scripting-to-capture-passwords)
+- [4. Lab: Exploiting XSS to perform CSRF](#4-lab-exploiting-xss-to-perform-csrf)
+- [5. Lab: Stored XSS into HTML context with nothing encoded](#5-lab-stored-xss-into-html-context-with-nothing-encoded)
+- [6. Lab: Reflected XSS into HTML context with most tags and attributes blocked](#6-lab-reflected-xss-into-html-context-with-most-tags-and-attributes-blocked)
+- [7. Lab: Reflected XSS into HTML context with all tags blocked except custom ones](#7-lab-reflected-xss-into-html-context-with-all-tags-blocked-except-custom-ones)
+- [8. Lab: Reflected XSS with event handlers and href attributes blocked](#8-lab-reflected-xss-with-event-handlers-and-href-attributes-blocked)
+- [9. Lab: Reflected XSS with some SVG markup allowed](#9-lab-reflected-xss-with-some-svg-markup-allowed)
+- [10. Lab: Reflected XSS into attribute with angle brackets HTML-encoded](#10-lab-reflected-xss-into-attribute-with-angle-brackets-html-encoded)
+- [11. Lab: Stored XSS into anchor `href` attribute with double quotes HTML-encoded](#11-lab-stored-xss-into-anchor-href-attribute-with-double-quotes-html-encoded)
+- [12. Lab: Reflected XSS in canonical link tag](#12-lab-reflected-xss-in-canonical-link-tag)
+- [13. Lab: Reflected XSS into a JavaScript string with single quote and backslash escaped](#13-lab-reflected-xss-into-a-javascript-string-with-single-quote-and-backslash-escaped)
+- [14. Lab: Reflected XSS into a JavaScript string with angle brackets HTML encoded](#14-lab-reflected-xss-into-a-javascript-string-with-angle-brackets-html-encoded)
+- [15. Lab: Reflected XSS into a JavaScript string with angle brackets and double quotes HTML-encoded and single quotes escaped](#15-lab-reflected-xss-into-a-javascript-string-with-angle-brackets-and-double-quotes-html-encoded-and-single-quotes-escaped)
+- [16. Lab: Reflected XSS in a JavaScript URL with some characters blocked (P)](#16-lab-reflected-xss-in-a-javascript-url-with-some-characters-blocked-p-)
+- [17. Lab: Stored XSS into onclick event with angle brackets and double quotes HTML-encoded and single quotes and backslash escaped](#17-lab-stored-xss-into-onclick-event-with-angle-brackets-and-double-quotes-html-encoded-and-single-quotes-and-backslash-escaped)
+- [18. Lab: Reflected XSS into a template literal with angle brackets, single, double quotes, backslash and backticks Unicode-escaped](#18-lab-reflected-xss-into-a-template-literal-with-angle-brackets-single-double-quotes-backslash-and-backticks-unicode-escaped)
+- [19. Lab: Reflected XSS with AngularJS sandbox escape without strings (P)](#19-lab-reflected-xss-with-angularjs-sandbox-escape-without-strings-p-)
+- [20. Lab: Reflected XSS with AngularJS sandbox escape and CSP (P)](#20-lab-reflected-xss-with-angularjs-sandbox-escape-and-csp-p-)
+- [21. Lab: DOM XSS in document.write sink using source location.search](#21-lab-dom-xss-in-documentwrite-sink-using-source-locationsearch)
+- [22. Lab: DOM XSS in document.write sink using source location.search inside a select element](#22-lab-dom-xss-in-documentwrite-sink-using-source-locationsearch-inside-a-select-element)
+- [23. Lab: DOM XSS in innerHTML sink using source location.search](#23-lab-dom-xss-in-innerhtml-sink-using-source-locationsearch)
+- [24. Lab: DOM XSS in jQuery anchor href attribute sink using location.search source](#24-lab-dom-xss-in-jquery-anchor-href-attribute-sink-using-locationsearch-source)
+- [25. Lab: DOM XSS in AngularJS expression with angle brackets and double quotes HTML-encoded](#25-lab-dom-xss-in-angularjs-expression-with-angle-brackets-and-double-quotes-html-encoded)
+- [26. Lab: Reflected DOM XSS](#26-lab-reflected-dom-xss)
+- [27. Lab: Stored DOM XSS](#27-lab-stored-dom-xss)
+- [28. Lab: Reflected XSS protected by CSP, with dangling markup attack](#28-lab-reflected-xss-protected-by-csp-with-dangling-markup-attack)
+- [29. Lab: Reflected XSS protected by very strict CSP, with dangling markup attack (P)](#29-lab-reflected-xss-protected-by-very-strict-csp-with-dangling-markup-attack-p-)
+- [30. Lab: Reflected XSS protected by CSP, with CSP bypass (P)](#30-lab-reflected-xss-protected-by-csp-with-csp-bypass-p-)
+- [CONCLUSION](#conclusion)
 
 ## 1. Lab: Reflected XSS into HTML context with nothing encoded
 
