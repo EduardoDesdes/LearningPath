@@ -16,15 +16,25 @@ Imaginate que no sabes como empezar... puedes entrar aqui: [Como empezar](/how-t
 ## PortSwigger
 
 - [Authentication](authentication-ps/)
+
 - [Directory Traversal](directory-traversal-ps/)
+
 - [OS command injection](command-injection-ps/)
+
 - [Business logic vulnerabilities](business-logic-ps/)
+
 - [Information disclosure vulnerabilities](information-disclosure-ps/)
+
 - [Access control vulnerabilities](access-control-ps/)
+
 - [Server-side request forgery](ssrf-ps/)
+
 - [XML external entity (XXE) injection](xxe-ps/)
+
 - [Cross-site scripting](xss-ps/)
+
 - [Cross-site request forgery](csrf-ps/)
+
 - [Cross-origin resource sharing](cors-ps/)
 
 ## Exploit Education
