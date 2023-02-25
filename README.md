@@ -37,6 +37,8 @@ Imaginate que no sabes como empezar... puedes entrar aqui: [Como empezar](/how-t
 
 - [Cross-origin resource sharing](cors-ps/)
 
+- [Clickjacking - PortSwigger](clickjacking-ps/)
+
 ## Exploit Education
 
 - [Phoenix](Phoenix-EE/)
