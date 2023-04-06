@@ -39,6 +39,10 @@ Imaginate que no sabes como empezar... puedes entrar aqui: [Como empezar](/how-t
 
 - [Clickjacking - PortSwigger](clickjacking-ps/)
 
+- [DOM-based vulnerabilities - PortSwigger](dom-based-ps/)
+
 ## Exploit Education
 
 - [Phoenix](Phoenix-EE/)
+
+
