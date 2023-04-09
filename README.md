@@ -41,8 +41,8 @@ Imaginate que no sabes como empezar... puedes entrar aqui: [Como empezar](/how-t
 
 - [DOM-based vulnerabilities - PortSwigger](dom-based-ps/)
 
+- [WebSockets - PortSwigger](web-sockets-ps/)
+
 ## Exploit Education
 
 - [Phoenix](Phoenix-EE/)
-
-
