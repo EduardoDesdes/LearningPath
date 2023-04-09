@@ -311,8 +311,114 @@ Entonces, agregamos este payload al exploit server, enviamos dos veces a la vict
 Este laboratorio contiene una vulnerabilidad DOM-clobbering. La funcionalidad de comentarios permite HTML "seguro". Para resolver este laboratorio, construye una inyección HTML que clobbers una variable y utiliza XSS para llamar a la función alert().
 ```
 
+Para resolver esta laboratorio empezamos buscando el código javascript que edita el DOM en el sitio web.
+
+```html
+<span id='user-comments'>
+    <script src='resources/js/domPurify-2.0.15.js'></script>
+    <script src='resources/js/loadCommentsWithDomClobbering.js'></script>
+    <script>loadComments('/post/comment')</script>
+</span>
+```
+
+Como podemos ver, el sitio web inserta dos archivos Javascript y podemos que uno consiste de una librería que limpia o purifica el dom de posibles ataques XSS. Asi mismo, podemos ver que el segundo archivo tiene un nombre interesante **loadCommentsWithDomClobbering.js**.
+
+Podemos entender por ello, que en este segundo archivo javascript es en donde se concentra el ataque de Dom Clobbering. Analizando el código podemos ver dos lineas de código interesantes:
+
+```javascript
+let defaultAvatar = window.defaultAvatar || {avatar: '/resources/images/avatarDefault.svg'}
+let avatarImgHTML = '<img class="avatar" src="' + (comment.avatar ? escapeHTML(comment.avatar) : defaultAvatar.avatar) + '">';
+```
+
+En la primera linea nos encontramos con **window.defaultAvatar**, lo cual nos devuelve un objeto que almacena las etiquetas html que tengan como identificador **defaultAvatar**. Si no existe ninguna etiqueta con este identificador entonces la variable javascript defaultAvatar se le asigna el valor por defecto **/resources/images/avatarDefault.svg**. Luego de ello el sitio web, crea una etiqueta **img** para cargar la imagen del usuario que realizo el comentario.
+
+**Para este laboratorio existen muchas cosas que debemos tener en cuenta** como el flujo de ejecución de este javascript y la lógica de ejecución del sitio web. El sitio web consta de articulos o post, en los cuales se le permite a los visitantes realizar comentarios y poder insertar ciertas etiquetas HTML. Para que este laboratorio no sea un simple laboratorio de XSS el sitio web hacer uso de una librería llamada domPurify para validar que etiquetas puede ejecutar el sitio web y cuales no. 
+
+Luego cuando un visitante ingresa un comentario el cual consiste en un cuerpo, nombre del visitante, correo, y sitio web (opcional), este se almacena en una API. Y ya que el javascript se ejecuta al iniciar el sitio web, este comentario no se va a mostrar hasta que se actualice el sitio web lo cual se realiza luego de enviar el mismo. Como podemos ver no existe ninguna entrada en el formulario que le permita a un visitante ingresar una imagen para que lo identifique, entonces de por si por el código javascript analizado anteriormente el sitio web siempre va a cargar la imagen por defecto **/resources/images/avatarDefault.svg**.
+
+Lo que nos queda hacer es clobberizar la variable **defaultAvatar** mediante el objeto **window.defaultAvatar**, para ello debemos ingresar una etiqueta en un comentario de manera que al momento de que el sitio web extraiga las etiquetas con identificador **defaultAvatar** del DOM obtenga esta etiqueta ingresada por nosotros y actualice el valor de la imagen del usuario con otro valor que no sea por defecto.
+
+La teoría de DOM Clobbering nos otorga el siguiente payload:
+
+```html
+<a id=someObject><a id=someObject name=url href=//malicious-website.com/evil.js>
+```
+
+Sabemos que el objeto que queremos clobberizar es defaultAvatar y luego se accederá a su atributo **avatar** mediante **defaultAvatar.avatar** en la segunda linea del código javascript que analizamos, por lo que nuestro payload actualizado seria:
+
+```html
+<a id=defaultAvatar><a id=defaultAvatar name=avatar href=/evil.png>
+```
+
+Ingresamos en el valor de href una imagen ya que luego este valor sera asignado al atributo src en la etiqueta img creada por el javascript. Enviamos el comentario y observamos el DOM.
+
+![](img9.png)
+
+Como podemos ver en **1** se refleja nuestro comentario el cual no tiene texto ya que solo consiste de etiquetas html. Asi mismo en **2** podemos identificar que nuestras etiquetas HTML forman parte del DOM. Por ultimo en **3** verificamos que nuestro comentario tiene como imagen de avatar el valor por defecto y no nuestra imagen **evil.png** lo cual explicaremos a continuación. 
+
+Esto se debe al flujo del javascript anterior que analizamos, el sitio web carga comentario por comentario en la sección de comentarios asi que cuando carga nuestro comentario con el payload que ingresamos este recién forma parte de DOM, por ello en la carga del siguiente comentario se mostrara la extracción del DOM de nuestra etiqueta y se realizara acabo el ataque. Por ingresamos un nuevo comentario sin importancia y verificamos si hay cambios.
+
+![](img10.png)
+
+Como podemos ver luego de ingresar un comentario sencillo verificamos que la etiqueta img con la clase **avatar** tiene como valor de **src** nuestra imagen **evil.png**.
+
+Intentaremos generar un ataque XSS mediante el siguiente payload:
+
+```html
+<a id=defaultAvatar><a id=defaultAvatar name=avatar href=javascript:alert(1)>
+```
+
+Esto lo ingresaremos en un post diferente para que no haga conflicto con nuestro payload anterior.
+
+![](img11.png)
+
+Como podemos ver, en el primer comentario que ingresamos el cual contenía el payload malicioso este al ser reflejado en el sitio web ya no contiene el atributo src ya que este a sido eliminado a la hora de mostrarlo por el domPurify. Luego en el segundo comentario podemos apreciar que el valor del atributo src de la imagen del usuario se encuentra vacía ya que no lo logro extraer del comentario anterior.
+
+Lo que nos toca ahora es revisar este archivo **domPurify-2.0.15.js** en busca de una manera de evadir esta restricción y de alguna manera ejecutar un alert en la etiqueta img del avatar del usuario o visitante.
+
+![](img12.png)
+
+Mientras revisamos el codigo del javascript, podemos verificar que hay una linea interesante que parece ser una lista blanca de protocolos permitidos.
+
+```javascript
+P = i(/^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i)
+```
+
+Entonces, entre todos ellos podemos ver, que la mayoria de estos protocolos son protocolos de correo o contacto, si elegimos por ejemplo el protocolo **mailto**, lo que podemos intentar es escapar del atributo src de la imagen y generar un XSS mediante el atributo **onerror**. Para realizar esto nuestro nuevo payload seria el siguiente:
+
+```html
+<a id=defaultAvatar><a id=defaultAvatar name=avatar href='mailto:"onerror=alert(1)'>
+```
+
+![](img13.png)
+
+Como podemos ver nuestro primer comentario se envió satisfactoriamente, pero en el segundo comentario podemos ver que las comillas dobles fue escapada con urlenconde.
+
+Entonces, ahora intentaremos el mismo payload pero en lugar de **mailto** usaremos **cid** (no olvidar que lo haremos en un post diferente para no generar conflicto).
+
+```html
+<a id=defaultAvatar><a id=defaultAvatar name=avatar href='cid:"onerror=alert(1)'>
+```
+
+![](img14.png)
+
+Como podemos ver ya nos encontramos muy cerca de completar el laboratorio, pero podemos verificar que no se ejecuto nuestro alert en javascript y esto se puede deber a que nos encontramos como podemos ver con unas comillas dobles adicionales en el javascript, por ello lo que haremos sera escaparlas iniciando un comentario antes de ellas.
+
+```html
+<a id=defaultAvatar><a id=defaultAvatar name=avatar href='cid:"onerror=alert(1)//'>
+```
+
+![](img15.png)
+
+Ahora si pudimos completar el laboratorio exitosamente, igual revisaremos el contenido del DOM para validar que los cambios se realizaron.
+
+![](img16.png)
+
+Podemos verificar que los comentarios ayudaron a eliminar el error de sintaxis presente por las comillas dobles adicionales. Con esto damos por concluido este laboratorio. :D .
+
 ## 7. Lab: Clobbering DOM attributes to bypass HTML filters
 
 ```
 Este laboratorio utiliza la biblioteca HTMLJanitor, que es vulnerable al DOM clobbering. Para resolverlo, construye un vector que evite el filtro y utilice el DOM clobbering para inyectar un vector que llame a la función print(). Puede que necesites utilizar el servidor de exploits para hacer que tu vector se auto-ejecute en el navegador de la víctima.
 ```
+
