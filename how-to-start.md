@@ -96,7 +96,7 @@ Esta capa contiene una información parecida a la capa de transporte, pero en lu
 
 ### Acceso a la red
 
-Si te esta interesando lo lees e.e?, te recomiendo ingresar a este: [https://start.desdes.xyz/](https://start.desdes.xyz/).
+Si te esta interesando lo que lees e.e?, te recomiendo ingresar a este enlace: [https://start.desdes.xyz/](https://start.desdes.xyz/).
 
 
 
