@@ -5,15 +5,27 @@ Saludos,
 
 Imaginate que no sabes como empezar... puedes entrar aqui: [Como empezar](/how-to-start)
 
-[RCE por LFI](rce-phpinfo/)
+## Enlaces Interesantes
 
-[XML Tutorial](xml-tutorial/)
+- [Hoja de trucos de seguridad (incompleto XD).](https://cs.desdes.xyz/)
 
-[Bit Flipper Attack](bit-flipper-attack/)
+- [Resolucion de laboratios de PortSwigger](https://ps.desdes.xyz/)
 
-[DVWA](dvwa/)
+- [Notas de infraestructura](https://infra.desdes.xyz/)
+
+- [Informacion de Ponencias](https://ponencias.desdes.xyz/)
+
+- [Antiguo Blog](http://x90.desdes.xyz/)
+
+- [Documentacion tramites UNI](https://uni.desdes.xyz/)
+
+- [Documentacion bot Nagatoro](https://dbot.desdes.xyz/)
+
+- [Canal de Youtube](https://www.youtube.com/@x90cs)
 
 ## PortSwigger
+
+Esta informacion es antigua, y poco a poco se tendra que actualizar.
 
 - [Authentication](authentication-ps/)
 
@@ -43,6 +55,20 @@ Imaginate que no sabes como empezar... puedes entrar aqui: [Como empezar](/how-t
 
 - [WebSockets - PortSwigger](web-sockets-ps/)
 
+Asi mismo, se recomienda revisar el nuevo contenido de los laboratorios siguientes en:
+
+[PortSwigger Labs by Desdes](https://ps.desdes.xyz/)
+
 ## Exploit Education
 
 - [Phoenix](Phoenix-EE/)
+
+## Post Variados
+
+[RCE por LFI](rce-phpinfo/)
+
+[XML Tutorial](xml-tutorial/)
+
+[Bit Flipper Attack](bit-flipper-attack/)
+
+[DVWA](dvwa/)
